@@ -20,7 +20,7 @@ const SRC = DIR + "sthree-boutique.html";
 /* Public base URL of the live site, no trailing slash. Until this is set,
    link previews cannot work — crawlers need an absolute address.
    For GitHub Pages it is:  https://<user>.github.io/<repo>          */
-const SITE_URL = "";
+const SITE_URL = "https://pudgeismylife-hash.github.io/sthree-boutique";
 
 const src = fs.readFileSync(SRC, "utf8");
 
