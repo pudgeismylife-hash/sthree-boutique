@@ -72,12 +72,12 @@ function check(s, label, needles) {
 /* ── 1. GitHub Pages ────────────────────────────────────────────── */
 let pages = setLogo(src, logoName);
 pages = setSiteUrl(pages, SITE_URL || "__SITE_URL__");
-check(pages, "index.html", ["<!doctype html>", 'id="prodGrid"', "917625077531", "og:image"]);
+check(pages, "index.html", ["<!doctype html>", 'id="prodGrid"', "919036087427", "og:image"]);
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
 
 /* ── 2. Claude artifact ─────────────────────────────────────────── */
 let artifact = unwrap(setSiteUrl(setLogo(src, logoDataUri), SITE_URL));
-check(artifact, "hosted", ["<title>", "<style>", 'id="prodGrid"', "917625077531", "demo-strip"]);
+check(artifact, "hosted", ["<title>", "<style>", 'id="prodGrid"', "919036087427", "demo-strip"]);
 fs.writeFileSync(DIR + "sthree-boutique-hosted.html", artifact, "utf8");
 
 /* ── 3. Standalone to send as a file ────────────────────────────── */

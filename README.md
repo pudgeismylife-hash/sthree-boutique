@@ -28,7 +28,7 @@ script in `sthree-boutique.html`:
 
 ```js
 const CONFIG = {
-  whatsapp : "917625077531",   // country code + number, no + or spaces
+  whatsapp : "919036087427",   // country code + number, no + or spaces
   instagram: "sthreeboutique2026",
   email    : "hello@sthreeboutique.in",
   currency : "₹",
