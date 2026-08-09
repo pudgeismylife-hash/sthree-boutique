@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sthree Boutique</title><meta name="description" content="Sthree Boutique — western wear, ethnic wear, anti-tarnish jewellery and press-on nails. Call 90360 87427."><meta property="og:title" content="Sthree Boutique"><meta property="og:description" content="Western · Ethnic · Anti-tarnish jewellery · Press-on nails"><meta property="og:image" content="sthree-logo.jpg"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="sthree-logo.jpg"><link rel="icon" href="sthree-logo.jpg"><template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#faf6ef"/><text x="50" y="56" text-anchor="middle" font-family="Georgia,serif" font-size="34" fill="#a8842c">S</text><text x="50" y="72" text-anchor="middle" font-family="Helvetica,sans-serif" font-size="7" letter-spacing="3" fill="#15130f">BOUTIQUE</text></svg></template><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Jost:wght@300;400;500&family=Pinyon+Script&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"><script src="./image-slot.js"></script><style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#e8e4de;font-family:'Jost',system-ui,sans-serif;color:#15130f}
+a{color:#a8842c;text-decoration:none}
+a:hover{color:#15130f}
+::-webkit-scrollbar{width:0;height:0}
+@keyframes riseIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.tilt{perspective:1000px}
+.tilt>.pane{transform:rotateY(-9deg) rotateX(5deg) translateZ(0);transition:transform .55s cubic-bezier(.22,1,.36,1),box-shadow .55s;box-shadow:14px 18px 34px -18px rgba(21,19,15,.45),0 2px 6px rgba(21,19,15,.08);position:relative}
+.tilt:hover>.pane{transform:rotateY(0deg) rotateX(0deg) scale(1.03);box-shadow:6px 26px 46px -20px rgba(21,19,15,.5)}
+.tilt>.pane:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,0) 34%,rgba(255,255,255,0) 68%,rgba(168,132,44,.16) 100%);transition:opacity .55s}
+.tilt:hover>.pane:after{opacity:.35}
+</style></helmet>
+<div style="min-height:100vh;display:flex;justify-content:center;background:#e8e4de">
+<div style="width:100%;max-width:460px;min-height:100vh;background:#faf6ef;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,.12)">
+
+<div style="position:sticky;top:0;z-index:40;background:rgba(250,246,239,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(21,19,15,.07);padding:14px 20px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+<div style="display:flex;flex-direction:column;line-height:1">
+<span style="font-family:'Pinyon Script',cursive;font-size:30px;color:#a8842c;line-height:.9">Sthree</span>
+<span style="font-size:8.5px;letter-spacing:.42em;color:#15130f;margin-top:3px;padding-left:2px">BOUTIQUE</span>
+</div>
+<div style="display:flex;align-items:center;gap:10px">
+<a href="tel:+919036087427" style="display:flex;align-items:center;justify-content:center;height:38px;padding:0 14px;border:1px solid rgba(168,132,44,.45);border-radius:999px;font-size:11px;letter-spacing:.14em;color:#a8842c" style-hover="background:#a8842c;color:#faf6ef">CALL</a>
+<button onClick="{{ goCart }}" style="position:relative;height:38px;width:38px;border-radius:999px;border:1px solid rgba(21,19,15,.15);background:transparent;color:#15130f;font-family:'Jost';font-size:10px;letter-spacing:.08em;cursor:pointer" style-hover="border-color:#a8842c;color:#a8842c">BAG<span style="{{ badgeStyle }}">{{ cartCount }}</span></button>
+</div>
+</div>
+
+<div style="padding-bottom:104px">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div style="animation:fadeIn .35s ease both">
+<div style="position:relative;margin:0;padding:0">
+<div style="position:relative;height:430px;background:linear-gradient(160deg,#f2ebdd,#e6dac6)">
+<image-slot id="sthree-hero" shape="rect" fit="cover" placeholder="Drop the hero photo"></image-slot>
+</div>
+<div style="position:absolute;inset:auto 0 0 0;padding:26px 22px 24px;background:linear-gradient(to top,rgba(250,246,239,.97) 45%,rgba(250,246,239,0))">
+<div style="font-size:9.5px;letter-spacing:.34em;color:#a8842c;margin-bottom:8px">AUTUMN EDIT · 2026</div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;line-height:1.05;letter-spacing:-.01em">Dressed for<br><em style="font-family:'Pinyon Script',cursive;font-size:46px;color:#a8842c;font-style:normal">every</em> occasion</div>
+<div style="display:flex;gap:10px;margin-top:18px">
+<button onClick="{{ goShop }}" style="flex:1;height:46px;border:none;border-radius:2px;background:#15130f;color:#faf6ef;font-family:'Jost';font-size:11px;letter-spacing:.2em;cursor:pointer" style-hover="background:#a8842c">SHOP THE EDIT</button>
+<a href="https://wa.me/919036087427" style="flex:none;display:flex;align-items:center;justify-content:center;height:46px;padding:0 18px;border:1px solid rgba(21,19,15,.2);border-radius:2px;font-size:11px;letter-spacing:.16em;color:#15130f" style-hover="border-color:#a8842c;color:#a8842c">ENQUIRE</a>
+</div>
+</div>
+</div>
+
+<div style="padding:30px 0 6px">
+<div style="padding:0 20px;display:flex;align-items:baseline;justify-content:space-between">
+<div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400">Shop by category</div>
+<button onClick="{{ goShop }}" style="border:none;background:none;font-family:'Jost';font-size:10px;letter-spacing:.18em;color:#a8842c;cursor:pointer">ALL</button>
+</div>
+<div style="display:flex;gap:14px;overflow-x:auto;padding:18px 20px 6px">
+<sc-for list="{{ catCards }}" as="c" hint-placeholder-count="4">
+<button onClick="{{ c.open }}" style="flex:none;width:104px;border:none;background:none;padding:0;cursor:pointer;text-align:center">
+<div class="tilt" style="width:104px;height:132px"><div class="pane" style="width:100%;height:100%;background:{{ c.bg }}"><image-slot id="{{ c.slot }}" shape="rect" fit="cover" placeholder="{{ c.label }}"></image-slot></div></div>
+<div style="font-family:'Jost';font-size:9.5px;letter-spacing:.16em;color:#15130f;margin-top:9px">{{ c.label }}</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:rgba(21,19,15,.4);margin-top:3px">{{ c.count }}</div>
+</button>
+</sc-for>
+</div>
+</div>
+
+<div style="margin:22px 20px;padding:20px;border:1px solid rgba(168,132,44,.3);background:linear-gradient(135deg,#f4ecdc,#faf6ef)">
+<div style="font-size:9px;letter-spacing:.3em;color:#a8842c">THE STHREE PROMISE</div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;margin-top:8px;line-height:1.4;text-wrap:pretty">Anti-tarnish jewellery, hand-checked before it reaches you — with a one-year shine guarantee.</div>
+</div>
+
+<div style="padding:8px 20px 0;display:flex;align-items:baseline;justify-content:space-between">
+<div style="font-family:'Cormorant Garamond',serif;font-size:22px">Just in</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(21,19,15,.4)">{{ newCount }} pieces</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:16px 20px 0">
+<sc-for list="{{ featured }}" as="p" hint-placeholder-count="4">
+<div onClick="{{ p.open }}" style="cursor:pointer;animation:riseIn .4s ease both">
+<div class="tilt" style="height:200px"><div class="pane" style="height:100%;background:{{ p.bg }}"><image-slot id="{{ p.slot }}" shape="rect" fit="cover" placeholder="{{ p.slug }}"></image-slot></div></div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:15px;margin-top:9px;line-height:1.25">{{ p.name }}</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:4px"><span style="font-size:11px;letter-spacing:.06em;color:#a8842c">₹{{ p.price }}</span><span style="font-size:9px;letter-spacing:.12em;color:rgba(21,19,15,.35)">{{ p.catLabel }}</span></div>
+</div>
+</sc-for>
+</div>
+
+<div style="margin:34px 20px 0;padding:24px 20px;background:#15130f;color:#faf6ef">
+<div style="font-size:9px;letter-spacing:.3em;color:#c9a75a">VISIT / ORDER</div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-top:10px;line-height:1.25">Styling help on call,<br>every day 10am–8pm</div>
+<div style="display:flex;gap:10px;margin-top:20px">
+<a href="tel:+919036087427" style="flex:1;display:flex;align-items:center;justify-content:center;height:44px;background:#c9a75a;color:#15130f;font-size:11px;letter-spacing:.16em" style-hover="background:#faf6ef">90360 87427</a>
+<a href="https://instagram.com/sthreeboutique2026" style="flex:none;display:flex;align-items:center;justify-content:center;height:44px;padding:0 16px;border:1px solid rgba(250,246,239,.3);color:#faf6ef;font-size:11px;letter-spacing:.16em" style-hover="border-color:#c9a75a;color:#c9a75a">INSTAGRAM</a>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isShop }}" hint-placeholder-val="{{ false }}">
+<div style="animation:fadeIn .3s ease both">
+<div style="padding:22px 20px 0"><div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300">The Collection</div></div>
+<div style="display:flex;gap:8px;overflow-x:auto;padding:16px 20px 14px;position:sticky;top:65px;background:rgba(250,246,239,.95);backdrop-filter:blur(8px);z-index:20">
+<sc-for list="{{ chips }}" as="ch" hint-placeholder-count="5">
+<button onClick="{{ ch.pick }}" style="{{ ch.style }}">{{ ch.label }}</button>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:6px 20px 0">
+<sc-for list="{{ shopList }}" as="p" hint-placeholder-count="6">
+<div onClick="{{ p.open }}" style="cursor:pointer;animation:riseIn .35s ease both">
+<div class="tilt" style="height:210px"><div class="pane" style="height:100%;background:{{ p.bg }}"><image-slot id="{{ p.slot }}" shape="rect" fit="cover" placeholder="{{ p.slug }}"></image-slot></div></div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:15px;margin-top:9px;line-height:1.25">{{ p.name }}</div>
+<div style="font-size:11px;letter-spacing:.06em;color:#a8842c;margin-top:4px">₹{{ p.price }}</div>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ shopEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="padding:60px 30px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:20px;color:rgba(21,19,15,.5)">Bags are landing soon — call to pre-book.</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCart }}" hint-placeholder-val="{{ false }}">
+<div style="animation:fadeIn .3s ease both;padding:22px 20px 0">
+<div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300">Your Bag</div>
+<sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ true }}">
+<div style="padding:70px 10px;text-align:center">
+<div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:rgba(21,19,15,.5)">Nothing picked yet.</div>
+<button onClick="{{ goShop }}" style="margin-top:20px;height:44px;padding:0 26px;border:1px solid #15130f;background:none;font-family:'Jost';font-size:11px;letter-spacing:.18em;cursor:pointer" style-hover="background:#15130f;color:#faf6ef">BROWSE PIECES</button>
+</div>
+</sc-if>
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:14px">
+<sc-for list="{{ cartItems }}" as="i" hint-placeholder-count="0">
+<div style="display:flex;gap:14px;align-items:center">
+<div style="position:relative;width:62px;height:76px;flex:none;background:{{ i.bg }}"><image-slot id="{{ i.slot }}" shape="rect" fit="cover" placeholder=" "></image-slot></div>
+<div style="flex:1">
+<div style="font-family:'Cormorant Garamond',serif;font-size:16px">{{ i.name }}</div>
+<div style="font-size:10px;letter-spacing:.12em;color:rgba(21,19,15,.4);margin-top:3px">{{ i.catLabel }} · QTY {{ i.qty }}</div>
+</div>
+<div style="text-align:right"><div style="font-size:12px;color:#a8842c">₹{{ i.line }}</div>
+<button onClick="{{ i.remove }}" style="border:none;background:none;padding:4px 0 0;font-family:'Jost';font-size:9px;letter-spacing:.14em;color:rgba(21,19,15,.35);cursor:pointer" style-hover="color:#15130f">REMOVE</button></div>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ cartHas }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:26px;border-top:1px solid rgba(21,19,15,.1);padding-top:16px">
+<div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em"><span>SUBTOTAL</span><span style="color:#a8842c">₹{{ cartTotal }}</span></div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(21,19,15,.4);margin-top:8px">Order is confirmed over WhatsApp — payment link follows.</div>
+<a href="{{ waOrder }}" style="display:flex;align-items:center;justify-content:center;height:50px;margin-top:16px;background:#15130f;color:#faf6ef;font-size:11px;letter-spacing:.2em" style-hover="background:#a8842c">SEND ORDER ON WHATSAPP</a>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+<div style="animation:fadeIn .3s ease both;padding:22px 20px 0">
+<div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300">Say hello</div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:rgba(21,19,15,.6);margin-top:8px;line-height:1.5;text-wrap:pretty">Share your size, occasion or a screenshot — we curate a set for you within the hour.</div>
+<div style="display:flex;flex-direction:column;gap:12px;margin-top:24px">
+<a href="tel:+919036087427" style="display:flex;align-items:center;justify-content:space-between;padding:20px;border:1px solid rgba(21,19,15,.12);background:#fff" style-hover="border-color:#a8842c">
+<span><span style="display:block;font-size:9px;letter-spacing:.3em;color:#a8842c">CALL</span><span style="display:block;font-family:'Cormorant Garamond',serif;font-size:24px;color:#15130f;margin-top:4px">90360 87427</span></span>
+<span style="font-size:11px;letter-spacing:.14em;color:rgba(21,19,15,.4)">TAP</span></a>
+<a href="https://wa.me/919036087427?text=Hi%20Sthree%20Boutique!" style="display:flex;align-items:center;justify-content:space-between;padding:20px;border:1px solid rgba(21,19,15,.12);background:#fff" style-hover="border-color:#a8842c">
+<span><span style="display:block;font-size:9px;letter-spacing:.3em;color:#a8842c">WHATSAPP</span><span style="display:block;font-family:'Cormorant Garamond',serif;font-size:24px;color:#15130f;margin-top:4px">Chat with us</span></span>
+<span style="font-size:11px;letter-spacing:.14em;color:rgba(21,19,15,.4)">TAP</span></a>
+<a href="https://instagram.com/sthreeboutique2026" style="display:flex;align-items:center;justify-content:space-between;padding:20px;border:1px solid rgba(21,19,15,.12);background:#fff" style-hover="border-color:#a8842c">
+<span><span style="display:block;font-size:9px;letter-spacing:.3em;color:#a8842c">INSTAGRAM</span><span style="display:block;font-family:'Cormorant Garamond',serif;font-size:24px;color:#15130f;margin-top:4px">@sthreeboutique2026</span></span>
+<span style="font-size:11px;letter-spacing:.14em;color:rgba(21,19,15,.4)">TAP</span></a>
+</div>
+<div style="margin-top:26px;padding:22px;background:#15130f;color:#faf6ef">
+<div style="font-size:9px;letter-spacing:.3em;color:#c9a75a">DELIVERY</div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-top:8px;line-height:1.45">Same-day within the city.<br>All-India shipping in 3–5 days.</div>
+</div>
+<div style="text-align:center;padding:34px 0 10px">
+<span style="font-family:'Pinyon Script',cursive;font-size:26px;color:#a8842c">Sthree</span>
+<div style="font-size:8px;letter-spacing:.4em;margin-top:4px;color:rgba(21,19,15,.45)">BOUTIQUE · EST 2026</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ hasSelected }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:60;display:flex;justify-content:center">
+<div onClick="{{ closeSheet }}" style="position:absolute;inset:0;background:rgba(21,19,15,.45);animation:fadeIn .25s ease both"></div>
+<div style="position:relative;width:100%;max-width:460px;margin-top:auto;max-height:88vh;overflow-y:auto;background:#faf6ef;animation:sheetUp .32s cubic-bezier(.22,1,.36,1) both">
+<div style="position:relative;height:330px;background:{{ selBg }}"><image-slot id="{{ selSlot }}" shape="rect" fit="cover" placeholder="{{ selSlug }}"></image-slot></div>
+<button onClick="{{ closeSheet }}" style="position:absolute;top:14px;right:14px;height:34px;width:34px;border-radius:999px;border:none;background:rgba(250,246,239,.9);font-family:'Jost';font-size:14px;cursor:pointer">×</button>
+<div style="padding:22px 22px 26px">
+<div style="font-size:9px;letter-spacing:.3em;color:#a8842c">{{ selCat }}</div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-top:8px;line-height:1.2">{{ selName }}</div>
+<div style="font-size:14px;letter-spacing:.06em;color:#a8842c;margin-top:6px">₹{{ selPrice }}</div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:rgba(21,19,15,.6);margin-top:14px;line-height:1.55;text-wrap:pretty">{{ selDesc }}</div>
+<div style="display:flex;gap:8px;margin-top:18px">
+<sc-for list="{{ selSizes }}" as="s" hint-placeholder-count="4">
+<button onClick="{{ s.pick }}" style="{{ s.style }}">{{ s.label }}</button>
+</sc-for>
+</div>
+<div style="display:flex;gap:10px;margin-top:22px">
+<button onClick="{{ addToCart }}" style="flex:1;height:50px;border:none;background:#15130f;color:#faf6ef;font-family:'Jost';font-size:11px;letter-spacing:.2em;cursor:pointer" style-hover="background:#a8842c">{{ addLabel }}</button>
+<a href="{{ waItem }}" style="flex:none;display:flex;align-items:center;justify-content:center;height:50px;padding:0 18px;border:1px solid rgba(21,19,15,.2);font-size:11px;letter-spacing:.14em;color:#15130f" style-hover="border-color:#a8842c;color:#a8842c">ASK</a>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<div style="position:fixed;bottom:0;width:100%;max-width:460px;z-index:50;background:rgba(250,246,239,.94);backdrop-filter:blur(14px);border-top:1px solid rgba(21,19,15,.08);display:grid;grid-template-columns:repeat(4,1fr);padding:12px 8px 16px">
+<sc-for list="{{ navs }}" as="n" hint-placeholder-count="4">
+<button onClick="{{ n.go }}" style="{{ n.style }}">{{ n.label }}<span style="{{ n.dot }}"></span></button>
+</sc-for>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const PHONE = "919036087427";
+const CATS = [
+  { key: "western", label: "WESTERN", tone: ["#ece6dc", "#e2d8c8"] },
+  { key: "ethnic", label: "ETHNIC", tone: ["#f0e3d6", "#e6d2bd"] },
+  { key: "jewellery", label: "JEWELLERY", tone: ["#f3ead3", "#e8d9b0"] },
+  { key: "nails", label: "PRESS-ON NAILS", tone: ["#f1e4e4", "#e6d2d2"] },
+  { key: "bags", label: "BAGS", tone: ["#e9e6e0", "#dcd7ce"] }
+];
+const PRODUCTS = [
+  { id: 1, name: "Ivory satin slip dress", price: "2,450", cat: "western", slug: "western · 01", desc: "Bias-cut satin with a cowl back. Falls softly, needs no ironing.", sizes: ["XS", "S", "M", "L"] },
+  { id: 2, name: "Onyx wide-leg co-ord", price: "2,890", cat: "western", slug: "western · 02", desc: "Crepe co-ord set with a cropped blazer. Office to evening.", sizes: ["S", "M", "L", "XL"] },
+  { id: 3, name: "Kanjivaram-border kurta", price: "3,150", cat: "ethnic", slug: "ethnic · 01", desc: "Handloom cotton with a woven gold border and matching dupatta.", sizes: ["S", "M", "L", "XL"] },
+  { id: 4, name: "Bandhani anarkali", price: "4,600", cat: "ethnic", slug: "ethnic · 02", desc: "Tie-dyed georgette, full flare, inner lining included.", sizes: ["S", "M", "L"] },
+  { id: 5, name: "Layered chain set", price: "1,290", cat: "jewellery", slug: "jewel · 01", desc: "Anti-tarnish gold-plated brass. One-year shine guarantee.", sizes: ["ONE SIZE"] },
+  { id: 6, name: "Pearl drop earrings", price: "890", cat: "jewellery", slug: "jewel · 02", desc: "Freshwater pearls on anti-tarnish hooks. Feather-light.", sizes: ["ONE SIZE"] },
+  { id: 7, name: "Stackable ring trio", price: "1,050", cat: "jewellery", slug: "jewel · 03", desc: "Three rings, three textures. Water and sweat safe.", sizes: ["6", "7", "8"] },
+  { id: 8, name: "Almond nude press-ons", price: "649", cat: "nails", slug: "nails · 01", desc: "24 nails, 12 sizes, glue and buffer in the box. Two-week wear.", sizes: ["ONE KIT"] },
+  { id: 9, name: "Chrome French press-ons", price: "749", cat: "nails", slug: "nails · 02", desc: "Mirror-chrome tips on a soft nude base. Reusable up to 3 times.", sizes: ["ONE KIT"] },
+  { id: 10, name: "Gold-foil bridal set", price: "899", cat: "nails", slug: "nails · 03", desc: "Hand-finished foil detailing, made to order in your shape.", sizes: ["ONE KIT"] }
+];
+const bgOf = cat => {
+  const c = CATS.find(x => x.key === cat) || CATS[0];
+  return `linear-gradient(150deg,${c.tone[0]},${c.tone[1]})`;
+};
+
+class Component extends DCLogic {
+  state = { screen: "home", cat: "all", sel: null, size: null, cart: [], added: false };
+
+  go(screen) { this.setState({ screen, sel: null }); window.scrollTo(0, 0); }
+  open(p) { this.setState({ sel: p, size: p.sizes[0], added: false }); }
+
+  renderVals() {
+    const s = this.state;
+    const nav = [["home", "HOME"], ["shop", "SHOP"], ["cart", "BAG"], ["contact", "CONTACT"]];
+    const cartCount = s.cart.reduce((a, i) => a + i.qty, 0);
+    const total = s.cart.reduce((a, i) => a + i.qty * Number(i.price.replace(/,/g, "")), 0);
+    const list = s.cat === "all" ? PRODUCTS : PRODUCTS.filter(p => p.cat === s.cat);
+    const card = (p, h) => ({
+      ...p, bg: bgOf(p.cat), slot: "sthree-p" + p.id,
+      catLabel: (CATS.find(c => c.key === p.cat) || {}).label,
+      open: () => this.open(p)
+    });
+    const orderText = s.cart.length
+      ? "Hi Sthree Boutique! I'd like to order: " + s.cart.map(i => `${i.qty}× ${i.name}`).join(", ") + `. Total ₹${total.toLocaleString("en-IN")}.`
+      : "Hi Sthree Boutique!";
+
+    return {
+      isHome: s.screen === "home", isShop: s.screen === "shop", isCart: s.screen === "cart", isContact: s.screen === "contact",
+      goShop: () => this.go("shop"), goCart: () => this.go("cart"),
+      cartCount, cartEmpty: s.cart.length === 0, cartHas: s.cart.length > 0,
+      cartTotal: total.toLocaleString("en-IN"),
+      waOrder: `https://wa.me/${PHONE}?text=` + encodeURIComponent(orderText),
+      badgeStyle: `position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:#a8842c;color:#faf6ef;font-size:9px;display:${cartCount ? "flex" : "none"};align-items:center;justify-content:center`,
+      navs: nav.map(([k, label]) => ({
+        label, go: () => this.go(k),
+        style: `position:relative;border:none;background:none;padding:6px 0 10px;cursor:pointer;font-family:'Jost';font-size:9.5px;letter-spacing:.2em;color:${s.screen === k ? "#15130f" : "rgba(21,19,15,.35)"}`,
+        dot: `position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:14px;height:1px;background:${s.screen === k ? "#a8842c" : "transparent"}`
+      })),
+      catCards: CATS.map(c => ({
+        label: c.label,
+        count: (c.key === "bags" ? "coming soon" : PRODUCTS.filter(p => p.cat === c.key).length + " pieces"),
+        bg: bgOf(c.key), slot: "sthree-cat-" + c.key,
+        open: () => this.setState({ screen: "shop", cat: c.key, sel: null })
+      })),
+      chips: [{ key: "all", label: "ALL" }, ...CATS].map(c => ({
+        label: c.label, pick: () => this.setState({ cat: c.key }),
+        style: `flex:none;height:34px;padding:0 16px;border-radius:999px;cursor:pointer;font-family:'Jost';font-size:9.5px;letter-spacing:.16em;border:1px solid ${s.cat === c.key ? "#15130f" : "rgba(21,19,15,.15)"};background:${s.cat === c.key ? "#15130f" : "transparent"};color:${s.cat === c.key ? "#faf6ef" : "#15130f"}`
+      })),
+      newCount: PRODUCTS.length,
+      featured: PRODUCTS.slice(0, 4).map(p => card(p, 200)),
+      shopList: list.map(p => card(p, 210)),
+      shopEmpty: list.length === 0,
+      cartItems: s.cart.map((i, idx) => ({
+        ...i, catLabel: (CATS.find(c => c.key === i.cat) || {}).label,
+        line: (i.qty * Number(i.price.replace(/,/g, ""))).toLocaleString("en-IN"),
+        bg: bgOf(i.cat), slot: "sthree-p" + i.id,
+        remove: () => this.setState({ cart: s.cart.filter((_, j) => j !== idx) })
+      })),
+      hasSelected: !!s.sel,
+      closeSheet: () => this.setState({ sel: null }),
+      selBg: s.sel ? bgOf(s.sel.cat) : "", selSlot: s.sel ? "sthree-p" + s.sel.id : "",
+      selName: s.sel && s.sel.name, selPrice: s.sel && s.sel.price, selDesc: s.sel && s.sel.desc, selSlug: s.sel && s.sel.slug,
+      selCat: s.sel ? (CATS.find(c => c.key === s.sel.cat) || {}).label : "",
+      selSizes: s.sel ? s.sel.sizes.map(z => ({
+        label: z, pick: () => this.setState({ size: z }),
+        style: `height:36px;padding:0 14px;cursor:pointer;font-family:'Jost';font-size:10px;letter-spacing:.14em;background:${s.size === z ? "#15130f" : "transparent"};color:${s.size === z ? "#faf6ef" : "#15130f"};border:1px solid ${s.size === z ? "#15130f" : "rgba(21,19,15,.18)"}`
+      })) : [],
+      addLabel: s.added ? "ADDED TO BAG ✓" : "ADD TO BAG",
+      addToCart: () => {
+        const p = s.sel; if (!p) return;
+        const ex = s.cart.find(i => i.id === p.id);
+        this.setState({
+          cart: ex ? s.cart.map(i => i.id === p.id ? { ...i, qty: i.qty + 1 } : i) : [...s.cart, { ...p, qty: 1 }],
+          added: true
+        });
+      },
+      waItem: s.sel ? `https://wa.me/${PHONE}?text=` + encodeURIComponent(`Hi! Is "${s.sel.name}" (₹${s.sel.price}) available?`) : `https://wa.me/${PHONE}`
+    };
+  }
+}
+</script>
+</body>
+</html>

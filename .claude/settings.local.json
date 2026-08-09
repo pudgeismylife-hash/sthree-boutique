@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"C:/Users/91984/AppData/Local/Temp/claude/C--Maya-test/7ada2742-7204-40f1-9f98-3b773f54b261/scratchpad\" 2>/dev/null; echo \"---uploads---\"; ls -la \"C:/Users/91984/Downloads\" 2>/dev/null | tail -20)"
+    ]
+  }
+}

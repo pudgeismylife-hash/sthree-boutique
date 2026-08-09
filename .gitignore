@@ -1,0 +1,7 @@
+# source bundle — contents are committed under app-handoff/
+*.zip
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store
