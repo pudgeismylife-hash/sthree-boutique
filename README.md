@@ -67,6 +67,24 @@ handoff tokens.
 
 ## Status
 
+Live at **https://pudgeismylife-hash.github.io/sthree-boutique/**
+
 Every photo slot is a labelled placeholder — hero at 1080x1350, category tiles 3:4,
 product cards 4:5 — awaiting the client's photography. Prices in `arrivals` are the
 handoff's demo figures and need confirming against real stock.
+
+## Open items
+
+| Item | Detail |
+|---|---|
+| **Phone numbers** | The branding handoff uses **76250 77531** throughout and the site treats it as primary. The two handoffs disagree on the second line — the app handoff says **90360 87427**, the branding handoff says **90360 87420**. One is a typo. The site currently shows 87420. Confirm before any print or ad spend. |
+| **Photography** | Not supplied. Needed: hero 1080×1350 portrait, 5 category tiles at 3:4, 6 product shots at 4:5. Serve WebP at 1×/2×. |
+| **Mobile nav overlay** | Shipped as a cream full-screen overlay with the five nav links and the WhatsApp CTA. The handoff lists this as needing design sign-off. |
+| **Map** | Links out to a Google Maps search so nothing needs an API key. Swap for an embed once the place ID exists. |
+| **Fonts** | Loaded from Google Fonts. The handoff asks for self-hosting in production; the private preview copy cannot load them and falls back to system faces. |
+
+## History
+
+The site was first built to a written brief before the branding handoff existed,
+in a different visual direction with a wishlist, quick view, growth roadmap and
+FAQ. That version is intact at commit `9588494` if any of it is wanted back.
