@@ -26,12 +26,13 @@ const src = fs.readFileSync(SRC, "utf8");
 
 /* ── the logo ───────────────────────────────────────────────────── */
 const MIME = { ".png":"image/png", ".jpg":"image/jpeg", ".jpeg":"image/jpeg", ".webp":"image/webp", ".svg":"image/svg+xml" };
-const logoFile = ["logo.jpg","logo.jpeg","logo.png","logo.webp","logo.svg"]
+const logoFile = ["assets/logo-web.png","logo.jpg","logo.png"]
   .map(f => DIR + f).find(p => fs.existsSync(p));
 
 if (!logoFile) { console.error("FAIL no logo file (expected logo.jpg or logo.png in " + DIR + ")"); process.exit(1); }
 
-const logoName = logoFile.slice(logoFile.lastIndexOf("/") + 1);
+// Path relative to the site root, so index.html can link it directly.
+const logoName = logoFile.slice(DIR.length);
 const logoBytes = fs.readFileSync(logoFile);
 const logoDataUri = "data:" + MIME[logoFile.slice(logoFile.lastIndexOf("."))] + ";base64," + logoBytes.toString("base64");
 
@@ -72,12 +73,12 @@ function check(s, label, needles) {
 /* ── 1. GitHub Pages ────────────────────────────────────────────── */
 let pages = setLogo(src, logoName);
 pages = setSiteUrl(pages, SITE_URL || "__SITE_URL__");
-check(pages, "index.html", ["<!doctype html>", 'id="prodGrid"', "919036087427", "og:image"]);
+check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og:image"]);
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
 
 /* ── 2. Claude artifact ─────────────────────────────────────────── */
 let artifact = unwrap(setSiteUrl(setLogo(src, logoDataUri), SITE_URL));
-check(artifact, "hosted", ["<title>", "<style>", 'id="prodGrid"', "919036087427", "demo-strip"]);
+check(artifact, "hosted", ["<title>", "<style>", 'id="items"', "917625077531", "Shop on WhatsApp"]);
 fs.writeFileSync(DIR + "sthree-boutique-hosted.html", artifact, "utf8");
 
 /* ── 3. Standalone to send as a file ────────────────────────────── */

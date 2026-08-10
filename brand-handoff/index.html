@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sthree Boutique — Mangalore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF6F0; --cream-2:#F3EDE4; --ink:#14110F; --ink-soft:#57514A;
+    --grey:#8A8177; --gold:#A98037; --gold-bright:#C9A227; --line:rgba(20,17,15,.09);
+    --serif:'Cormorant Garamond',Georgia,serif; --sans:'Jost',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;
+       -webkit-font-smoothing:antialiased;padding-bottom:76px}
+  img{max-width:100%}
+  a{color:var(--gold);text-decoration:none}
+  a:hover{color:var(--ink)}
+  h1,h2{margin:0;font-family:var(--serif);font-weight:300;text-wrap:balance}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 22px}
+  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  .ph{background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px)}
+
+  .announce{padding:7px;background:var(--ink);color:#EFE7D9;text-align:center;
+            font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;
+         padding:10px 18px;border-bottom:1px solid var(--line);background:var(--cream)}
+  header .icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+               font-family:var(--serif);font-size:21px;color:var(--ink);cursor:pointer}
+  header img{height:84px;width:auto;display:block;flex:none}
+  nav{display:none;gap:30px;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+  nav a{color:var(--ink)}
+
+  .hero{height:300px;display:flex;align-items:flex-end;padding:14px}
+  .hero span{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--grey)}
+  .intro{padding:30px 22px;display:flex;flex-direction:column;gap:16px}
+  .intro h1{font-size:34px;line-height:1.1}
+  .intro p{margin:0;font-size:14px;line-height:1.7;color:var(--ink-soft)}
+  .btn{padding:16px;text-align:center;background:var(--ink);color:var(--cream);
+       font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+  .btn:hover{background:var(--gold);color:var(--cream)}
+
+  section{padding:30px 22px}
+  section h2{font-size:26px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .cat span{display:block;font-family:var(--serif);font-size:17px;margin-top:8px}
+  .cat .ph{aspect-ratio:3/4}
+  .alt{background:var(--cream-2)}
+  .card{background:var(--cream);padding:9px;display:flex;flex-direction:column;gap:8px}
+  .card .ph{aspect-ratio:4/5}
+  .card .name{font-size:13px;line-height:1.35}
+  .card .price{font-family:var(--serif);font-size:17px}
+  .card .enquire{padding:12px;text-align:center;border:1px solid rgba(20,17,15,.2);
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+  .card .enquire:hover{background:var(--ink);color:var(--cream)}
+  .map{height:150px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);
+       font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-top:14px}
+  .rows{display:flex;flex-direction:column;border-top:1px solid rgba(20,17,15,.12);margin-top:14px}
+  .rows div{display:flex;flex-direction:column;gap:4px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .rows dt{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+  .rows dd{margin:0;font-size:14px;line-height:1.5}
+  .quote{padding:26px 22px;background:var(--ink);color:#EFE7D9;display:flex;flex-direction:column;gap:16px}
+  .quote p{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:#F1E9DC}
+  .quote cite{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-bright);font-style:normal}
+
+  .bar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:10px;padding:12px 16px;
+       background:rgba(250,246,240,.96);border-top:1px solid rgba(20,17,15,.12);
+       backdrop-filter:blur(6px);z-index:20}
+  .bar a:first-child{flex:1;padding:15px;text-align:center;background:var(--gold);color:var(--cream);
+       font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+  .bar a:last-child{width:52px;height:48px;display:flex;align-items:center;justify-content:center;
+       border:1px solid rgba(20,17,15,.25);font-size:17px;color:var(--ink)}
+
+  @media (min-width:600px){
+    .grid{grid-template-columns:repeat(3,1fr);gap:16px}
+    .intro h1{font-size:44px}
+  }
+  @media (min-width:900px){
+    body{padding-bottom:0}
+    header{padding:14px 32px}
+    nav{display:flex}
+    header .icon.menu{display:none}
+    .hero{height:520px}
+    .intro{max-width:620px;padding:56px 32px}
+    .intro h1{font-size:52px}
+    .intro .btn{align-self:flex-start;padding:15px 34px}
+    section{padding:64px 32px}
+    section h2{font-size:34px}
+    .grid{grid-template-columns:repeat(4,1fr);gap:20px}
+    .grid.cats{grid-template-columns:repeat(5,1fr)}
+    .visit{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+    .map{height:100%;min-height:320px;margin-top:0}
+    .quote{padding:64px 32px;align-items:center;text-align:center}
+    .quote p{font-size:26px;max-width:760px}
+    .bar{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="announce">Imported &amp; Indian · Mangalore</div>
+
+<header>
+  <div class="icon menu" aria-label="Menu">☰</div>
+  <img src="assets/sthree-logo-full.png" alt="Sthree Boutique">
+  <nav>
+    <a href="#categories">Western</a><a href="#categories">Ethnic</a>
+    <a href="#categories">Co-ord sets</a><a href="#categories">Jewellery</a>
+    <a href="#visit">Visit</a>
+  </nav>
+  <div class="icon" aria-label="Search">⌕</div>
+</header>
+
+<div class="hero ph"><span>hero · 1080 × 1350px portrait</span></div>
+
+<div class="intro">
+  <div class="eyebrow">Quality. Style. Personality.</div>
+  <h1>The boutique where fashion meets personality.</h1>
+  <p>Western and ethnic wear, co-ord sets, anti-tarnish jewellery and bags.</p>
+  <a class="btn" href="https://wa.me/917625077531">Shop on WhatsApp</a>
+</div>
+
+<section id="categories">
+  <h2>Shop by category</h2>
+  <div class="grid cats" id="cats"></div>
+</section>
+
+<section class="alt" id="arrivals">
+  <h2>New arrivals</h2>
+  <div class="grid" id="items"></div>
+</section>
+
+<section id="visit">
+  <div class="visit">
+    <div>
+      <h2>Visit the boutique</h2>
+      <dl class="rows" id="store"></dl>
+    </div>
+    <div class="map ph">map embed</div>
+  </div>
+</section>
+
+<div class="quote">
+  <p>She picked three things I would never have tried and all three worked.</p>
+  <cite>Anusha R. · Kadri</cite>
+</div>
+
+<div class="bar">
+  <a href="https://wa.me/917625077531">WhatsApp order</a>
+  <a href="tel:+917625077531" aria-label="Call the boutique">☏</a>
+</div>
+
+<script>
+const WA = "https://wa.me/917625077531";
+const categories = [
+  { name: "Western wear", note: "Dresses, tops, denim" },
+  { name: "Ethnic wear", note: "Kurtas, sarees, suits" },
+  { name: "Co-ord sets", note: "Matched two-pieces" },
+  { name: "Jewellery", note: "Anti-tarnish, everyday" },
+  { name: "Bags", note: "Imported & Indian" }
+];
+const arrivals = [
+  { name: "Linen-blend co-ord set", origin: "Imported", price: "₹3,200" },
+  { name: "Hand-block cotton kurta", origin: "Indian", price: "₹1,850" },
+  { name: "Satin slip dress", origin: "Imported", price: "₹2,700" },
+  { name: "Anti-tarnish layered chain", origin: "Anti-tarnish", price: "₹899" },
+  { name: "Structured tote", origin: "Imported", price: "₹2,450" },
+  { name: "Organza saree, pearl edge", origin: "Indian", price: "₹4,100" }
+];
+const storeInfo = [
+  { label: "Address", value: "Bikarnakatte, Mangalore, Karnataka" },
+  { label: "Hours", value: "9:00 am – 8:00 pm, all days" },
+  { label: "WhatsApp", value: "+91 76250 77531 · +91 90360 87420" },
+  { label: "Email", value: "priyankamonteiro@gmail.com" }
+];
+document.getElementById("cats").innerHTML = categories.map(c =>
+  `<div class="cat"><div class="ph"></div><span>${c.name}</span></div>`).join("");
+document.getElementById("items").innerHTML = arrivals.map(i =>
+  `<div class="card"><div class="ph"></div><div class="name">${i.name}</div>
+   <div class="price">${i.price}</div>
+   <a class="enquire" href="${WA}?text=${encodeURIComponent("Hi Sthree Boutique, I'd like to know more about the " + i.name + ".")}">Enquire</a></div>`).join("");
+document.getElementById("store").innerHTML = storeInfo.map(r =>
+  `<div><dt>${r.label}</dt><dd>${r.value}</dd></div>`).join("");
+</script>
+</body>
+</html>

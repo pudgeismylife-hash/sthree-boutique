@@ -16,10 +16,10 @@ It opens straight from a file or from any static host.
 | `index.html` | Built — the public site (GitHub Pages serves this). |
 | `sthree-boutique-share.html` | Built — standalone copy to send as a file on WhatsApp. |
 | `sthree-boutique-hosted.html` | Built — copy for the private Claude preview link. |
-| `logo.jpg` | Brand logo, web size. Used in the header, footer and tab icon. |
-| `logo-full.png` | Brand logo, full resolution. |
+| `assets/` | Logo artwork. `logo-web.png` is used on the site; the full-size and dark variants are kept alongside it. |
 | `og-image.jpg` | 1200×630 link-preview thumbnail (WhatsApp, Instagram, Facebook). |
 | `app-handoff/` | Separate design bundle for the mobile storefront app. |
+| `brand-handoff/` | Branding handoff for direction 3a, which this site implements. |
 
 ## Editing
 
@@ -28,18 +28,20 @@ script in `sthree-boutique.html`:
 
 ```js
 const CONFIG = {
-  whatsapp : "919036087427",   // country code + number, no + or spaces
-  instagram: "sthreeboutique2026",
-  email    : "hello@sthreeboutique.in",
-  currency : "₹",
-  logo     : ""                // filled in by the build
+  whatsapp : "917625077531",             // primary, per the branding handoff
+  whatsappAlt: "919036087420",           // secondary line
+  tel      : "+917625077531",
+  email    : "priyankamonteiro@gmail.com",
+  address  : "Bikarnakatte, Mangalore, Karnataka",
+  hours    : "9:00 am – 8:00 pm, all days",
+  logo     : ""                          // filled in by the build
 };
 ```
 
 Change the number there and every WhatsApp button on the site follows.
 
-Products, collections, reviews, the roadmap and the FAQ are plain lists just below
-that block — add or edit entries and the page updates itself.
+The `categories` and `arrivals` lists sit just below that block. New arrivals are
+expected to change weekly — edit that list, rebuild, and push.
 
 After any edit:
 
@@ -56,7 +58,15 @@ URL — a relative path or an embedded image will not produce a preview.
 
 Set it, rerun the build, commit, and re-share the link.
 
+## Design
+
+Implements **direction 3a "Editorial"** from `brand-handoff/`: cream ground,
+Cormorant Garamond display type, Jost UI, JetBrains Mono labels, square corners,
+no shadows, separation by hairline rules. Colours, type sizes and copy follow the
+handoff tokens.
+
 ## Status
 
-Design preview. Product photography, prices, stock and customer reviews are
-placeholders pending the client's real content — the page carries a banner saying so.
+Every photo slot is a labelled placeholder — hero at 1080x1350, category tiles 3:4,
+product cards 4:5 — awaiting the client's photography. Prices in `arrivals` are the
+handoff's demo figures and need confirming against real stock.

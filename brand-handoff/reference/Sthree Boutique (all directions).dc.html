@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E9E5DE; font-family:'Jost',system-ui,sans-serif; color:#14110F; -webkit-font-smoothing:antialiased; }
+  a { color:#A98037; text-decoration:none; }
+  a:hover { color:#14110F; }
+  @keyframes floaty { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+</style>
+</helmet>
+
+<section style="display:flex; flex-direction:column; gap:40px; padding:64px 56px 40px;">
+
+  <div style="display:flex; flex-direction:column; gap:14px; max-width:900px;">
+    <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#8A8177;">Turn 3 · Responsive</div>
+    <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:52px; line-height:1.05; letter-spacing:-.01em;">Phone and tablet views</h1>
+    <p style="margin:0; font-size:16px; line-height:1.65; color:#57514A; max-width:740px; text-wrap:pretty;">Most of her customers will arrive from Instagram on a phone, so each direction is laid out mobile-first: <a href="#3a">3a</a>, <a href="#3b">3b</a> and <a href="#3c">3c</a> are the three directions at 390px, <a href="#3d">3d</a> is the tablet view. Breakpoints: 1 column under 600px, 2 columns to 900px, 3–4 above. Every tap target is at least 44px, and a WhatsApp bar stays fixed at the bottom of the phone so ordering is one thumb-press from anywhere.</p>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:rgba(20,17,15,.12); border:1px solid rgba(20,17,15,.12); max-width:1140px;">
+    <sc-for list="{{ devices }}" as="d" hint-placeholder-count="6">
+      <div style="background:#FAF6F0; padding:22px 24px; display:flex; flex-direction:column; gap:7px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#A98037;">{{ d.width }}</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; line-height:1.2;">{{ d.name }}</div>
+        <div style="font-size:13px; line-height:1.6; color:#57514A; text-wrap:pretty;">{{ d.layout }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:30px; align-items:flex-start;">
+
+    <div id="3a" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">3a</span>
+        <span style="font-family:'Cormorant Garamond',serif; font-size:21px;">Editorial · 390px</span>
+      </div>
+      <div style="width:390px; background:#FAF6F0; border:1px solid rgba(20,17,15,.14); overflow:hidden; position:relative;">
+        <div style="padding:7px; background:#14110F; color:#EFE7D9; text-align:center; font-family:'Jost',sans-serif; font-weight:300; font-size:10px; letter-spacing:.14em; text-transform:uppercase;">Imported &amp; Indian · Mangalore</div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-bottom:1px solid rgba(20,17,15,.09);">
+          <div style="width:44px; height:44px; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:22px; color:#14110F;">☰</div>
+          <img src="assets/sthree-logo-full.png" alt="Sthree Boutique" style="height:84px; width:auto; display:block; flex:none;">
+          <div style="width:44px; height:44px; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:20px; color:#14110F;">⌕</div>
+        </div>
+        <div style="height:300px; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); display:flex; align-items:flex-end; padding:14px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.1em; color:#8A8177;">hero · 1080 × 1350px portrait</span>
+        </div>
+        <div style="padding:30px 22px; display:flex; flex-direction:column; gap:16px;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#A98037;">Quality. Style. Personality.</div>
+          <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:34px; line-height:1.1; text-wrap:balance;">The boutique where fashion meets personality.</h1>
+          <p style="margin:0; font-size:14px; line-height:1.7; color:#57514A;">Western and ethnic wear, co-ord sets, anti-tarnish jewellery and bags.</p>
+          <a href="https://wa.me/917625077531" style="padding:16px; text-align:center; background:#14110F; color:#FAF6F0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase;">Shop on WhatsApp</a>
+        </div>
+        <div style="padding:0 22px 30px; display:flex; flex-direction:column; gap:14px;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px;">Shop by category</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="aspect-ratio:3/4; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px);"></div>
+                <div style="font-family:'Cormorant Garamond',serif; font-size:17px;">{{ cat.name }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:30px 22px; background:#F3EDE4; display:flex; flex-direction:column; gap:14px;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px;">New arrivals</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <sc-for list="{{ arrivals }}" as="item" hint-placeholder-count="6">
+              <div style="display:flex; flex-direction:column; gap:8px; background:#FAF6F0; padding:9px;">
+                <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px);"></div>
+                <div style="font-size:13px; line-height:1.35;">{{ item.name }}</div>
+                <div style="font-family:'Cormorant Garamond',serif; font-size:17px;">{{ item.price }}</div>
+                <a href="https://wa.me/917625077531" style="padding:12px; text-align:center; border:1px solid rgba(20,17,15,.2); font-family:'Jost',sans-serif; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#14110F;">Enquire</a>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:30px 22px; display:flex; flex-direction:column; gap:14px;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px;">Visit the boutique</h2>
+          <div style="height:150px; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177;">map embed</div>
+          <div style="display:flex; flex-direction:column; border-top:1px solid rgba(20,17,15,.12);">
+            <sc-for list="{{ storeInfo }}" as="row" hint-placeholder-count="4">
+              <div style="display:flex; flex-direction:column; gap:4px; padding:11px 0; border-bottom:1px solid rgba(20,17,15,.09);">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177;">{{ row.label }}</span>
+                <span style="font-size:14px; line-height:1.5;">{{ row.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:26px 22px 80px; background:#14110F; color:#EFE7D9; display:flex; flex-direction:column; gap:16px;">
+          <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:19px; line-height:1.5; color:#F1E9DC;">She picked three things I would never have tried and all three worked.</div>
+          <div style="font-family:'Jost',sans-serif; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#C9A227;">Anusha R. · Kadri</div>
+        </div>
+        <div style="position:sticky; bottom:0; display:flex; gap:10px; padding:12px 16px; background:rgba(250,246,240,.96); border-top:1px solid rgba(20,17,15,.12);">
+          <a href="https://wa.me/917625077531" style="flex:1; padding:15px; text-align:center; background:#A98037; color:#FAF6F0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase;">WhatsApp order</a>
+          <a href="tel:+917625077531" style="width:52px; height:48px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(20,17,15,.25); font-size:17px; color:#14110F;">☏</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="3b" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">3b</span>
+        <span style="font-family:'Cormorant Garamond',serif; font-size:21px;">Catalogue · 390px</span>
+      </div>
+      <div style="width:390px; background:#FFFDFA; border:1px solid rgba(20,17,15,.14); overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-bottom:1px solid rgba(20,17,15,.09);">
+          <img src="assets/sthree-logo-full.png" alt="Sthree Boutique" style="height:84px; width:auto; display:block; flex:none;">
+          <div style="display:flex; gap:6px;">
+            <div style="width:44px; height:44px; display:flex; align-items:center; justify-content:center; font-size:18px;">⌕</div>
+            <div style="width:44px; height:44px; display:flex; align-items:center; justify-content:center; font-size:20px;">☰</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; padding:12px 16px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; border-bottom:1px solid rgba(20,17,15,.09); background:#FAF6F0;">
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+            <span style="flex:none; padding:11px 15px; border:1px solid rgba(20,17,15,.16); border-radius:999px; font-family:'Jost',sans-serif; font-size:11px; white-space:nowrap;">{{ cat.name }}</span>
+          </sc-for>
+        </div>
+        <div style="height:230px; margin:16px; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); display:flex; align-items:flex-end; padding:18px;">
+          <div style="background:rgba(250,246,240,.94); padding:16px 18px; display:flex; flex-direction:column; gap:9px;">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:#A98037;">This week</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px; line-height:1.1;">Festive co-ord sets, just in</div>
+          </div>
+        </div>
+        <div style="margin:0 16px 16px; background:#14110F; color:#EFE7D9; padding:22px; display:flex; flex-direction:column; gap:8px;">
+          <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:24px; color:#FAF6F0;">Anti-tarnish jewellery</div>
+          <div style="font-size:12px; line-height:1.6; color:rgba(239,231,217,.72);">Wear it daily. It keeps its colour.</div>
+          <div style="font-family:'Jost',sans-serif; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#C9A227; padding-top:4px;">From ₹499</div>
+        </div>
+        <div style="padding:0 16px 24px; display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between;">
+            <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px;">New this week</h2>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177;">Every Friday</span>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <sc-for list="{{ arrivals }}" as="item" hint-placeholder-count="6">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); position:relative;">
+                  <span style="position:absolute; top:8px; left:8px; padding:4px 8px; background:#FFFDFA; font-family:'Jost',sans-serif; font-size:8px; letter-spacing:.12em; text-transform:uppercase;">{{ item.tag }}</span>
+                </div>
+                <div style="font-size:13px; line-height:1.35;">{{ item.name }}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-family:'Cormorant Garamond',serif; font-size:17px;">{{ item.price }}</span>
+                  <a href="https://wa.me/917625077531" style="font-family:'Jost',sans-serif; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:#A98037;">Enquire</a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:26px 16px; background:#FAF6F0; display:flex; flex-direction:column; gap:14px; border-top:1px solid rgba(20,17,15,.1);">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px;">Visit the boutique</h2>
+          <div style="display:flex; flex-direction:column; border-top:1px solid rgba(20,17,15,.12);">
+            <sc-for list="{{ storeInfo }}" as="row" hint-placeholder-count="4">
+              <div style="display:flex; flex-direction:column; gap:4px; padding:11px 0; border-bottom:1px solid rgba(20,17,15,.09);">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177;">{{ row.label }}</span>
+                <span style="font-size:14px; line-height:1.5;">{{ row.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="position:sticky; bottom:0; display:flex; gap:10px; padding:12px 16px; background:#14110F;">
+          <a href="https://wa.me/917625077531" style="flex:1; padding:15px; text-align:center; background:#C9A227; color:#12100E; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase;">WhatsApp order</a>
+          <a href="https://www.instagram.com/sthreeboutique2026" style="width:52px; height:48px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(201,162,39,.5); color:#C9A227; font-size:15px;">◎</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="3c" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">3c</span>
+        <span style="font-family:'Cormorant Garamond',serif; font-size:21px;">Dark luxe · 390px</span>
+      </div>
+      <div style="width:390px; background:#12100E; border:1px solid rgba(20,17,15,.4); overflow:hidden; color:#EFE7D9;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid rgba(201,162,39,.22);">
+          <img src="assets/sthree-logo-full-dark.png" alt="Sthree Boutique" style="height:84px; width:auto; display:block; flex:none;">
+          <div style="width:44px; height:44px; display:flex; align-items:center; justify-content:center; font-size:20px; color:#C9A227;">☰</div>
+        </div>
+        <div style="min-height:340px; background:repeating-linear-gradient(135deg,#221E1A 0 12px,#1A1714 12px 24px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:44px 24px; text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:#C9A227;">Quality. Style. Personality.</div>
+          <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:38px; line-height:1.06; color:#FAF6F0; text-wrap:balance;">The boutique where fashion meets personality.</h1>
+          <a href="https://wa.me/917625077531" style="padding:15px 30px; background:#C9A227; color:#12100E; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase;">Shop on WhatsApp</a>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(201,162,39,.22);">
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+            <div style="background:#12100E; padding:22px 18px; display:flex; flex-direction:column; gap:6px; min-height:104px;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:20px; color:#FAF6F0;">{{ cat.name }}</div>
+              <div style="font-size:11px; color:rgba(239,231,217,.55);">{{ cat.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:30px 16px; display:flex; flex-direction:column; gap:14px;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px; color:#FAF6F0;">New arrivals</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <sc-for list="{{ arrivals }}" as="item" hint-placeholder-count="6">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#221E1A 0 10px,#1A1714 10px 20px);"></div>
+                <div style="font-family:'Cormorant Garamond',serif; font-size:18px; color:#FAF6F0; line-height:1.25;">{{ item.name }}</div>
+                <div style="font-size:13px; color:#C9A227;">{{ item.price }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:0 16px 30px; display:flex; flex-direction:column; gap:12px;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px; color:#FAF6F0;">Visit the boutique</h2>
+          <div style="display:flex; flex-direction:column; border-top:1px solid rgba(239,231,217,.14);">
+            <sc-for list="{{ storeInfo }}" as="row" hint-placeholder-count="4">
+              <div style="display:flex; flex-direction:column; gap:4px; padding:11px 0; border-bottom:1px solid rgba(239,231,217,.12);">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:#C9A227;">{{ row.label }}</span>
+                <span style="font-size:14px; line-height:1.5; color:rgba(239,231,217,.85);">{{ row.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="position:sticky; bottom:0; display:flex; gap:10px; padding:12px 16px; background:rgba(18,16,14,.96); border-top:1px solid rgba(201,162,39,.3);">
+          <a href="https://wa.me/917625077531" style="flex:1; padding:15px; text-align:center; background:#C9A227; color:#12100E; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase;">WhatsApp order</a>
+          <a href="tel:+917625077531" style="width:52px; height:48px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(201,162,39,.5); color:#C9A227; font-size:17px;">☏</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="3d" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">3d</span>
+        <span style="font-family:'Cormorant Garamond',serif; font-size:21px;">Tablet · 768px</span>
+      </div>
+      <div style="width:768px; background:#FFFDFA; border:1px solid rgba(20,17,15,.14); overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px; border-bottom:1px solid rgba(20,17,15,.09);">
+          <img src="assets/sthree-logo-full.png" alt="Sthree Boutique" style="height:88px; width:auto; display:block; flex:none;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <a href="https://wa.me/917625077531" style="padding:13px 20px; background:#A98037; color:#FFFDFA; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase;">WhatsApp</a>
+            <div style="width:46px; height:46px; display:flex; align-items:center; justify-content:center; font-size:20px;">☰</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; padding:14px 24px; border-bottom:1px solid rgba(20,17,15,.09); background:#FAF6F0;">
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+            <span style="padding:11px 16px; border:1px solid rgba(20,17,15,.16); border-radius:999px; font-family:'Jost',sans-serif; font-size:12px; white-space:nowrap;">{{ cat.name }}</span>
+          </sc-for>
+        </div>
+        <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:14px; padding:24px;">
+          <div style="min-height:280px; background:repeating-linear-gradient(135deg,#EFE9DF 0 12px,#E6DED1 12px 24px); display:flex; align-items:flex-end; padding:24px;">
+            <div style="background:rgba(250,246,240,.94); padding:20px 24px; display:flex; flex-direction:column; gap:10px;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:#A98037;">This week</div>
+              <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:32px; line-height:1.1;">Festive co-ord sets, just in</div>
+            </div>
+          </div>
+          <div style="background:#14110F; color:#EFE7D9; padding:24px; display:flex; flex-direction:column; justify-content:center; gap:9px;">
+            <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px; color:#FAF6F0;">Anti-tarnish jewellery</div>
+            <div style="font-size:12px; line-height:1.6; color:rgba(239,231,217,.72);">Wear it daily. It keeps its colour.</div>
+            <div style="font-family:'Jost',sans-serif; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#C9A227; padding-top:4px;">From ₹499</div>
+          </div>
+        </div>
+        <div style="padding:0 24px 32px; display:flex; flex-direction:column; gap:16px;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:30px;">New this week</h2>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+            <sc-for list="{{ arrivals }}" as="item" hint-placeholder-count="6">
+              <div style="display:flex; flex-direction:column; gap:9px;">
+                <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px);"></div>
+                <div style="font-size:13px; line-height:1.35;">{{ item.name }}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-family:'Cormorant Garamond',serif; font-size:18px;">{{ item.price }}</span>
+                  <a href="https://wa.me/917625077531" style="font-family:'Jost',sans-serif; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:#A98037;">Enquire</a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; background:#FAF6F0; border-top:1px solid rgba(20,17,15,.1);">
+          <div style="padding:34px 24px; display:flex; flex-direction:column; gap:14px;">
+            <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:28px;">Visit the boutique</h2>
+            <div style="display:flex; flex-direction:column; border-top:1px solid rgba(20,17,15,.12);">
+              <sc-for list="{{ storeInfo }}" as="row" hint-placeholder-count="4">
+                <div style="display:flex; flex-direction:column; gap:4px; padding:11px 0; border-bottom:1px solid rgba(20,17,15,.09);">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177;">{{ row.label }}</span>
+                  <span style="font-size:14px; line-height:1.5;">{{ row.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:repeating-linear-gradient(135deg,#EFE9DF 0 12px,#E6DED1 12px 24px); min-height:260px; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177;">map embed</div>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:22px 24px; background:#14110F; color:rgba(239,231,217,.6); font-size:12px;">
+          <span>© 2026 Sthree Boutique</span>
+          <a href="https://wa.me/917625077531" style="color:#C9A227;">+91 76250 77531</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<section style="display:flex; flex-direction:column; gap:44px; padding:24px 56px 40px;">
+
+  <div style="display:flex; flex-direction:column; gap:14px; max-width:900px;">
+    <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#8A8177;">Turn 2 · Desktop</div>
+    <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:52px; line-height:1.05; letter-spacing:-.01em;">Three website directions — her logo, kept as is</h1>
+    <p style="margin:0; font-size:16px; line-height:1.65; color:#57514A; max-width:740px; text-wrap:pretty;">Same content, three different feels: <a href="#2a">2a</a> editorial and airy, <a href="#2b">2b</a> catalogue-first and shoppable, <a href="#2c">2c</a> dark luxe. The existing logo leads every one of them.</p>
+  </div>
+
+  <div style="display:flex; gap:24px; align-items:flex-start; padding:22px; background:#FAF6F0; border:1px solid rgba(20,17,15,.1); max-width:900px;">
+    <img src="assets/sthree-logo-full.png" alt="Sthree Boutique logo" style="width:150px; height:150px; object-fit:contain; flex:none;">
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#A98037;">Working with the existing logo</div>
+      <p style="margin:0; font-size:14px; line-height:1.7; color:#57514A; text-wrap:pretty;">Fine as the main lock-up on cream. Two practical fixes worth doing later, no redesign needed: the transparent-background version is now in use across the site, and use a plain gold "S" or the letterspaced STHREE for the favicon and Instagram avatar, where the sketch disappears.</p>
+    </div>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:32px; align-items:flex-start;">
+
+    <div id="2a" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">2a</span>
+        <span style="font-family:'Cormorant Garamond',serif; font-size:25px;">Editorial — airy, magazine-like</span>
+      </div>
+      <div style="width:1080px; background:#FAF6F0; border:1px solid rgba(20,17,15,.12); overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:center; gap:10px; padding:9px; background:#14110F; color:#EFE7D9; font-family:'Jost',sans-serif; font-weight:300; font-size:11px; letter-spacing:.16em; text-transform:uppercase;">
+          <span>Imported &amp; Indian labels</span><span style="color:#A98037;">·</span><span>Mangalore, Bikarnakatte</span><span style="color:#A98037;">·</span><span>9 am – 8 pm</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; padding:30px 40px 24px; border-bottom:1px solid rgba(20,17,15,.09);">
+          <img src="assets/sthree-logo-full.png" alt="Sthree Boutique" style="width:210px; height:auto; object-fit:contain; display:block;">
+          <div style="display:flex; gap:34px; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.18em; text-transform:uppercase;">
+            <span>Western</span><span>Ethnic</span><span>Co-ord Sets</span><span>Jewellery</span><span>Bags</span><span>About</span>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; min-height:460px;">
+          <div style="padding:72px 44px; display:flex; flex-direction:column; justify-content:center; gap:24px;">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#A98037;">Quality. Style. Personality.</div>
+            <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:60px; line-height:1.04; text-wrap:balance;">The boutique where fashion meets personality.</h1>
+            <p style="margin:0; font-size:15px; line-height:1.7; color:#57514A; max-width:400px;">Western and ethnic wear, co-ord sets, anti-tarnish jewellery and bags — imported and Indian, chosen piece by piece by Priyanka.</p>
+            <div style="display:flex; gap:12px;">
+              <a href="https://wa.me/917625077531" style="padding:14px 28px; background:#14110F; color:#FAF6F0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase;" style-hover="background:#A98037;">Shop on WhatsApp</a>
+              <a href="#2a" style="padding:14px 28px; border:1px solid rgba(20,17,15,.25); font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#14110F;" style-hover="border-color:#14110F;">New arrivals</a>
+            </div>
+          </div>
+          <div style="background:repeating-linear-gradient(135deg,#EFE9DF 0 12px,#E6DED1 12px 24px); display:flex; align-items:center; justify-content:center;">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177; text-align:center; line-height:1.9;">hero image<br>full-length, cream ground<br>2000 × 2600px</div>
+          </div>
+        </div>
+        <div style="padding:64px 44px; border-top:1px solid rgba(20,17,15,.09);">
+          <h2 style="margin:0 0 24px; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:34px;">Shop by category</h2>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:14px;">
+            <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="aspect-ratio:3/4; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); display:flex; align-items:flex-end; padding:12px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.1em; color:#8A8177;">{{ cat.slot }}</span>
+                </div>
+                <div style="font-family:'Cormorant Garamond',serif; font-size:19px;">{{ cat.name }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:64px 44px; background:#F3EDE4; border-top:1px solid rgba(20,17,15,.07);">
+          <h2 style="margin:0 0 24px; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:34px;">New arrivals</h2>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+            <sc-for list="{{ arrivals }}" as="item" hint-placeholder-count="6">
+              <div style="display:flex; flex-direction:column; gap:12px; background:#FAF6F0; padding:12px;">
+                <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); display:flex; align-items:flex-end; padding:12px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#8A8177;">product shot · 1200 × 1500px</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; gap:10px;">
+                  <div style="display:flex; flex-direction:column; gap:4px;">
+                    <div style="font-family:'Cormorant Garamond',serif; font-size:20px; line-height:1.2;">{{ item.name }}</div>
+                    <div style="font-size:11px; color:#8A8177; letter-spacing:.06em;">{{ item.origin }}</div>
+                  </div>
+                  <div style="font-size:14px; white-space:nowrap;">{{ item.price }}</div>
+                </div>
+                <a href="https://wa.me/917625077531" style="padding:10px; text-align:center; border:1px solid rgba(20,17,15,.2); font-family:'Jost',sans-serif; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#14110F;" style-hover="background:#14110F; color:#FAF6F0;">Enquire</a>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; border-top:1px solid rgba(20,17,15,.09);">
+          <div style="padding:64px 44px; display:flex; flex-direction:column; gap:22px;">
+            <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:34px;">Visit the boutique</h2>
+            <div style="display:flex; flex-direction:column; border-top:1px solid rgba(20,17,15,.12);">
+              <sc-for list="{{ storeInfo }}" as="row" hint-placeholder-count="4">
+                <div style="display:grid; grid-template-columns:110px 1fr; gap:18px; padding:13px 0; border-bottom:1px solid rgba(20,17,15,.09);">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177; padding-top:3px;">{{ row.label }}</span>
+                  <span style="font-size:14px; line-height:1.6;">{{ row.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:repeating-linear-gradient(135deg,#EFE9DF 0 12px,#E6DED1 12px 24px); min-height:340px; display:flex; align-items:center; justify-content:center;">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177; text-align:center; line-height:1.9;">map embed<br>Bikarnakatte, Mangalore</div>
+          </div>
+        </div>
+        <div style="padding:64px 44px; background:#14110F; color:#EFE7D9;">
+          <h2 style="margin:0 0 26px; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:34px; color:#FAF6F0;">What customers say</h2>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+            <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex; flex-direction:column; gap:16px; padding:26px; border:1px solid rgba(239,231,217,.16);">
+                <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:19px; line-height:1.5; color:#F1E9DC;">{{ r.quote }}</div>
+                <div style="margin-top:auto; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#C9A227;">{{ r.name }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:28px 44px; font-size:12px; color:#8A8177;">
+          <span>© 2026 Sthree Boutique</span>
+          <div style="display:flex; gap:20px;"><a href="https://wa.me/917625077531">+91 76250 77531</a><a href="mailto:priyankamonteiro@gmail.com">priyankamonteiro@gmail.com</a><a href="https://www.instagram.com/sthreeboutique2026">@sthreeboutique2026</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="2b" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">2b</span>
+        <span style="font-family:'Cormorant Garamond',serif; font-size:25px;">Catalogue — shoppable, product-first</span>
+      </div>
+      <div style="width:1080px; background:#FFFDFA; border:1px solid rgba(20,17,15,.12); overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 32px; border-bottom:1px solid rgba(20,17,15,.09);">
+          <img src="assets/sthree-logo-full.png" alt="Sthree Boutique" style="height:96px; width:auto; display:block; flex:none;">
+          <div style="display:flex; align-items:center; gap:12px; flex:1; max-width:380px; margin:0 40px; padding:11px 16px; background:#F4EFE7; font-size:13px; color:#8A8177;">Search kurtas, co-ords, chains…</div>
+          <a href="https://wa.me/917625077531" style="display:flex; align-items:center; gap:9px; padding:12px 20px; background:#A98037; color:#FFFDFA; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase;" style-hover="background:#14110F;">WhatsApp order</a>
+        </div>
+        <div style="display:flex; gap:10px; padding:14px 32px; border-bottom:1px solid rgba(20,17,15,.09); background:#FAF6F0;">
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+            <span style="padding:9px 18px; border:1px solid rgba(20,17,15,.16); border-radius:999px; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.06em;" style-hover="background:#14110F; color:#FAF6F0; border-color:#14110F;">{{ cat.name }}</span>
+          </sc-for>
+          <span style="margin-left:auto; align-self:center; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177;">Free styling advice in store</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:14px; padding:32px;">
+          <div style="position:relative; min-height:360px; background:repeating-linear-gradient(135deg,#EFE9DF 0 12px,#E6DED1 12px 24px); display:flex; align-items:flex-end; padding:34px;">
+            <div style="display:flex; flex-direction:column; gap:14px; background:rgba(250,246,240,.94); padding:26px 30px; max-width:430px;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#A98037;">This week</div>
+              <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:42px; line-height:1.08;">Festive co-ord sets, just in</h1>
+              <a href="https://wa.me/917625077531" style="font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#14110F; border-bottom:1px solid #A98037; padding-bottom:5px; align-self:flex-start;">See the edit</a>
+            </div>
+            <span style="position:absolute; top:20px; right:20px; font-family:'JetBrains Mono',monospace; font-size:10px; color:#8A8177;">banner · 1800 × 1000px</span>
+          </div>
+          <div style="display:grid; grid-template-rows:1fr 1fr; gap:14px;">
+            <div style="background:#14110F; color:#EFE7D9; padding:28px; display:flex; flex-direction:column; justify-content:center; gap:10px;">
+              <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:30px; color:#FAF6F0;">Anti-tarnish jewellery</div>
+              <div style="font-size:13px; line-height:1.6; color:rgba(239,231,217,.72);">Wear it daily. It keeps its colour — that's the promise.</div>
+              <div style="font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#C9A227; padding-top:6px;">From ₹499</div>
+            </div>
+            <div style="background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177;">bags · 900 × 600px</div>
+          </div>
+        </div>
+        <div style="padding:12px 32px 56px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:20px;">
+            <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:32px;">New this week</h2>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">Updated every Friday</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+            <sc-for list="{{ arrivals }}" as="item" hint-placeholder-count="6">
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); position:relative;">
+                  <span style="position:absolute; top:10px; left:10px; padding:4px 9px; background:#FFFDFA; font-family:'Jost',sans-serif; font-size:9px; letter-spacing:.14em; text-transform:uppercase;">{{ item.tag }}</span>
+                </div>
+                <div style="font-size:14px; line-height:1.35;">{{ item.name }}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-family:'Cormorant Garamond',serif; font-size:19px;">{{ item.price }}</span>
+                  <a href="https://wa.me/917625077531" style="font-family:'Jost',sans-serif; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#A98037;">Enquire</a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(20,17,15,.1); border-top:1px solid rgba(20,17,15,.1);">
+          <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+            <div style="background:#FFFDFA; padding:34px 30px; display:flex; flex-direction:column; gap:14px;">
+              <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:19px; line-height:1.5;">{{ r.quote }}</div>
+              <div style="margin-top:auto; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#A98037;">{{ r.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; background:#FAF6F0; border-top:1px solid rgba(20,17,15,.1);">
+          <div style="padding:48px 32px; display:flex; flex-direction:column; gap:18px;">
+            <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:32px;">Visit the boutique</h2>
+            <div style="display:flex; flex-direction:column; border-top:1px solid rgba(20,17,15,.12);">
+              <sc-for list="{{ storeInfo }}" as="row" hint-placeholder-count="4">
+                <div style="display:grid; grid-template-columns:110px 1fr; gap:16px; padding:12px 0; border-bottom:1px solid rgba(20,17,15,.09);">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#8A8177; padding-top:3px;">{{ row.label }}</span>
+                  <span style="font-size:14px; line-height:1.6;">{{ row.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:repeating-linear-gradient(135deg,#EFE9DF 0 12px,#E6DED1 12px 24px); min-height:300px; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">map embed</div>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:26px 32px; background:#14110F; color:rgba(239,231,217,.7); font-size:12px;">
+          <span>© 2026 Sthree Boutique · Bikarnakatte, Mangalore</span>
+          <div style="display:flex; gap:20px;"><a href="https://wa.me/917625077531" style="color:#C9A227;">+91 76250 77531</a><a href="https://www.instagram.com/sthreeboutique2026" style="color:#C9A227;">@sthreeboutique2026</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="2c" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">2c</span>
+        <span style="font-family:'Cormorant Garamond',serif; font-size:25px;">Dark luxe — gold on near-black</span>
+      </div>
+      <div style="width:1080px; background:#12100E; border:1px solid rgba(20,17,15,.4); overflow:hidden; color:#EFE7D9;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:18px 40px; border-bottom:1px solid rgba(201,162,39,.22);">
+          <img src="assets/sthree-logo-full-dark.png" alt="Sthree Boutique" style="height:96px; width:auto; display:block; flex:none;">
+          <div style="display:flex; gap:32px; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:rgba(239,231,217,.85);">
+            <span>Western</span><span>Ethnic</span><span>Co-ord Sets</span><span>Jewellery</span><span>Bags</span>
+          </div>
+          <a href="https://wa.me/917625077531" style="padding:12px 22px; border:1px solid #C9A227; color:#C9A227; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase;" style-hover="background:#C9A227; color:#12100E;">WhatsApp</a>
+        </div>
+        <div style="position:relative; min-height:520px; background:repeating-linear-gradient(135deg,#221E1A 0 14px,#1A1714 14px 28px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; padding:80px 40px; text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:#C9A227;">Quality. Style. Personality.</div>
+          <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:72px; line-height:1.02; color:#FAF6F0; max-width:760px; text-wrap:balance;">The boutique where fashion meets personality.</h1>
+          <p style="margin:0; font-size:15px; line-height:1.7; color:rgba(239,231,217,.72); max-width:520px;">Imported and Indian pieces, hand-picked in Mangalore.</p>
+          <a href="https://wa.me/917625077531" style="padding:15px 34px; background:#C9A227; color:#12100E; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase;" style-hover="background:#FAF6F0;">Shop on WhatsApp</a>
+          <span style="position:absolute; bottom:18px; right:24px; font-family:'JetBrains Mono',monospace; font-size:10px; color:rgba(239,231,217,.4);">full-bleed hero · dark ground · 2400 × 1400px</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:rgba(201,162,39,.22);">
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+            <div style="background:#12100E; padding:34px 22px; display:flex; flex-direction:column; gap:8px; min-height:150px;" style-hover="background:#1A1714;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:24px; color:#FAF6F0;">{{ cat.name }}</div>
+              <div style="font-size:12px; color:rgba(239,231,217,.55);">{{ cat.note }}</div>
+              <div style="margin-top:auto; font-family:'Jost',sans-serif; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#C9A227;">View</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:70px 40px;">
+          <h2 style="margin:0 0 26px; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:36px; color:#FAF6F0;">New arrivals</h2>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+            <sc-for list="{{ arrivals }}" as="item" hint-placeholder-count="6">
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#221E1A 0 10px,#1A1714 10px 20px); display:flex; align-items:flex-end; padding:12px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:9px; color:rgba(239,231,217,.4);">product shot · dark ground</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; gap:10px; align-items:baseline;">
+                  <div style="font-family:'Cormorant Garamond',serif; font-size:21px; color:#FAF6F0;">{{ item.name }}</div>
+                  <div style="font-size:14px; color:#C9A227; white-space:nowrap;">{{ item.price }}</div>
+                </div>
+                <div style="font-size:11px; letter-spacing:.06em; color:rgba(239,231,217,.5);">{{ item.origin }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; padding:0 40px 70px;">
+          <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex; flex-direction:column; gap:14px; padding-top:22px; border-top:1px solid rgba(201,162,39,.3);">
+              <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:19px; line-height:1.5; color:#F1E9DC;">{{ r.quote }}</div>
+              <div style="font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#C9A227;">{{ r.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; border-top:1px solid rgba(201,162,39,.22);">
+          <div style="padding:56px 40px; display:flex; flex-direction:column; gap:20px;">
+            <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:36px; color:#FAF6F0;">Visit the boutique</h2>
+            <div style="display:flex; flex-direction:column; border-top:1px solid rgba(239,231,217,.14);">
+              <sc-for list="{{ storeInfo }}" as="row" hint-placeholder-count="4">
+                <div style="display:grid; grid-template-columns:110px 1fr; gap:16px; padding:13px 0; border-bottom:1px solid rgba(239,231,217,.12);">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#C9A227; padding-top:3px;">{{ row.label }}</span>
+                  <span style="font-size:14px; line-height:1.6; color:rgba(239,231,217,.85);">{{ row.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:repeating-linear-gradient(135deg,#221E1A 0 12px,#1A1714 12px 24px); min-height:320px; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:rgba(239,231,217,.4);">map embed · dark theme</div>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:26px 40px; border-top:1px solid rgba(201,162,39,.22); font-size:12px; color:rgba(239,231,217,.5);">
+          <span>© 2026 Sthree Boutique</span>
+          <div style="display:flex; gap:20px;"><a href="https://wa.me/917625077531" style="color:#C9A227;">+91 76250 77531</a><a href="mailto:priyankamonteiro@gmail.com" style="color:#C9A227;">priyankamonteiro@gmail.com</a></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<section style="display:flex; flex-direction:column; gap:56px; padding:24px 56px 96px; opacity:.75;">
+
+  <div style="display:flex; flex-direction:column; gap:14px; max-width:900px;">
+    <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#8A8177;">Turn 1 · superseded — logo kept as is</div>
+    <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:52px; line-height:1.05; letter-spacing:-.01em;">Logo routes &amp; homepage</h1>
+    <p style="margin:0; font-size:16px; line-height:1.65; color:#57514A; max-width:720px; text-wrap:pretty;">Four monogram containers (<a href="#1a">1a</a>–<a href="#1d">1d</a>) plus one contrast route, the simplified figure mark (<a href="#1e">1e</a>). Each is shown at real working sizes — favicon, Instagram avatar, one-colour signage. The homepage (<a href="#1f">1f</a>) is built on <a href="#1b">1b</a>; tell me which mark you want and I'll swap it through.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:28px;">
+
+    <div id="1a" style="width:392px; background:#FAF6F0; border:1px solid rgba(20,17,15,.1); display:flex; flex-direction:column;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid rgba(20,17,15,.08);">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">1a</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">Bare monogram</span>
+      </div>
+      <div style="padding:52px 32px; display:flex; flex-direction:column; align-items:center; gap:18px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:104px; line-height:.8; color:#A98037;">S</div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px;">
+          <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:19px; letter-spacing:.42em; text-indent:.42em; color:#14110F;">STHREE</div>
+          <div style="width:64px; height:1px; background:rgba(169,128,55,.5);"></div>
+          <div style="font-family:'Jost',sans-serif; font-weight:300; font-size:9px; letter-spacing:.36em; text-indent:.36em; color:#8A8177;">BOUTIQUE</div>
+        </div>
+      </div>
+      <div style="margin-top:auto; display:flex; align-items:center; gap:20px; padding:18px 20px; background:#F2ECE3; border-top:1px solid rgba(20,17,15,.07);">
+        <div style="width:32px; height:32px; background:#14110F; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:20px; color:#C9A227;">S</div>
+        <div style="width:56px; height:56px; border-radius:50%; background:#14110F; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:32px; color:#C9A227;">S</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; line-height:1.6; color:#8A8177;">32px favicon<br>56px avatar</div>
+      </div>
+      <div style="padding:16px 20px; font-size:13px; line-height:1.6; color:#57514A; border-top:1px solid rgba(20,17,15,.07); text-wrap:pretty;">Cleanest, most flexible. The letter alone is enough at any size, and the name never has to shrink with it.</div>
+    </div>
+
+    <div id="1b" style="width:392px; background:#FAF6F0; border:1px solid rgba(20,17,15,.1); display:flex; flex-direction:column; box-shadow:0 0 0 3px rgba(169,128,55,.28);">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid rgba(20,17,15,.08);">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">1b</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">Circle seal · recommended</span>
+      </div>
+      <div style="padding:44px 32px; display:flex; flex-direction:column; align-items:center; gap:20px;">
+        <div style="width:132px; height:132px; border-radius:50%; border:1px solid #A98037; display:flex; align-items:center; justify-content:center; position:relative;">
+          <div style="position:absolute; inset:7px; border-radius:50%; border:1px solid rgba(169,128,55,.3);"></div>
+          <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:70px; line-height:.8; color:#A98037; margin-top:4px;">S</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px;">
+          <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:19px; letter-spacing:.42em; text-indent:.42em; color:#14110F;">STHREE</div>
+          <div style="font-family:'Jost',sans-serif; font-weight:300; font-size:9px; letter-spacing:.36em; text-indent:.36em; color:#8A8177;">BOUTIQUE</div>
+        </div>
+      </div>
+      <div style="margin-top:auto; display:flex; align-items:center; gap:20px; padding:18px 20px; background:#F2ECE3; border-top:1px solid rgba(20,17,15,.07);">
+        <div style="width:32px; height:32px; border-radius:50%; background:#14110F; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:19px; color:#C9A227;">S</div>
+        <div style="width:56px; height:56px; border-radius:50%; background:#A98037; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:32px; color:#FAF6F0;">S</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; line-height:1.6; color:#8A8177;">reads clean<br>at every size</div>
+      </div>
+      <div style="padding:16px 20px; font-size:13px; line-height:1.6; color:#57514A; border-top:1px solid rgba(20,17,15,.07); text-wrap:pretty;">The circle gives you a stamp — perfect for the Instagram avatar, a bag sticker, or a gold sign on the shopfront.</div>
+    </div>
+
+    <div id="1c" style="width:392px; background:#FAF6F0; border:1px solid rgba(20,17,15,.1); display:flex; flex-direction:column;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid rgba(20,17,15,.08);">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">1c</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">Framed square</span>
+      </div>
+      <div style="padding:44px 32px; display:flex; flex-direction:column; align-items:center; gap:20px;">
+        <div style="width:128px; height:128px; border:1px solid #A98037; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;">
+          <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:60px; line-height:.8; color:#A98037;">S</div>
+          <div style="width:36px; height:1px; background:rgba(169,128,55,.55);"></div>
+          <div style="font-family:'Jost',sans-serif; font-weight:300; font-size:8px; letter-spacing:.3em; text-indent:.3em; color:#14110F;">EST 2026</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px;">
+          <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:19px; letter-spacing:.42em; text-indent:.42em; color:#14110F;">STHREE</div>
+          <div style="font-family:'Jost',sans-serif; font-weight:300; font-size:9px; letter-spacing:.36em; text-indent:.36em; color:#8A8177;">BOUTIQUE</div>
+        </div>
+      </div>
+      <div style="margin-top:auto; display:flex; align-items:center; gap:20px; padding:18px 20px; background:#F2ECE3; border-top:1px solid rgba(20,17,15,.07);">
+        <div style="width:32px; height:32px; background:#14110F; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:20px; color:#C9A227;">S</div>
+        <div style="width:56px; height:56px; background:#14110F; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:32px; color:#C9A227;">S</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; line-height:1.6; color:#8A8177;">frame drops<br>below 40px</div>
+      </div>
+      <div style="padding:16px 20px; font-size:13px; line-height:1.6; color:#57514A; border-top:1px solid rgba(20,17,15,.07); text-wrap:pretty;">Sharper, more retail-label. The "EST 2026" line makes it feel like a real house rather than a new page.</div>
+    </div>
+
+    <div id="1d" style="width:392px; background:#FAF6F0; border:1px solid rgba(20,17,15,.1); display:flex; flex-direction:column;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid rgba(20,17,15,.08);">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">1d</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">Diamond</span>
+      </div>
+      <div style="padding:44px 32px; display:flex; flex-direction:column; align-items:center; gap:22px;">
+        <div style="width:104px; height:104px; border:1px solid #A98037; transform:rotate(45deg); display:flex; align-items:center; justify-content:center; margin:14px 0;">
+          <div style="transform:rotate(-45deg); font-family:'Cormorant Garamond',serif; font-weight:300; font-size:58px; line-height:.8; color:#A98037;">S</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px;">
+          <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:19px; letter-spacing:.42em; text-indent:.42em; color:#14110F;">STHREE</div>
+          <div style="font-family:'Jost',sans-serif; font-weight:300; font-size:9px; letter-spacing:.36em; text-indent:.36em; color:#8A8177;">BOUTIQUE</div>
+        </div>
+      </div>
+      <div style="margin-top:auto; display:flex; align-items:center; gap:20px; padding:18px 20px; background:#F2ECE3; border-top:1px solid rgba(20,17,15,.07);">
+        <div style="width:32px; height:32px; background:#14110F; display:flex; align-items:center; justify-content:center;"><div style="width:19px; height:19px; border:1px solid #C9A227; transform:rotate(45deg);"></div></div>
+        <div style="width:56px; height:56px; border-radius:50%; background:#14110F; display:flex; align-items:center; justify-content:center;"><div style="width:30px; height:30px; border:1px solid #C9A227; transform:rotate(45deg); display:flex; align-items:center; justify-content:center;"><span style="transform:rotate(-45deg); font-family:'Cormorant Garamond',serif; font-size:17px; color:#C9A227;">S</span></div></div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; line-height:1.6; color:#8A8177;">jewellery-leaning<br>facet shape</div>
+      </div>
+      <div style="padding:16px 20px; font-size:13px; line-height:1.6; color:#57514A; border-top:1px solid rgba(20,17,15,.07); text-wrap:pretty;">Nods to the jewellery side of the range. Wastes the most space of the four — weakest on a narrow signboard.</div>
+    </div>
+
+    <div id="1e" style="width:392px; background:#FAF6F0; border:1px solid rgba(20,17,15,.1); display:flex; flex-direction:column;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid rgba(20,17,15,.08);">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">1e</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">Figure mark · contrast route</span>
+      </div>
+      <div style="padding:40px 32px; display:flex; flex-direction:column; align-items:center; gap:20px;">
+        <div style="width:132px; height:132px; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 120 120" width="118" height="118" aria-label="Sthree figure mark">
+            <ellipse cx="60" cy="34" rx="34" ry="9" fill="none" stroke="#A98037" stroke-width="1.6"></ellipse>
+            <circle cx="60" cy="30" r="11" fill="none" stroke="#14110F" stroke-width="1.6"></circle>
+            <path d="M60 45 L60 74" stroke="#14110F" stroke-width="1.6" fill="none" stroke-linecap="round"></path>
+            <path d="M44 100 L60 74 L76 100 Z" fill="none" stroke="#14110F" stroke-width="1.6" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:7px;">
+          <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:19px; letter-spacing:.42em; text-indent:.42em; color:#14110F;">STHREE</div>
+          <div style="font-family:'Jost',sans-serif; font-weight:300; font-size:9px; letter-spacing:.36em; text-indent:.36em; color:#8A8177;">BOUTIQUE</div>
+        </div>
+      </div>
+      <div style="margin-top:auto; display:flex; align-items:center; gap:20px; padding:18px 20px; background:#F2ECE3; border-top:1px solid rgba(20,17,15,.07);">
+        <div style="width:32px; height:32px; background:#14110F; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 120 120" width="22" height="22"><ellipse cx="60" cy="34" rx="34" ry="9" fill="none" stroke="#C9A227" stroke-width="5"></ellipse><circle cx="60" cy="30" r="11" fill="none" stroke="#C9A227" stroke-width="5"></circle><path d="M60 45 L60 74" stroke="#C9A227" stroke-width="5"></path><path d="M44 100 L60 74 L76 100 Z" fill="none" stroke="#C9A227" stroke-width="5" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="width:56px; height:56px; border-radius:50%; background:#14110F; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 120 120" width="38" height="38"><ellipse cx="60" cy="34" rx="34" ry="9" fill="none" stroke="#C9A227" stroke-width="3"></ellipse><circle cx="60" cy="30" r="11" fill="none" stroke="#C9A227" stroke-width="3"></circle><path d="M60 45 L60 74" stroke="#C9A227" stroke-width="3"></path><path d="M44 100 L60 74 L76 100 Z" fill="none" stroke="#C9A227" stroke-width="3" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; line-height:1.6; color:#8A8177;">geometry survives<br>the shrink</div>
+      </div>
+      <div style="padding:16px 20px; font-size:13px; line-height:1.6; color:#57514A; border-top:1px solid rgba(20,17,15,.07); text-wrap:pretty;">Keeps the hat-and-silhouette idea from the current logo, but reduced to four strokes so it survives embroidery and small sizes.</div>
+    </div>
+
+  </div>
+
+  <div id="1f" style="display:flex; flex-direction:column; gap:16px;">
+    <div style="display:flex; align-items:baseline; gap:14px;">
+      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#A98037;">1f</span>
+      <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:30px;">Homepage — catalogue with WhatsApp ordering</h2>
+    </div>
+
+    <div style="width:1280px; background:#FAF6F0; border:1px solid rgba(20,17,15,.12); overflow:hidden;">
+
+      <div style="display:flex; align-items:center; justify-content:center; gap:10px; padding:10px; background:#14110F; color:#EFE7D9; font-family:'Jost',sans-serif; font-weight:300; font-size:12px; letter-spacing:.16em; text-transform:uppercase;">
+        <span>Imported &amp; Indian labels</span><span style="color:#A98037;">·</span><span>New drops every week</span><span style="color:#A98037;">·</span><span>Mangalore, Bikarnakatte</span>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 44px; border-bottom:1px solid rgba(20,17,15,.09);">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div style="width:46px; height:46px; border-radius:50%; border:1px solid #A98037; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:26px; color:#A98037;">S</div>
+          <div style="display:flex; flex-direction:column; gap:3px;">
+            <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:15px; letter-spacing:.34em; text-indent:.34em;">STHREE</div>
+            <div style="font-family:'Jost',sans-serif; font-weight:300; font-size:8px; letter-spacing:.3em; text-indent:.3em; color:#8A8177;">BOUTIQUE</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:34px; font-family:'Jost',sans-serif; font-weight:400; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:#14110F;">
+          <span>Western</span><span>Ethnic</span><span>Co-ord Sets</span><span>Jewellery</span><span>Bags</span><span>About</span>
+        </div>
+        <a href="https://wa.me/917625077531" style="padding:11px 22px; border:1px solid #14110F; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#14110F;" style-hover="background:#14110F; color:#FAF6F0;">Order on WhatsApp</a>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.05fr .95fr; min-height:520px;">
+        <div style="padding:88px 56px 88px 44px; display:flex; flex-direction:column; justify-content:center; gap:26px;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#A98037;">Quality. Style. Personality.</div>
+          <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:66px; line-height:1.04; letter-spacing:-.015em; text-wrap:balance;">The boutique where fashion meets personality.</h1>
+          <p style="margin:0; font-size:16px; line-height:1.7; color:#57514A; max-width:440px; text-wrap:pretty;">Hand-picked western and ethnic wear, co-ord sets, anti-tarnish jewellery and bags — imported and Indian labels, chosen piece by piece by Priyanka.</p>
+          <div style="display:flex; gap:14px; padding-top:4px;">
+            <a href="https://wa.me/917625077531" style="padding:15px 30px; background:#14110F; color:#FAF6F0; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.18em; text-transform:uppercase;" style-hover="background:#A98037;">Shop on WhatsApp</a>
+            <a href="#1f" style="padding:15px 30px; border:1px solid rgba(20,17,15,.25); color:#14110F; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.18em; text-transform:uppercase;" style-hover="border-color:#14110F;">View new arrivals</a>
+          </div>
+        </div>
+        <div style="background:repeating-linear-gradient(135deg,#EFE9DF 0 12px,#E6DED1 12px 24px); display:flex; align-items:center; justify-content:center;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177; text-align:center; line-height:1.9;">hero image<br>portrait shot, full-length<br>2000 × 2600px</div>
+        </div>
+      </div>
+
+      <div style="padding:76px 44px; border-top:1px solid rgba(20,17,15,.09);">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:28px;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:38px;">Shop by category</h2>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">Five edits</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:16px;">
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div style="aspect-ratio:3/4; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); display:flex; align-items:flex-end; padding:14px;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em; color:#8A8177;">{{ cat.slot }}</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:4px;">
+                <div style="font-family:'Cormorant Garamond',serif; font-size:21px;">{{ cat.name }}</div>
+                <div style="font-size:12px; color:#8A8177; letter-spacing:.04em;">{{ cat.note }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="padding:76px 44px; background:#F3EDE4; border-top:1px solid rgba(20,17,15,.07);">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:28px;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:38px;">New arrivals</h2>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177;">Tap any piece to enquire</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+          <sc-for list="{{ arrivals }}" as="item" hint-placeholder-count="6">
+            <div style="display:flex; flex-direction:column; gap:14px; background:#FAF6F0; padding:14px;">
+              <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#EFE9DF 0 10px,#E6DED1 10px 20px); position:relative; display:flex; align-items:flex-end; padding:14px;">
+                <span style="position:absolute; top:12px; left:12px; padding:5px 10px; background:#14110F; color:#EFE7D9; font-family:'Jost',sans-serif; font-size:9px; letter-spacing:.16em; text-transform:uppercase;">{{ item.tag }}</span>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em; color:#8A8177;">product shot · 1200 × 1500px</span>
+              </div>
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                  <div style="font-family:'Cormorant Garamond',serif; font-size:22px; line-height:1.2;">{{ item.name }}</div>
+                  <div style="font-size:12px; color:#8A8177; letter-spacing:.06em;">{{ item.origin }}</div>
+                </div>
+                <div style="font-family:'Jost',sans-serif; font-size:15px; white-space:nowrap;">{{ item.price }}</div>
+              </div>
+              <a href="https://wa.me/917625077531" style="padding:11px; text-align:center; border:1px solid rgba(20,17,15,.2); font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#14110F;" style-hover="background:#14110F; color:#FAF6F0; border-color:#14110F;">Enquire on WhatsApp</a>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; border-top:1px solid rgba(20,17,15,.09);">
+        <div style="padding:76px 44px; display:flex; flex-direction:column; gap:26px; justify-content:center;">
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:38px;">Visit the boutique</h2>
+          <p style="margin:0; font-size:15px; line-height:1.75; color:#57514A; max-width:400px; text-wrap:pretty;">Come in and try the pieces on — Priyanka styles every customer personally. Walk-ins welcome, no appointment needed.</p>
+          <div style="display:flex; flex-direction:column; gap:0; border-top:1px solid rgba(20,17,15,.12);">
+            <sc-for list="{{ storeInfo }}" as="row" hint-placeholder-count="4">
+              <div style="display:grid; grid-template-columns:120px 1fr; gap:20px; padding:15px 0; border-bottom:1px solid rgba(20,17,15,.09);">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177; padding-top:3px;">{{ row.label }}</span>
+                <span style="font-size:15px; line-height:1.6; color:#14110F;">{{ row.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:repeating-linear-gradient(135deg,#EFE9DF 0 12px,#E6DED1 12px 24px); min-height:420px; display:flex; align-items:center; justify-content:center;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8A8177; text-align:center; line-height:1.9;">map embed<br>Bikarnakatte, Mangalore</div>
+        </div>
+      </div>
+
+      <div style="padding:76px 44px; background:#14110F; color:#EFE7D9;">
+        <h2 style="margin:0 0 32px; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:38px; color:#FAF6F0;">What customers say</h2>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px;">
+          <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex; flex-direction:column; gap:18px; padding:30px; border:1px solid rgba(239,231,217,.16);">
+              <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:21px; line-height:1.5; color:#F1E9DC; text-wrap:pretty;">{{ r.quote }}</div>
+              <div style="margin-top:auto; display:flex; flex-direction:column; gap:4px;">
+                <div style="font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#C9A227;">{{ r.name }}</div>
+                <div style="font-size:12px; color:rgba(239,231,217,.55);">{{ r.city }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; padding:66px 44px 40px; border-top:1px solid rgba(20,17,15,.09);">
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="display:flex; align-items:center; gap:13px;">
+            <div style="width:42px; height:42px; border-radius:50%; border:1px solid #A98037; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:300; font-size:24px; color:#A98037;">S</div>
+            <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:14px; letter-spacing:.34em; text-indent:.34em;">STHREE</div>
+          </div>
+          <p style="margin:0; font-size:14px; line-height:1.7; color:#57514A; max-width:290px;">Quality. Style. Personality. Curated womenswear and accessories in Mangalore since 2026.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#8A8177;">Shop</div>
+          <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#57514A;">
+            <span>Western wear</span><span>Ethnic wear</span><span>Co-ord sets</span><span>Anti-tarnish jewellery</span><span>Bags</span>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#8A8177;">Contact</div>
+          <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#57514A;">
+            <a href="https://wa.me/917625077531">+91 76250 77531</a>
+            <a href="https://wa.me/919036087420">+91 90360 87420</a>
+            <a href="mailto:priyankamonteiro@gmail.com">priyankamonteiro@gmail.com</a>
+            <a href="https://www.instagram.com/sthreeboutique2026">@sthreeboutique2026</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 44px 30px; font-size:12px; color:#8A8177; border-top:1px solid rgba(20,17,15,.07);">
+        <span>© 2026 Sthree Boutique</span>
+        <span>Bikarnakatte, Mangalore · 9 am – 8 pm daily</span>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      devices: [
+        { name: "iPhone SE / small Android", width: "320 – 400px", layout: "One column. 2-up product grid, chips scroll sideways, WhatsApp bar fixed at the bottom." },
+        { name: "iPhone 14 / 15 / Pro Max", width: "390 – 430px", layout: "Same as 3a–3c. Safe-area padding under the notch and above the home bar." },
+        { name: "Large Android", width: "412 – 480px", layout: "One column, images scale up. No horizontal scrolling anywhere on the page." },
+        { name: "iPad / tablet, portrait", width: "768 – 834px", layout: "As 3d — 3-up products, hero splits into image plus jewellery panel." },
+        { name: "iPad landscape / laptop", width: "1024 – 1440px", layout: "Full desktop layout, content capped at 1280px and centred so it never stretches." },
+        { name: "Large desktop / TV", width: "1441px +", layout: "Same 1280px content column with wider margins; images served at 2× for retina screens." }
+      ],
+      categories: [
+        { name: "Western wear", note: "Dresses, tops, denim", slot: "flat-lay or on-model" },
+        { name: "Ethnic wear", note: "Kurtas, sarees, suits", slot: "on-model, full length" },
+        { name: "Co-ord sets", note: "Matched two-pieces", slot: "on-model, full length" },
+        { name: "Jewellery", note: "Anti-tarnish, everyday", slot: "close-up, plain ground" },
+        { name: "Bags", note: "Imported & Indian", slot: "product on stand" }
+      ],
+      arrivals: [
+        { name: "Linen-blend co-ord set", origin: "Imported", price: "₹3,200", tag: "New" },
+        { name: "Hand-block cotton kurta", origin: "Indian", price: "₹1,850", tag: "New" },
+        { name: "Satin slip dress", origin: "Imported", price: "₹2,700", tag: "New" },
+        { name: "Anti-tarnish layered chain", origin: "Anti-tarnish", price: "₹899", tag: "Restock" },
+        { name: "Structured tote", origin: "Imported", price: "₹2,450", tag: "New" },
+        { name: "Organza saree, pearl edge", origin: "Indian", price: "₹4,100", tag: "New" }
+      ],
+      storeInfo: [
+        { label: "Address", value: "Bikarnakatte, Mangalore, Karnataka" },
+        { label: "Hours", value: "9:00 am – 8:00 pm, all days" },
+        { label: "WhatsApp", value: "+91 76250 77531 · +91 90360 87420" },
+        { label: "Email", value: "priyankamonteiro@gmail.com" }
+      ],
+      reviews: [
+        { quote: "She picked three things I would never have tried and all three worked. That is the whole service.", name: "Anusha R.", city: "Kadri" },
+        { quote: "The jewellery genuinely does not tarnish — I have worn the same chain daily for months.", name: "Fathima S.", city: "Mangalore" },
+        { quote: "Imported pieces you will not see on anyone else in the city, at fair prices.", name: "Deepa K.", city: "Surathkal" }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
