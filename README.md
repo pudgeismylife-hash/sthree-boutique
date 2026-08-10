@@ -1,8 +1,10 @@
 # Sthree Boutique
 
-Website for **Sthree Boutique** — ethnic wear, western wear, anti-tarnish jewellery and
-press-on nails. Instagram [@sthreeboutique2026](https://instagram.com/sthreeboutique2026),
-orders over WhatsApp.
+Website for **Sthree Boutique**, Bikarnakatte, Mangalore — western wear, ethnic wear,
+co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported and Indian,
+delivered across India and worldwide. Owner: Priyanka Monteiro. Established June 2026.
+Instagram [@sthreeboutique2026](https://instagram.com/sthreeboutique2026),
+orders over WhatsApp — no cart, no payment integration.
 
 The site is one self-contained HTML page: no build tools, no dependencies, no server.
 It opens straight from a file or from any static host.
@@ -77,7 +79,7 @@ handoff's demo figures and need confirming against real stock.
 
 | Item | Detail |
 |---|---|
-| **Phone numbers** | The branding handoff uses **76250 77531** throughout and the site treats it as primary. The two handoffs disagree on the second line — the app handoff says **90360 87427**, the branding handoff says **90360 87420**. One is a typo. The site currently shows 87420. Confirm before any print or ad spend. |
+| **Second WhatsApp line** | Primary **76250 77531** is confirmed by the owner and used everywhere. The second line is not: the owner wrote `903608742` (nine digits), the app handoff says `9036087427`, the branding handoff says `9036087420`. The last digit is unknown, so the number is **left off the site** rather than guessed — `CONFIG.whatsappAlt` is empty and Visit shows one number. Fill it in once confirmed. |
 | **Photography** | Not supplied. Needed: hero 1080×1350 portrait, 5 category tiles at 3:4, 6 product shots at 4:5. Serve WebP at 1×/2×. |
 | **Mobile nav overlay** | Shipped as a cream full-screen overlay with the five nav links and the WhatsApp CTA. The handoff lists this as needing design sign-off. |
 | **Map** | Links out to a Google Maps search so nothing needs an API key. Swap for an embed once the place ID exists. |

@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Sthree Boutique — Bikarnakatte, Mangalore</title>
-<meta name="description" content="Sthree Boutique, Bikarnakatte, Mangalore. Western and ethnic wear, co-ord sets, anti-tarnish jewellery and bags. Imported &amp; Indian. Order on WhatsApp.">
+<meta name="description" content="Sthree Boutique, Bikarnakatte, Mangalore. Western and ethnic wear, co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported &amp; Indian, delivered across India and worldwide. Order on WhatsApp.">
 <meta name="theme-color" content="#FAF6F0">
 <meta name="format-detection" content="telephone=no">
 
@@ -29,7 +29,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ClothingStore","name":"Sthree Boutique","description":"Western and ethnic wear, co-ord sets, anti-tarnish jewellery and bags.","address":{"@type":"PostalAddress","streetAddress":"Bikarnakatte","addressLocality":"Mangalore","addressRegion":"Karnataka","addressCountry":"IN"},"openingHours":"Mo-Su 09:00-20:00","telephone":"+917625077531","email":"priyankamonteiro@gmail.com","sameAs":["https://instagram.com/sthreeboutique2026"]}
+{"@context":"https://schema.org","@type":"ClothingStore","name":"Sthree Boutique","description":"Western and ethnic wear, co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported and Indian.","founder":{"@type":"Person","name":"Priyanka Monteiro"},"foundingDate":"2026-06-14","address":{"@type":"PostalAddress","streetAddress":"Bikarnakatte","addressLocality":"Mangalore","addressRegion":"Karnataka","addressCountry":"IN"},"openingHours":"Mo-Su 09:00-20:00","telephone":"+917625077531","email":"priyankamonteiro@gmail.com","areaServed":["IN","Worldwide"],"sameAs":["https://instagram.com/sthreeboutique2026"]}
 </script>
 
 <style>
@@ -179,9 +179,11 @@ h2{font-size:26px;margin-bottom:22px}
 .grid{display:grid;gap:12px}
 @media (min-width:600px){ .grid{gap:16px} }
 @media (min-width:900px){ .grid{gap:20px} }
+/* The handoff specified five columns for five categories. Press-on nails
+   makes six, so the desktop row is six — otherwise the last tile orphans. */
 .cats{grid-template-columns:repeat(2,1fr)}
 @media (min-width:600px){ .cats{grid-template-columns:repeat(3,1fr)} }
-@media (min-width:900px){ .cats{grid-template-columns:repeat(5,1fr)} }
+@media (min-width:900px){ .cats{grid-template-columns:repeat(6,1fr)} }
 .cat .ph{aspect-ratio:3/4}
 .cat span.name{
   display:block;font-family:var(--display);font-size:17px;margin-top:9px;line-height:1.3;
@@ -320,7 +322,7 @@ footer li a:hover{color:var(--gold)}
 <div class="wrap intro">
   <p class="eyebrow">Quality. Style. Personality.</p>
   <h1>The boutique where fashion meets personality.</h1>
-  <p>Western and ethnic wear, co-ord sets, anti-tarnish jewellery and bags.</p>
+  <p>Western and ethnic wear, co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported and Indian, delivered all over India and worldwide.</p>
   <a class="btn" id="introCta">Shop on WhatsApp</a>
 </div>
 
@@ -360,10 +362,12 @@ footer li a:hover{color:var(--gold)}
     <div class="foot">
       <div>
         <img class="logo" id="footLogo" src="" alt="Sthree Boutique">
-        <p style="font-size:13px;color:var(--ink-soft);margin:0;max-width:32ch">
-          Western and ethnic wear, co-ord sets, anti-tarnish jewellery and bags.
-          Imported &amp; Indian, in Bikarnakatte.
+        <p style="font-size:13px;color:var(--ink-soft);margin:0;max-width:34ch">
+          Western and ethnic wear, co-ord sets, anti-tarnish jewellery,
+          press-on nails and bags. Imported &amp; Indian, in Bikarnakatte.
+          Delivered all over India and worldwide.
         </p>
+        <p style="font-size:13px;color:var(--ink-soft);margin:12px 0 0" id="ownerLine"></p>
       </div>
       <div>
         <h3>Shop</h3>
@@ -372,6 +376,7 @@ footer li a:hover{color:var(--gold)}
           <li><a href="#categories">Ethnic wear</a></li>
           <li><a href="#categories">Co-ord sets</a></li>
           <li><a href="#categories">Jewellery</a></li>
+          <li><a href="#categories">Press-on nails</a></li>
           <li><a href="#categories">Bags</a></li>
         </ul>
       </div>
@@ -381,8 +386,8 @@ footer li a:hover{color:var(--gold)}
       </div>
     </div>
     <div class="legal">
-      <span>© <span id="yr">2026</span> Sthree Boutique</span>
-      <span>Bikarnakatte, Mangalore</span>
+      <span>© <span id="yr">2026</span> Sthree Boutique · Est. 2026</span>
+      <span>Bikarnakatte, Mangalore · Shipping worldwide</span>
     </div>
   </div>
 </footer>
@@ -397,13 +402,18 @@ footer li a:hover{color:var(--gold)}
    SETTINGS — the only block that normally needs editing.
    ═══════════════════════════════════════════════════════════════ */
 const CONFIG = {
-  whatsapp : "917625077531",              // primary, per the branding handoff
-  whatsappAlt: "919036087420",            // secondary line
+  owner    : "Priyanka Monteiro",
+  whatsapp : "917625077531",              // primary
+  // Second line: the owner supplied "903608742", which is nine digits.
+  // Left out of the page until the missing digit is confirmed.
+  whatsappAlt: "",
   tel      : "+917625077531",
   email    : "priyankamonteiro@gmail.com",
   instagram: "sthreeboutique2026",
   address  : "Bikarnakatte, Mangalore, Karnataka",
   hours    : "9:00 am – 8:00 pm, all days",
+  delivery : "All over India and worldwide",
+  founded  : "2026",
   mapsQuery: "Sthree Boutique, Bikarnakatte, Mangalore, Karnataka",
 
   // Filled in by build-hosted.js from assets/logo-web.png
@@ -412,11 +422,12 @@ const CONFIG = {
 
 /* Content — update these lists and the page follows. */
 const categories = [
-  { name:"Western wear", note:"Dresses, tops, denim" },
-  { name:"Ethnic wear",  note:"Kurtas, sarees, suits" },
-  { name:"Co-ord sets",  note:"Matched two-pieces" },
-  { name:"Jewellery",    note:"Anti-tarnish, everyday" },
-  { name:"Bags",         note:"Imported & Indian" }
+  { name:"Western wear",   note:"Dresses, tops, denim" },
+  { name:"Ethnic wear",    note:"Kurtas, sarees, suits" },
+  { name:"Co-ord sets",    note:"Matched two-pieces" },
+  { name:"Jewellery",      note:"Anti-tarnish, everyday" },
+  { name:"Press-on nails", note:"Salon look, at home" },
+  { name:"Bags",           note:"Imported & Indian" }
 ];
 
 const arrivals = [
@@ -482,10 +493,15 @@ const arrivals = [
     </article>`).join("");
 
   /* visit details */
+  const waValue = `<a href="${wa(shopMsg)}" target="_blank" rel="noopener">${pretty(CONFIG.whatsapp)}</a>`
+    + (CONFIG.whatsappAlt
+        ? ` · <a href="https://wa.me/${CONFIG.whatsappAlt}" target="_blank" rel="noopener">${pretty(CONFIG.whatsappAlt)}</a>`
+        : "");
   const store = [
     { label:"Address",  value: esc(CONFIG.address) },
     { label:"Hours",    value: esc(CONFIG.hours) },
-    { label:"WhatsApp", value: `<a href="${wa(shopMsg)}" target="_blank" rel="noopener">${pretty(CONFIG.whatsapp)}</a> · <a href="https://wa.me/${CONFIG.whatsappAlt}" target="_blank" rel="noopener">${pretty(CONFIG.whatsappAlt)}</a>` },
+    { label:"Delivery", value: esc(CONFIG.delivery) },
+    { label:"WhatsApp", value: waValue },
     { label:"Email",    value: `<a href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a>` }
   ];
   $("#store").innerHTML = store.map(r=>`
@@ -498,6 +514,9 @@ const arrivals = [
     <li><a href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a></li>
     <li><a href="https://instagram.com/${CONFIG.instagram}" target="_blank" rel="noopener">@${esc(CONFIG.instagram)}</a></li>
     <li><span>${esc(CONFIG.hours)}</span></li>`;
+
+  const ownerLine = $("#ownerLine");
+  if(ownerLine) ownerLine.textContent = "Owner · " + CONFIG.owner;
 
   /* map — a plain link out, so no API key is needed to ship */
   const map = document.querySelector(".map");
