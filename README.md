@@ -71,19 +71,39 @@ handoff tokens.
 
 Live at **https://pudgeismylife-hash.github.io/sthree-boutique/**
 
-Every photo slot is a labelled placeholder — hero at 1080x1350, category tiles 3:4,
-product cards 4:5 — awaiting the client's photography. Prices in `arrivals` are the
-handoff's demo figures and need confirming against real stock.
+Her real catalogue is live: **25 products** at her own prices, loaded from the
+Drive product sheets. Category tiles filter the grid. Jewellery is 17 of the 25.
+The hero image is still a placeholder.
 
-## Open items
+## What we still need from Priyanka
+
+**Blocking a proper launch**
+
+| Item | Why it matters |
+|---|---|
+| **Hero photo, 1080×1350 portrait** | The top of the page is still a grey placeholder. Her existing photos are 716×716 and cannot fill it. Biggest single visual gap. |
+| **Sizes** | Her product sheets have none. Clothing is hard to sell without it, even over WhatsApp. |
+| **Stock status** | No indication which of the 25 pieces are available. She already marks "Sold — stock ll be back soon" on Instagram. |
+| **A real customer review** | The quote on the site ("She picked three things I would never have tried…" — Anusha R., Kadri) is demo copy from the branding handoff, now public. Replace with a real message or remove. |
+
+**Data to confirm**
 
 | Item | Detail |
 |---|---|
-| **Second WhatsApp line** | Primary **76250 77531** is confirmed by the owner and used everywhere. The second line is not: the owner wrote `903608742` (nine digits), the app handoff says `9036087427`, the branding handoff says `9036087420`. The last digit is unknown, so the number is **left off the site** rather than guessed — `CONFIG.whatsappAlt` is empty and Visit shows one number. Fill it in once confirmed. |
-| **Photography** | Not supplied. Needed: hero 1080×1350 portrait, 5 category tiles at 3:4, 6 product shots at 4:5. Serve WebP at 1×/2×. |
-| **Mobile nav overlay** | Shipped as a cream full-screen overlay with the five nav links and the WhatsApp CTA. The handoff lists this as needing design sign-off. |
-| **Map** | Links out to a Google Maps search so nothing needs an API key. Swap for an embed once the place ID exists. |
-| **Fonts** | Loaded from Google Fonts. The handoff asks for self-hosting in production; the private preview copy cannot load them and falls back to system faces. |
+| **Second WhatsApp line** | She wrote `903608742` — nine digits. The app handoff says `9036087427`, the branding handoff `9036087420`. Left off the site until confirmed. |
+| **Earring names** | Her sheet called all six "Antitarnish earring". Named by motif — Starfish, Chrysanthemum, Petal drop, Monstera leaf, Octopus, Heart. Needs her approval. |
+| **Spelling corrections** | Lilen→Linen, desiner→designer, polyster→polyester, kafthan→kaftan, Plazo→Palazzo, Studed→Studded, sequence→sequin. |
+| **The two linen dresses** | Black and orange, both ₹2,093 — one product in two colours, or two products? |
+| **Imported or Indian** | The brand line is "Imported & Indian" but no per-item origin was supplied, so cards show the category instead. |
+| **Delivery cost and time** | "Worldwide" is stated with no charges or timelines. |
+
+**Missing stock**
+
+Press-on nails and bags are listed as categories with no photos and no products. Both show as "Coming soon".
+
+**Smaller**
+
+Google Maps place ID for the Visit embed · sign-off on the mobile menu overlay · higher-resolution photo originals.
 
 ## History
 
