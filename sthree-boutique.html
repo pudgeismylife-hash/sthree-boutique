@@ -215,6 +215,10 @@ h2{font-size:26px;margin-bottom:22px}
   font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--gold);
   cursor:pointer;padding:0;border-bottom:1px solid currentColor;
 }
+.empty{
+  grid-column:1/-1;text-align:center;padding:40px 0;color:var(--grey);font-size:14px;
+}
+.empty button{color:var(--gold);cursor:pointer;border-bottom:1px solid currentColor;font:inherit}
 
 .items{grid-template-columns:repeat(2,1fr)}
 @media (min-width:600px){ .items{grid-template-columns:repeat(3,1fr)} }
@@ -308,6 +312,86 @@ footer li a:hover{color:var(--gold)}
 .bar .call:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 @media (min-width:900px){ .bar{display:none} }
 
+/* ── header CTA + search ──────────────────────────────────── */
+.header-cta{display:none}
+@media (min-width:900px){ .header-cta{display:inline-block;padding:12px 22px;flex:none} }
+.searchbar{background:var(--cream);border-bottom:1px solid var(--hairline);padding:10px 0}
+.searchbar .wrap{display:flex;gap:10px;align-items:center}
+.searchbar input{
+  flex:1;min-width:0;background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:11px 2px;font-family:var(--ui);font-size:15px;color:var(--ink);
+}
+.searchbar input:focus{outline:0;border-bottom-color:var(--gold)}
+.searchbar button{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);cursor:pointer;padding:10px 4px;
+}
+
+/* ── product viewer ───────────────────────────────────────── */
+.viewer{
+  position:fixed;inset:0;z-index:80;background:var(--cream);
+  display:grid;grid-template-rows:auto 1fr auto;
+}
+.viewer[hidden]{display:none}
+.viewer-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid var(--hairline);
+}
+.viewer-count{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.viewer-icon{width:44px;height:44px;display:grid;place-items:center;font-size:17px;cursor:pointer;color:var(--ink)}
+.viewer-stage{
+  position:relative;overflow:hidden;touch-action:none;background:var(--cream-alt);
+  display:grid;place-items:center;cursor:zoom-in;
+}
+.viewer-stage.is-zoomed{cursor:grab}
+.viewer-stage.is-grabbing{cursor:grabbing}
+.viewer-stage img{
+  max-width:100%;max-height:100%;width:auto;height:auto;display:block;
+  transform-origin:center center;will-change:transform;user-select:none;-webkit-user-drag:none;
+}
+.viewer-nav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:46px;height:46px;display:grid;place-items:center;cursor:pointer;
+  font-size:26px;line-height:1;color:var(--ink);
+  background:rgba(250,246,240,.9);border:1px solid var(--hairline);
+}
+.viewer-nav:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.viewer-nav.prev{left:10px}
+.viewer-nav.next{right:10px}
+.viewer-bar{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--hairline);background:var(--cream);
+}
+.viewer-meta{flex:1;min-width:150px;display:flex;flex-direction:column;gap:2px}
+.viewer-meta .vname{font-family:var(--display);font-size:19px;line-height:1.2}
+.viewer-meta .vprice{font-family:var(--display);font-size:17px;color:var(--gold)}
+.viewer-zoom{display:flex;align-items:center;gap:4px;flex:none}
+.viewer-zoom button{
+  width:40px;height:40px;border:1px solid var(--rule);cursor:pointer;font-size:17px;
+  display:grid;place-items:center;
+}
+.viewer-zoom button:hover:not(:disabled){background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.viewer-zoom button:disabled{opacity:.35;cursor:default}
+.viewer-zoom span{
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;min-width:44px;text-align:center;
+  font-variant-numeric:tabular-nums;color:var(--grey);
+}
+.viewer-bar .btn{flex:none}
+.viewer-hint{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:96px;margin:0;z-index:2;
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--grey);background:rgba(250,246,240,.92);padding:6px 12px;
+  transition:opacity .3s ease;pointer-events:none;
+}
+.viewer-hint.gone{opacity:0}
+@media (max-width:599px){
+  .viewer-bar .btn{width:100%;text-align:center;order:3}
+  .viewer-nav{width:40px;height:40px;font-size:22px}
+}
+/* the photo inside a card is the thing you tap to open */
+.card .shot{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important}
   html{scroll-behavior:auto}
@@ -329,8 +413,16 @@ footer li a:hover{color:var(--gold)}
     <a href="#visit">Visit</a>
   </nav>
   <span class="spacer"></span>
-  <a class="icon" id="headerCta" aria-label="Order on WhatsApp">⌕</a>
+  <button class="icon" id="searchBtn" aria-label="Search the collection" aria-expanded="false" aria-controls="searchBar">⌕</button>
+  <a class="btn header-cta" id="headerCta">WhatsApp</a>
 </header>
+
+<div class="searchbar" id="searchBar" hidden>
+  <div class="wrap">
+    <input type="search" id="searchInput" placeholder="Search sarees, earrings, cordsets…" aria-label="Search the collection" autocomplete="off">
+    <button id="searchClear" aria-label="Clear search">Clear</button>
+  </div>
+</div>
 
 <div class="navpanel" id="navPanel" aria-hidden="true">
   <div class="top"><button class="icon" id="menuClose" aria-label="Close menu">✕</button></div>
@@ -433,6 +525,35 @@ footer li a:hover{color:var(--gold)}
   <a class="call" id="barCall" aria-label="Call the boutique">☏</a>
 </div>
 
+<!-- Product viewer: tap a photo to open it large and zoom in -->
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Product photo" hidden>
+  <div class="viewer-top">
+    <span class="viewer-count" id="vCount"></span>
+    <button class="viewer-icon" id="vClose" aria-label="Close">✕</button>
+  </div>
+
+  <button class="viewer-nav prev" id="vPrev" aria-label="Previous piece">‹</button>
+  <div class="viewer-stage" id="vStage">
+    <img id="vImg" alt="" draggable="false">
+  </div>
+  <button class="viewer-nav next" id="vNext" aria-label="Next piece">›</button>
+
+  <div class="viewer-bar">
+    <div class="viewer-meta">
+      <span class="origin" id="vLabel"></span>
+      <span class="vname" id="vName"></span>
+      <span class="vprice" id="vPrice"></span>
+    </div>
+    <div class="viewer-zoom">
+      <button id="vOut" aria-label="Zoom out">−</button>
+      <span id="vPct">100%</span>
+      <button id="vIn" aria-label="Zoom in">+</button>
+    </div>
+    <a class="btn" id="vWa" target="_blank" rel="noopener">Enquire on WhatsApp</a>
+  </div>
+  <p class="viewer-hint" id="vHint">Pinch or scroll to zoom · double-tap to fill</p>
+</div>
+
 <script>
 /* ═══════════════════════════════════════════════════════════════
    SETTINGS — the only block that normally needs editing.
@@ -473,37 +594,37 @@ const categories = [
 const P = "assets/products/";
 const arrivals = [
   // Ethnic
-  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, img:P+"sarees_1.jpg" },
-  { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, img:P+"sarees_2.jpg" },
-  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, img:P+"sarees_3.jpg" },
+  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, kw:"saree sari ethnic", img:P+"sarees_1.jpg" },
+  { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, kw:"saree sari ethnic", img:P+"sarees_2.jpg" },
+  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", img:P+"sarees_3.jpg" },
   // Western
-  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, img:P+"cloth_section_western_wear_1.jpg" },
-  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, img:P+"gowns_1.jpg" },
-  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, img:P+"gowns_2.jpg" },
+  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", img:P+"cloth_section_western_wear_1.jpg" },
+  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", img:P+"gowns_1.jpg" },
+  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, kw:"dress gown western frock", img:P+"gowns_2.jpg" },
   // Co-ord sets
-  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, img:P+"cloth_section_western_wear_2.jpg" },
-  { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  img:P+"cloth_section_western_wear_3.jpg" },
+  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", img:P+"cloth_section_western_wear_2.jpg" },
+  { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  kw:"cordset co-ord coord palazzo set", img:P+"cloth_section_western_wear_3.jpg" },
   // Jewellery — earrings
-  { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  img:P+"earring_1.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Chrysanthemum studs",                   price:110,  img:P+"earring_2.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Petal drop earrings",                   price:120,  img:P+"earring_3.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Monstera leaf studs",                   price:120,  img:P+"earring_4.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Octopus studs",                         price:120,  img:P+"earring_5.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart studs",                           price:120,  img:P+"earring_6.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  kw:"earrings earring studs stud jhumka", img:P+"earring_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Chrysanthemum studs",                   price:110,  kw:"earrings earring studs stud jhumka", img:P+"earring_2.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Petal drop earrings",                   price:120,  kw:"earrings earring studs stud jhumka", img:P+"earring_3.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Monstera leaf studs",                   price:120,  kw:"earrings earring studs stud jhumka", img:P+"earring_4.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Octopus studs",                         price:120,  kw:"earrings earring studs stud jhumka", img:P+"earring_5.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart studs",                           price:120,  kw:"earrings earring studs stud jhumka", img:P+"earring_6.jpg" },
   // Jewellery — neck
-  { cat:"jewellery", label:"Anti-tarnish", name:"Studded infinity heart necklace",       price:280,  img:P+"necklace_1.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace",                price:350,  img:P+"necklace_2.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace, beaded",        price:350,  img:P+"necklace_3.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Black clover set",                      price:499,  img:P+"black_clover_set_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Studded infinity heart necklace",       price:280,  kw:"necklace chain pendant", img:P+"necklace_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace",                price:350,  kw:"necklace chain pendant", img:P+"necklace_2.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace, beaded",        price:350,  kw:"necklace chain pendant", img:P+"necklace_3.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Black clover set",                      price:499,  kw:"necklace bracelet set clover", img:P+"black_clover_set_1.jpg" },
   // Jewellery — hand and arm
-  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, floral pearl",         price:130,  img:P+"ring_1.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, peacock",              price:120,  img:P+"ring_2.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  img:P+"bracelet_1.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Butterfly armcuff",                     price:280,  img:P+"armcuff_1.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Sculpted double floral open armcuff",   price:280,  img:P+"armcuff_2.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, floral pearl",         price:130,  kw:"ring rings", img:P+"ring_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, peacock",              price:120,  kw:"ring rings", img:P+"ring_2.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  kw:"bracelet bangle", img:P+"bracelet_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Butterfly armcuff",                     price:280,  kw:"armcuff arm cuff bajuband", img:P+"armcuff_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Sculpted double floral open armcuff",   price:280,  kw:"armcuff arm cuff bajuband", img:P+"armcuff_2.jpg" },
   // Jewellery — anklets
-  { cat:"jewellery", label:"Anti-tarnish", name:"Anklet",                                price:280,  img:P+"anklets_1.jpg" },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Anti-tarnish anklet",                   price:280,  img:P+"anklets_2.jpg" }
+  { cat:"jewellery", label:"Anti-tarnish", name:"Anklet",                                price:280,  kw:"anklet anklets payal", img:P+"anklets_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Anti-tarnish anklet",                   price:280,  kw:"anklet anklets payal", img:P+"anklets_2.jpg" }
 ];
 
 (function(){
@@ -557,37 +678,219 @@ const arrivals = [
 
   /* the collection */
   const grid = $("#items");
-  function render(filter){
-    const list = filter ? arrivals.filter(a=>a.cat===filter) : arrivals;
-    grid.innerHTML = list.map(i=>`
+  let view = arrivals.slice();          // what is currently on screen
+  const enquiry = i => wa("Hi Sthree Boutique, I'd like to know more about the " + i.name + " (" + rupee(i.price) + ").");
+
+  function render(){
+    let list = arrivals;
+    if(active) list = list.filter(a=>a.cat===active);
+    if(term){
+      /* Match on word starts, not raw substrings — otherwise "ring"
+         also returns every pair of earrings. */
+      const qs = term.toLowerCase().split(/\s+/).filter(Boolean);
+      list = list.filter(a=>{
+        const words = (a.name+" "+a.label+" "+(a.kw||"")).toLowerCase().split(/[^a-z0-9]+/);
+        return qs.every(q => words.some(w => w.startsWith(q)));
+      });
+    }
+    view = list;
+    grid.innerHTML = list.map((i,n)=>`
       <article class="card">
-        <div class="ph"><img src="${i.img}" alt="${esc(i.name)}" loading="lazy" decoding="async"></div>
+        <button class="shot" data-i="${n}" aria-label="View ${esc(i.name)} larger">
+          <span class="ph"><img src="${i.img}" alt="${esc(i.name)}" loading="lazy" decoding="async"></span>
+        </button>
         <span class="origin">${esc(i.label)}</span>
         <div class="name">${esc(i.name)}</div>
         <div class="price">${rupee(i.price)}</div>
-        <a class="enquire" href="${wa("Hi Sthree Boutique, I'd like to know more about the " + i.name + " (" + rupee(i.price) + ").")}" target="_blank" rel="noopener">Enquire</a>
-      </article>`).join("");
+        <a class="enquire" href="${enquiry(i)}" target="_blank" rel="noopener">Enquire</a>
+      </article>`).join("") ||
+      `<p class="empty">Nothing matches that. <button id="resetAll">Show everything</button></p>`;
     $("#count").textContent = list.length + (list.length === 1 ? " piece" : " pieces");
+    const reset = $("#resetAll");
+    if(reset) reset.addEventListener("click", ()=>{ active=null; term=""; $("#searchInput").value=""; syncCats(); render(); });
   }
-  let active = null;
-  render(null);
-  $("#cats").addEventListener("click", e=>{
-    const b = e.target.closest("[data-cat]");
-    if(!b || b.disabled) return;
-    active = (active === b.dataset.cat) ? null : b.dataset.cat;
+  let active = null, term = "";
+  function syncCats(){
     document.querySelectorAll("#cats .cat").forEach(x=>{
       const on = x.dataset.cat === active;
       x.classList.toggle("is-on", on);
       x.setAttribute("aria-pressed", String(on));
     });
-    render(active);
+  }
+  render();
+  $("#cats").addEventListener("click", e=>{
+    const b = e.target.closest("[data-cat]");
+    if(!b || b.disabled) return;
+    active = (active === b.dataset.cat) ? null : b.dataset.cat;
+    syncCats();
+    render();
     document.getElementById("arrivals").scrollIntoView({behavior:"smooth",block:"start"});
   });
   $("#clearFilter").addEventListener("click", ()=>{
-    active = null;
-    document.querySelectorAll("#cats .cat").forEach(x=>{ x.classList.remove("is-on"); x.setAttribute("aria-pressed","false"); });
-    render(null);
+    active = null; term = ""; $("#searchInput").value = "";
+    syncCats(); render();
   });
+
+  /* ── search ─────────────────────────────────────────────── */
+  const bar = $("#searchBar"), input = $("#searchInput"), sBtn = $("#searchBtn");
+  sBtn.addEventListener("click", ()=>{
+    const open = bar.hasAttribute("hidden");
+    if(open){ bar.removeAttribute("hidden"); sBtn.setAttribute("aria-expanded","true"); input.focus(); }
+    else { bar.setAttribute("hidden",""); sBtn.setAttribute("aria-expanded","false"); term=""; input.value=""; render(); }
+  });
+  input.addEventListener("input", ()=>{
+    term = input.value.trim();
+    render();
+    if(term) document.getElementById("arrivals").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+  $("#searchClear").addEventListener("click", ()=>{ term=""; input.value=""; render(); input.focus(); });
+
+  /* ── product viewer, with zoom ───────────────────────────── */
+  const V = {
+    el:$("#viewer"), stage:$("#vStage"), img:$("#vImg"),
+    i:0, scale:1, tx:0, ty:0, MIN:1, MAX:4, opener:null
+  };
+  $("#vWa").href = wa(shopMsg);   // never dead, even before a product is opened
+
+  function vApply(){
+    V.img.style.transform = `translate(${V.tx}px, ${V.ty}px) scale(${V.scale})`;
+    $("#vPct").textContent = Math.round(V.scale*100) + "%";
+    V.stage.classList.toggle("is-zoomed", V.scale > 1.01);
+    $("#vOut").disabled = V.scale <= V.MIN + .01;
+    $("#vIn").disabled  = V.scale >= V.MAX - .01;
+  }
+  /* Keep the photo from being dragged off the stage. clientWidth is the
+     laid-out size before the transform, so scale multiplies it. */
+  function vClamp(){
+    const s = V.stage.getBoundingClientRect();
+    const mx = Math.max(0, (V.img.clientWidth  * V.scale - s.width)  / 2);
+    const my = Math.max(0, (V.img.clientHeight * V.scale - s.height) / 2);
+    V.tx = Math.min(mx, Math.max(-mx, V.tx));
+    V.ty = Math.min(my, Math.max(-my, V.ty));
+  }
+  /* zoom about a screen point, so what is under the finger stays put */
+  function vZoomAt(cx, cy, next){
+    next = Math.min(V.MAX, Math.max(V.MIN, next));
+    const s = V.stage.getBoundingClientRect();
+    const ox = cx - s.left - s.width/2, oy = cy - s.top - s.height/2;
+    const k = next / V.scale;
+    V.tx = ox - k*(ox - V.tx);
+    V.ty = oy - k*(oy - V.ty);
+    V.scale = next;
+    if(V.scale <= V.MIN + .01){ V.tx = 0; V.ty = 0; }
+    vClamp(); vApply();
+  }
+  function vReset(){ V.scale=1; V.tx=0; V.ty=0; vApply(); }
+
+  function vShow(n){
+    if(!view.length) return;
+    V.i = (n + view.length) % view.length;
+    const p = view[V.i];
+    V.img.src = p.img; V.img.alt = p.name;
+    $("#vLabel").textContent = p.label;
+    $("#vName").textContent  = p.name;
+    $("#vPrice").textContent = rupee(p.price);
+    $("#vCount").textContent = (V.i+1) + " of " + view.length;
+    const link = $("#vWa"); link.href = enquiry(p);
+    const many = view.length > 1;
+    $("#vPrev").hidden = !many; $("#vNext").hidden = !many;
+    vReset();
+  }
+  function vOpen(n, opener){
+    V.opener = opener || null;
+    V.el.removeAttribute("hidden");
+    document.body.style.overflow = "hidden";
+    vShow(n);
+    $("#vHint").classList.remove("gone");
+    setTimeout(()=> $("#vHint").classList.add("gone"), 2600);
+    $("#vClose").focus({preventScroll:true});
+  }
+  function vClose(){
+    V.el.setAttribute("hidden","");
+    document.body.style.overflow = "";
+    if(V.opener && document.contains(V.opener)) V.opener.focus({preventScroll:true});
+  }
+
+  grid.addEventListener("click", e=>{
+    const b = e.target.closest(".shot");
+    if(!b) return;
+    vOpen(+b.dataset.i, b);
+  });
+  $("#vClose").addEventListener("click", vClose);
+  $("#vPrev").addEventListener("click", ()=> vShow(V.i-1));
+  $("#vNext").addEventListener("click", ()=> vShow(V.i+1));
+  $("#vIn").addEventListener("click",  ()=>{ const s=V.stage.getBoundingClientRect(); vZoomAt(s.left+s.width/2, s.top+s.height/2, V.scale*1.5); });
+  $("#vOut").addEventListener("click", ()=>{ const s=V.stage.getBoundingClientRect(); vZoomAt(s.left+s.width/2, s.top+s.height/2, V.scale/1.5); });
+
+  addEventListener("keydown", e=>{
+    if(V.el.hasAttribute("hidden")) return;
+    if(e.key === "Escape"){ vClose(); }
+    else if(e.key === "ArrowLeft"){ vShow(V.i-1); }
+    else if(e.key === "ArrowRight"){ vShow(V.i+1); }
+    else if(e.key === "+" || e.key === "="){ const s=V.stage.getBoundingClientRect(); vZoomAt(s.left+s.width/2,s.top+s.height/2,V.scale*1.5); }
+    else if(e.key === "-"){ const s=V.stage.getBoundingClientRect(); vZoomAt(s.left+s.width/2,s.top+s.height/2,V.scale/1.5); }
+    else if(e.key === "0"){ vReset(); }
+  });
+
+  /* wheel / trackpad */
+  V.stage.addEventListener("wheel", e=>{
+    e.preventDefault();
+    vZoomAt(e.clientX, e.clientY, V.scale * (e.deltaY < 0 ? 1.12 : 1/1.12));
+  }, {passive:false});
+
+  /* pointer: drag to pan, two fingers to pinch, double tap to fill */
+  const pts = new Map();
+  let startDist = 0, startScale = 1, panning = false, lastX = 0, lastY = 0, lastTap = 0, moved = 0;
+
+  V.stage.addEventListener("pointerdown", e=>{
+    V.stage.setPointerCapture(e.pointerId);
+    pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+    moved = 0;
+    if(pts.size === 2){
+      const [a,b] = [...pts.values()];
+      startDist = Math.hypot(a.x-b.x, a.y-b.y) || 1;
+      startScale = V.scale;
+      panning = false;
+    } else {
+      panning = true; lastX = e.clientX; lastY = e.clientY;
+      V.stage.classList.add("is-grabbing");
+    }
+  });
+
+  V.stage.addEventListener("pointermove", e=>{
+    if(!pts.has(e.pointerId)) return;
+    pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+    if(pts.size === 2){
+      const [a,b] = [...pts.values()];
+      const d = Math.hypot(a.x-b.x, a.y-b.y) || 1;
+      vZoomAt((a.x+b.x)/2, (a.y+b.y)/2, startScale * (d/startDist));
+    } else if(panning && V.scale > 1.01){
+      const dx = e.clientX-lastX, dy = e.clientY-lastY;
+      moved += Math.abs(dx)+Math.abs(dy);
+      V.tx += dx; V.ty += dy; lastX = e.clientX; lastY = e.clientY;
+      vClamp(); vApply();
+    }
+  });
+
+  function endPointer(e){
+    pts.delete(e.pointerId);
+    if(pts.size < 2) startDist = 0;
+    if(pts.size === 0){
+      panning = false;
+      V.stage.classList.remove("is-grabbing");
+      // double tap / double click toggles fill
+      const now = Date.now();
+      if(moved < 8){
+        if(now - lastTap < 300){
+          if(V.scale > 1.01) vReset(); else vZoomAt(e.clientX, e.clientY, 2.5);
+          lastTap = 0;
+        } else lastTap = now;
+      }
+    }
+  }
+  V.stage.addEventListener("pointerup", endPointer);
+  V.stage.addEventListener("pointercancel", endPointer);
+  addEventListener("resize", ()=>{ if(!V.el.hasAttribute("hidden")){ vClamp(); vApply(); } });
 
   /* visit details */
   const waValue = `<a href="${wa(shopMsg)}" target="_blank" rel="noopener">${pretty(CONFIG.whatsapp)}</a>`
