@@ -43,6 +43,21 @@ function setLogo(s, value) {
 }
 const setSiteUrl = (s, url) => s.split("__SITE_URL__").join(url);
 
+/* Product photos are linked relatively, which is right for the hosted site
+   but broken for the artifact (cannot fetch external files) and for the
+   standalone copy (travels on its own). Inline them for those two. */
+function inlineProducts(s) {
+  const cache = new Map();
+  return s.replace(/assets\/products\/[A-Za-z0-9._-]+\.jpg/g, ref => {
+    if (!cache.has(ref)) {
+      const p = DIR + ref;
+      if (!fs.existsSync(p)) { console.error("FAIL missing product image: " + ref); process.exit(1); }
+      cache.set(ref, "data:image/jpeg;base64," + fs.readFileSync(p).toString("base64"));
+    }
+    return cache.get(ref);
+  });
+}
+
 /* ── strip the document wrapper for the artifact host ───────────── */
 function unwrap(s) {
   const out = s
@@ -73,16 +88,16 @@ function check(s, label, needles) {
 /* ── 1. GitHub Pages ────────────────────────────────────────────── */
 let pages = setLogo(src, logoName);
 pages = setSiteUrl(pages, SITE_URL || "__SITE_URL__");
-check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og:image"]);
+check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og:image", "assets/products/"]);
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
 
 /* ── 2. Claude artifact ─────────────────────────────────────────── */
-let artifact = unwrap(setSiteUrl(setLogo(src, logoDataUri), SITE_URL));
+let artifact = unwrap(inlineProducts(setSiteUrl(setLogo(src, logoDataUri), SITE_URL)));
 check(artifact, "hosted", ["<title>", "<style>", 'id="items"', "917625077531", "Shop on WhatsApp"]);
 fs.writeFileSync(DIR + "sthree-boutique-hosted.html", artifact, "utf8");
 
 /* ── 3. Standalone to send as a file ────────────────────────────── */
-const share = setSiteUrl(setLogo(src, logoDataUri), SITE_URL);
+const share = inlineProducts(setSiteUrl(setLogo(src, logoDataUri), SITE_URL));
 fs.writeFileSync(DIR + "sthree-boutique-share.html", share, "utf8");
 
 const kb = n => Math.round(n / 1024) + " KB";

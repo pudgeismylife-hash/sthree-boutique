@@ -192,8 +192,27 @@ h2{font-size:26px;margin-bottom:22px}
   display:block;font-family:var(--display);font-size:17px;margin-top:9px;line-height:1.3;
 }
 .cat small{display:block;font-size:11px;color:var(--grey);letter-spacing:.02em}
-.cat{transition:opacity .15s ease}
-.cat:hover{opacity:.78}
+.cat{
+  transition:opacity .15s ease;padding:0;border:0;background:none;
+  text-align:left;cursor:pointer;color:inherit;display:block;width:100%;
+}
+.cat:hover:not(:disabled){opacity:.78}
+.cat:disabled{cursor:default;opacity:.55}
+.cat.is-on .ph{outline:1px solid var(--gold);outline-offset:-1px}
+.cat.is-on .name{color:var(--gold)}
+.ph img{width:100%;height:100%;object-fit:cover;position:relative}
+
+/* section head with the live count and a reset */
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.sec-head h2{margin-bottom:14px}
+.count{
+  margin:0 0 14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--grey);
+}
+.count button{
+  font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--gold);
+  cursor:pointer;padding:0;border-bottom:1px solid currentColor;
+}
 
 .items{grid-template-columns:repeat(2,1fr)}
 @media (min-width:600px){ .items{grid-template-columns:repeat(3,1fr)} }
@@ -341,7 +360,10 @@ footer li a:hover{color:var(--gold)}
 
 <section class="alt" id="arrivals">
   <div class="wrap">
-    <h2>New arrivals</h2>
+    <div class="sec-head">
+      <h2>The collection</h2>
+      <p class="count"><span id="count"></span> · <button id="clearFilter">Show all</button></p>
+    </div>
     <div class="grid items" id="items"></div>
   </div>
 </section>
@@ -427,22 +449,53 @@ const CONFIG = {
 };
 
 /* Content — update these lists and the page follows. */
+/* Categories. `key` links a tile to the products below it. */
 const categories = [
-  { name:"Western wear",   note:"Dresses, tops, denim" },
-  { name:"Ethnic wear",    note:"Kurtas, sarees, suits" },
-  { name:"Co-ord sets",    note:"Matched two-pieces" },
-  { name:"Jewellery",      note:"Anti-tarnish, everyday" },
-  { name:"Press-on nails", note:"Salon look, at home" },
-  { name:"Bags",           note:"Imported & Indian" }
+  { key:"western",   name:"Western wear",   note:"Dresses, kaftans",        img:"assets/products/cat-western.jpg" },
+  { key:"ethnic",    name:"Ethnic wear",    note:"Sarees",                  img:"assets/products/cat-ethnic.jpg" },
+  { key:"coord",     name:"Co-ord sets",    note:"Matched two-pieces",      img:"assets/products/cat-coord.jpg" },
+  { key:"jewellery", name:"Jewellery",      note:"Anti-tarnish, everyday",  img:"assets/products/cat-jewellery.jpg" },
+  { key:"nails",     name:"Press-on nails", note:"Salon look, at home",     soon:true },
+  { key:"bags",      name:"Bags",           note:"Imported & Indian",       soon:true }
 ];
 
+/* The real catalogue, from the boutique's own product sheets.
+   Prices are exactly as supplied. Spelling of product names has been
+   tidied (Linen, designer, polyester, palazzo, sequin, studded). */
+const P = "assets/products/";
 const arrivals = [
-  { name:"Linen-blend co-ord set",      origin:"Imported",      price:"₹3,200" },
-  { name:"Hand-block cotton kurta",     origin:"Indian",        price:"₹1,850" },
-  { name:"Satin slip dress",            origin:"Imported",      price:"₹2,700" },
-  { name:"Anti-tarnish layered chain",  origin:"Anti-tarnish",  price:"₹899"   },
-  { name:"Structured tote",             origin:"Imported",      price:"₹2,450" },
-  { name:"Organza saree, pearl edge",   origin:"Indian",        price:"₹4,100" }
+  // Ethnic
+  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, img:P+"sarees_1.jpg" },
+  { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, img:P+"sarees_2.jpg" },
+  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, img:P+"sarees_3.jpg" },
+  // Western
+  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, img:P+"cloth_section_western_wear_1.jpg" },
+  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, img:P+"gowns_1.jpg" },
+  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, img:P+"gowns_2.jpg" },
+  // Co-ord sets
+  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, img:P+"cloth_section_western_wear_2.jpg" },
+  { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  img:P+"cloth_section_western_wear_3.jpg" },
+  // Jewellery — earrings
+  { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  img:P+"earring_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Chrysanthemum studs",                   price:110,  img:P+"earring_2.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Petal drop earrings",                   price:120,  img:P+"earring_3.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Monstera leaf studs",                   price:120,  img:P+"earring_4.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Octopus studs",                         price:120,  img:P+"earring_5.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart studs",                           price:120,  img:P+"earring_6.jpg" },
+  // Jewellery — neck
+  { cat:"jewellery", label:"Anti-tarnish", name:"Studded infinity heart necklace",       price:280,  img:P+"necklace_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace",                price:350,  img:P+"necklace_2.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace, beaded",        price:350,  img:P+"necklace_3.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Black clover set",                      price:499,  img:P+"black_clover_set_1.jpg" },
+  // Jewellery — hand and arm
+  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, floral pearl",         price:130,  img:P+"ring_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, peacock",              price:120,  img:P+"ring_2.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  img:P+"bracelet_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Butterfly armcuff",                     price:280,  img:P+"armcuff_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Sculpted double floral open armcuff",   price:280,  img:P+"armcuff_2.jpg" },
+  // Jewellery — anklets
+  { cat:"jewellery", label:"Anti-tarnish", name:"Anklet",                                price:280,  img:P+"anklets_1.jpg" },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Anti-tarnish anklet",                   price:280,  img:P+"anklets_2.jpg" }
 ];
 
 (function(){
@@ -480,23 +533,53 @@ const arrivals = [
   });
   $("#barCall").href = "tel:" + CONFIG.tel;
 
-  /* categories */
-  $("#cats").innerHTML = categories.map(c=>`
-    <a class="cat" href="${wa("Hi Sthree Boutique, I'd like to see your " + c.name + ".")}" target="_blank" rel="noopener">
-      <div class="ph"><span>${esc(c.name)}<br>3:4 photo</span></div>
+  /* categories — tiles filter the collection below */
+  const rupee = n => "₹" + n.toLocaleString("en-IN");
+  $("#cats").innerHTML = categories.map(c=>{
+    const count = arrivals.filter(a=>a.cat===c.key).length;
+    const art = c.img
+      ? `<div class="ph"><img src="${c.img}" alt="${esc(c.name)}" loading="lazy" decoding="async"></div>`
+      : `<div class="ph"><span>Coming soon</span></div>`;
+    return `<button class="cat" data-cat="${c.key}"${c.soon?' disabled':''} aria-pressed="false">
+      ${art}
       <span class="name">${esc(c.name)}</span>
-      <small>${esc(c.note)}</small>
-    </a>`).join("");
+      <small>${c.soon ? "Coming soon" : esc(c.note) + " · " + count}</small>
+    </button>`;
+  }).join("");
 
-  /* new arrivals */
-  $("#items").innerHTML = arrivals.map(i=>`
-    <article class="card">
-      <div class="ph"><span>4:5 photo</span></div>
-      <span class="origin">${esc(i.origin)}</span>
-      <div class="name">${esc(i.name)}</div>
-      <div class="price">${esc(i.price)}</div>
-      <a class="enquire" href="${wa("Hi Sthree Boutique, I'd like to know more about the " + i.name + ".")}" target="_blank" rel="noopener">Enquire</a>
-    </article>`).join("");
+  /* the collection */
+  const grid = $("#items");
+  function render(filter){
+    const list = filter ? arrivals.filter(a=>a.cat===filter) : arrivals;
+    grid.innerHTML = list.map(i=>`
+      <article class="card">
+        <div class="ph"><img src="${i.img}" alt="${esc(i.name)}" loading="lazy" decoding="async"></div>
+        <span class="origin">${esc(i.label)}</span>
+        <div class="name">${esc(i.name)}</div>
+        <div class="price">${rupee(i.price)}</div>
+        <a class="enquire" href="${wa("Hi Sthree Boutique, I'd like to know more about the " + i.name + " (" + rupee(i.price) + ").")}" target="_blank" rel="noopener">Enquire</a>
+      </article>`).join("");
+    $("#count").textContent = list.length + (list.length === 1 ? " piece" : " pieces");
+  }
+  let active = null;
+  render(null);
+  $("#cats").addEventListener("click", e=>{
+    const b = e.target.closest("[data-cat]");
+    if(!b || b.disabled) return;
+    active = (active === b.dataset.cat) ? null : b.dataset.cat;
+    document.querySelectorAll("#cats .cat").forEach(x=>{
+      const on = x.dataset.cat === active;
+      x.classList.toggle("is-on", on);
+      x.setAttribute("aria-pressed", String(on));
+    });
+    render(active);
+    document.getElementById("arrivals").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+  $("#clearFilter").addEventListener("click", ()=>{
+    active = null;
+    document.querySelectorAll("#cats .cat").forEach(x=>{ x.classList.remove("is-on"); x.setAttribute("aria-pressed","false"); });
+    render(null);
+  });
 
   /* visit details */
   const waValue = `<a href="${wa(shopMsg)}" target="_blank" rel="noopener">${pretty(CONFIG.whatsapp)}</a>`
