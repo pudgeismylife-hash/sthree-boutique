@@ -43,12 +43,12 @@ function setLogo(s, value) {
 }
 const setSiteUrl = (s, url) => s.split("__SITE_URL__").join(url);
 
-/* Product photos are linked relatively, which is right for the hosted site
+/* Product and hero photos are linked relatively, which is right for the hosted site
    but broken for the artifact (cannot fetch external files) and for the
    standalone copy (travels on its own). Inline them for those two. */
 function inlineProducts(s) {
   const cache = new Map();
-  return s.replace(/assets\/products\/[A-Za-z0-9._-]+\.jpg/g, ref => {
+  return s.replace(/assets\/(?:products\/|hero-)[A-Za-z0-9._-]+\.jpg/g, ref => {
     if (!cache.has(ref)) {
       const p = DIR + ref;
       if (!fs.existsSync(p)) { console.error("FAIL missing product image: " + ref); process.exit(1); }

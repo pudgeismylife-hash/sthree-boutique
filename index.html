@@ -134,7 +134,9 @@ header nav{display:none}
 .navpanel .btn{margin-top:18px;width:100%;text-align:center}
 
 /* ── hero ─────────────────────────────────────────────────── */
-.hero{height:300px;position:relative;overflow:hidden}
+.hero{height:300px;position:relative;overflow:hidden;background:var(--cream-alt)}
+.hero picture,.hero img{display:block;width:100%;height:100%}
+.hero img{object-fit:cover;object-position:center 32%}
 @media (min-width:900px){ .hero{height:520px} }
 
 /* ── image placeholders ───────────────────────────────────────
@@ -342,7 +344,13 @@ footer li a:hover{color:var(--gold)}
   <a class="btn" id="navCta">Shop on WhatsApp</a>
 </div>
 
-<div class="hero ph tone2"><span>hero · 1080 × 1350px portrait</span></div>
+<div class="hero">
+  <picture>
+    <source media="(min-width:900px)" srcset="assets/hero-wide.jpg">
+    <source media="(min-width:600px)" srcset="assets/hero-mid.jpg">
+    <img src="assets/hero-narrow.jpg" alt="Sarees, dresses and anti-tarnish jewellery from Sthree Boutique" fetchpriority="high" decoding="async">
+  </picture>
+</div>
 
 <div class="wrap intro">
   <p class="eyebrow">Quality. Style. Personality.</p>
