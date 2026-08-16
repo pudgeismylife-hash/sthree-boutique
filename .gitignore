@@ -8,3 +8,6 @@ desktop.ini
 
 # intermediate files from processing the Drive catalogue
 _drive/
+
+# unrelated project living in this folder
+griha-pravesh/
