@@ -83,8 +83,8 @@ The hero image is still a placeholder.
 |---|---|
 | **Hero photo, 1080×1350 portrait** | The top of the page is still a grey placeholder. Her existing photos are 716×716 and cannot fill it. Biggest single visual gap. |
 | **Sizes** | Her product sheets have none. Clothing is hard to sell without it, even over WhatsApp. |
-| **Stock status** | No indication which of the 25 pieces are available. She already marks "Sold — stock ll be back soon" on Instagram. |
-| **A real customer review** | The quote on the site ("She picked three things I would never have tried…" — Anusha R., Kadri) is demo copy from the branding handoff, now public. Replace with a real message or remove. |
+| **Stock status** | No indication which of the 25 pieces are available. She already marks "Sold — stock ll be back soon" on Instagram. Product structured data omits availability until this exists. |
+| **A real customer review** | The invented testimonial has been removed and the band is hidden. It reappears the moment a genuine review is added to the `reviews` list. Ask a happy customer for one line. |
 
 **Data to confirm**
 
@@ -101,9 +101,16 @@ The hero image is still a placeholder.
 
 Press-on nails and bags are listed as categories with no photos and no products. Both show as "Coming soon".
 
+| **Fabric, fit, wash care** | Per piece. The product view has rows for these and shows them only when supplied; right now every one is empty. |
+| **More photos** | One per piece today. Two or three angles each would make the zoom worth having. |
+
 **Smaller**
 
 Google Maps place ID for the Visit embed · sign-off on the mobile menu overlay · higher-resolution photo originals.
+
+**Needs a decision, not data**
+
+No analytics yet, so nobody can tell whether the site produces enquiries. Adding it needs an account (Google Analytics, or a lighter privacy-friendly service) and its ID — a one-line change once chosen.
 
 ## History
 
