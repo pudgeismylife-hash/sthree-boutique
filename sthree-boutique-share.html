@@ -765,6 +765,10 @@ const arrivals = [
   });
   $("#barCall").href = "tel:" + CONFIG.tel;
 
+  /* Cards and tiles show a small copy; the viewer loads the full-size photo.
+     Declared before first use — the category tiles below need it. */
+  const thumb = src => src.replace("assets/products/", "assets/products/thumb/");
+
   /* categories — tiles filter the collection below */
   const rupee = n => "₹" + n.toLocaleString("en-IN");
   $("#cats").innerHTML = categories.map(c=>{
@@ -794,10 +798,6 @@ const arrivals = [
     seq[p.cat] = (seq[p.cat] || 0) + 1;
     p.code = "SB-" + (CAT_CODE[p.cat] || "GEN") + "-" + String(seq[p.cat]).padStart(2,"0");
   });
-
-  /* Cards show a small copy; the viewer loads the full-size photo. The cards
-     were pulling 720px images to draw them at ~170px. */
-  const thumb = src => src.replace("assets/products/", "assets/products/thumb/");
 
   const siteBase = (CONFIG.site && CONFIG.site.indexOf("__") === -1)
     ? CONFIG.site.replace(/\/$/,"")
