@@ -63,7 +63,12 @@
 @media (min-width:900px){ :root{ --gut:32px } }
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{
+  -webkit-text-size-adjust:100%;scroll-behavior:smooth;
+  /* reserve the scrollbar so opening the viewer or the menu, which lock
+     scrolling, does not shift the page sideways */
+  scrollbar-gutter:stable;
+}
 body{
   margin:0;background:var(--cream);color:var(--ink);
   font-family:var(--ui);font-weight:300;font-size:14px;line-height:1.7;
