@@ -335,8 +335,58 @@ footer li a:hover{color:var(--gold)}
 /* ── product viewer ───────────────────────────────────────── */
 .viewer{
   position:fixed;inset:0;z-index:80;background:var(--cream);
-  display:grid;grid-template-rows:auto 1fr auto;
+  display:grid;grid-template-rows:auto 1fr;
 }
+/* Stage takes its fixed height, the panel takes whatever is left and
+   scrolls. The other way round lets the panel squeeze the stage's row
+   while the stage keeps its height, and the two overlap. */
+.viewer-body{display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0;overflow:hidden}
+.viewer-stagewrap{position:relative;min-height:0}
+@media (min-width:900px){
+  .viewer-body{grid-template-rows:none;grid-template-columns:minmax(0,1.35fr) minmax(340px,.65fr)}
+  .viewer-panel{border-left:1px solid var(--hairline);border-top:0!important}
+}
+
+/* details panel — the same anatomy a shop product page uses */
+.viewer-panel{
+  overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--cream);
+  padding:16px var(--gut) calc(20px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--hairline);display:flex;flex-direction:column;gap:6px;
+}
+.viewer-panel .vname{font-family:var(--display);font-size:23px;line-height:1.2;font-weight:300;margin:0}
+.viewer-panel .vprice{font-family:var(--display);font-size:21px;color:var(--gold)}
+.viewer-panel .vcode{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--grey)}
+.vsizes{margin-top:14px}
+.vsizes-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);
+}
+.vsizes-head button{color:var(--gold);cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;border-bottom:1px solid currentColor}
+.vsizes-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.vsizes-row button{
+  min-width:44px;min-height:44px;padding:0 12px;border:1px solid var(--rule);
+  cursor:pointer;font-size:13px;
+}
+.vsizes-row button.on{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.vactions{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.vactions .btn{width:100%;text-align:center}
+.vactions-row{display:flex;gap:8px}
+.vghost{
+  flex:1;text-align:center;padding:13px;border:1px solid var(--rule);cursor:pointer;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+}
+.vghost:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.vspec{margin:18px 0 0}
+.vspec .r{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--hairline);font-size:13px}
+.vspec .r:first-child{border-top:1px solid var(--hairline)}
+.vspec dt{
+  flex:0 0 96px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--grey);padding-top:3px;
+}
+.vspec dd{margin:0;flex:1}
+.vnotes{margin-top:14px;font-size:12px;line-height:1.6;color:var(--ink-soft)}
+.vnotes p{margin:0 0 6px}
+.vnotes .missing{color:var(--grey);font-style:italic}
 .viewer[hidden]{display:none}
 .viewer-top{
   display:flex;align-items:center;justify-content:space-between;
@@ -363,18 +413,11 @@ footer li a:hover{color:var(--gold)}
 .viewer-nav:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .viewer-nav.prev{left:10px}
 .viewer-nav.next{right:10px}
-.viewer-bar{
-  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-  padding:12px 14px calc(12px + env(safe-area-inset-bottom));
-  border-top:1px solid var(--hairline);background:var(--cream);
+.viewer-zoom{
+  position:absolute;right:10px;bottom:10px;z-index:3;
+  display:flex;align-items:center;gap:4px;
+  background:rgba(250,246,240,.94);border:1px solid var(--hairline);padding:3px;
 }
-.viewer-meta{flex:1;min-width:150px;display:flex;flex-direction:column;gap:2px}
-.viewer-meta .vname{font-family:var(--display);font-size:19px;line-height:1.2}
-.viewer-meta .vprice{font-family:var(--display);font-size:17px;color:var(--gold)}
-.viewer-meta .vcode{
-  font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--grey);margin-top:2px;
-}
-.viewer-zoom{display:flex;align-items:center;gap:4px;flex:none}
 .viewer-zoom button{
   width:40px;height:40px;border:1px solid var(--rule);cursor:pointer;font-size:17px;
   display:grid;place-items:center;
@@ -387,14 +430,15 @@ footer li a:hover{color:var(--gold)}
 }
 .viewer-bar .btn{flex:none}
 .viewer-hint{
-  position:absolute;left:50%;transform:translateX(-50%);bottom:96px;margin:0;z-index:2;
+  position:absolute;left:50%;transform:translateX(-50%);bottom:12px;margin:0;z-index:2;
   font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--grey);background:rgba(250,246,240,.92);padding:6px 12px;
   transition:opacity .3s ease;pointer-events:none;
 }
 .viewer-hint.gone{opacity:0}
-@media (max-width:599px){
-  .viewer-bar .btn{width:100%;text-align:center;order:3}
+@media (max-width:899px){
+  .viewer-stagewrap{height:46svh;min-height:220px}
+  .viewer-panel{max-height:none}
   .viewer-nav{width:40px;height:40px;font-size:22px}
 }
 /* the photo inside a card is the thing you tap to open */
@@ -540,27 +584,48 @@ footer li a:hover{color:var(--gold)}
     <button class="viewer-icon" id="vClose" aria-label="Close">✕</button>
   </div>
 
-  <button class="viewer-nav prev" id="vPrev" aria-label="Previous piece">‹</button>
-  <div class="viewer-stage" id="vStage">
-    <img id="vImg" alt="" draggable="false">
-  </div>
-  <button class="viewer-nav next" id="vNext" aria-label="Next piece">›</button>
+  <div class="viewer-body">
+    <div class="viewer-stagewrap">
+      <button class="viewer-nav prev" id="vPrev" aria-label="Previous piece">‹</button>
+      <div class="viewer-stage" id="vStage">
+        <img id="vImg" alt="" draggable="false">
+      </div>
+      <button class="viewer-nav next" id="vNext" aria-label="Next piece">›</button>
+      <div class="viewer-zoom">
+        <button id="vOut" aria-label="Zoom out">−</button>
+        <span id="vPct">100%</span>
+        <button id="vIn" aria-label="Zoom in">+</button>
+      </div>
+      <p class="viewer-hint" id="vHint">Pinch or scroll to zoom · double-tap to fill</p>
+    </div>
 
-  <div class="viewer-bar">
-    <div class="viewer-meta">
+    <div class="viewer-panel">
       <span class="origin" id="vLabel"></span>
-      <span class="vname" id="vName"></span>
-      <span class="vprice" id="vPrice"></span>
-      <span class="vcode" id="vCode"></span>
+      <h2 class="vname" id="vName"></h2>
+      <div class="vprice" id="vPrice"></div>
+      <div class="vcode" id="vCode"></div>
+
+      <div class="vsizes" id="vSizes" hidden>
+        <div class="vsizes-head">
+          <span>Size</span>
+          <button id="vSizeGuide" type="button" hidden>Size guide</button>
+        </div>
+        <div class="vsizes-row" id="vSizeRow"></div>
+      </div>
+
+      <div class="vactions">
+        <a class="btn" id="vWa" target="_blank" rel="noopener">Enquire on WhatsApp</a>
+        <div class="vactions-row">
+          <a class="vghost" id="vAsk" target="_blank" rel="noopener">Ask a question</a>
+          <button class="vghost" id="vShare" type="button">Share</button>
+        </div>
+      </div>
+
+      <dl class="vspec" id="vSpec"></dl>
+
+      <div class="vnotes" id="vNotes"></div>
     </div>
-    <div class="viewer-zoom">
-      <button id="vOut" aria-label="Zoom out">−</button>
-      <span id="vPct">100%</span>
-      <button id="vIn" aria-label="Zoom in">+</button>
-    </div>
-    <a class="btn" id="vWa" target="_blank" rel="noopener">Enquire on WhatsApp</a>
   </div>
-  <p class="viewer-hint" id="vHint">Pinch or scroll to zoom · double-tap to fill</p>
 </div>
 
 <script>
@@ -579,6 +644,17 @@ const CONFIG = {
   address  : "Bikarnakatte, Mangalore, Karnataka",
   hours    : "9:00 am – 8:00 pm, all days",
   delivery : "All over India and worldwide",
+
+  // Sizes per category. Clothing sizes are NOT yet confirmed by the owner —
+  // leave these empty until she supplies them rather than guessing, since a
+  // wrong size list causes wrong orders. Jewellery is genuinely free size.
+  defaultSizes: {
+    ethnic:    [],
+    western:   [],
+    coord:     [],
+    jewellery: ["Free size"]
+  },
+
   founded  : "2026",
   mapsQuery: "Sthree Boutique, Bikarnakatte, Mangalore, Karnataka",
   site     : "__SITE_URL__",              // filled by the build; used for product links
@@ -707,10 +783,11 @@ const arrivals = [
     : (location.origin + location.pathname).replace(/\/index\.html$/,"").replace(/\/$/,"");
   const productUrl = p => siteBase + "/?p=" + encodeURIComponent(p.key);
 
-  const enquiry = p => wa(
+  const enquiry = (p, size) => wa(
     "Hi Sthree Boutique, I'd like to enquire about:\n\n" +
     "*" + p.name + "*\n" +
-    rupee(p.price) + "  ·  " + p.code + "\n\n" +
+    rupee(p.price) + "  ·  " + p.code +
+    (size ? "\nSize: " + size : "") + "\n\n" +
     productUrl(p)
   );
 
@@ -825,7 +902,42 @@ const arrivals = [
     $("#vPrice").textContent = rupee(p.price);
     $("#vCount").textContent = (V.i+1) + " of " + view.length;
     $("#vCode").textContent = p.code;
-    const link = $("#vWa"); link.href = enquiry(p);
+
+    /* Sizes — only shown for pieces that actually have them. */
+    let chosen = "";
+    const sizes = p.sizes || CONFIG.defaultSizes[p.cat] || null;
+    const sizeBox = $("#vSizes"), row = $("#vSizeRow");
+    if(sizes && sizes.length){
+      sizeBox.removeAttribute("hidden");
+      row.innerHTML = sizes.map((s,n)=>`<button type="button"${n===0?' class="on"':''}>${esc(s)}</button>`).join("");
+      chosen = sizes[0];
+      row.querySelectorAll("button").forEach(b=> b.addEventListener("click", ()=>{
+        row.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+        b.classList.add("on"); chosen = b.textContent;
+        $("#vWa").href = enquiry(p, chosen);
+      }));
+    } else {
+      sizeBox.setAttribute("hidden","");
+      row.innerHTML = "";
+    }
+
+    /* Spec rows — each appears only when the boutique has supplied it. */
+    const spec = [
+      ["Category", ({ethnic:"Ethnic wear",western:"Western wear",coord:"Co-ord set",jewellery:"Jewellery"})[p.cat]],
+      ["Fabric",   p.fabric],
+      ["Fit",      p.fit],
+      ["Care",     p.care],
+      ["Origin",   p.origin],
+      ["Delivery", CONFIG.delivery]
+    ].filter(r=>r[1]);
+    $("#vSpec").innerHTML = spec.map(([k,v])=>`<div class="r"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+
+    const missing = ["fabric","fit","care"].filter(f=>!p[f]).length;
+    $("#vNotes").innerHTML = p.desc ? `<p>${esc(p.desc)}</p>` :
+      (missing ? `<p class="missing">Fabric, fit and care details coming soon — ask on WhatsApp and we'll tell you everything.</p>` : "");
+
+    const link = $("#vWa"); link.href = enquiry(p, chosen);
+    $("#vAsk").href = wa("Hi Sthree Boutique, I have a question about the " + p.name + " (" + p.code + ").");
     // reflect the open piece in the address bar so it can be shared
     try { history.replaceState(null, "", "?p=" + encodeURIComponent(p.key)); } catch(_){}
     const many = view.length > 1;
@@ -865,6 +977,18 @@ const arrivals = [
     vOpen(+b.dataset.i, b);
   });
   $("#vClose").addEventListener("click", vClose);
+  $("#vShare").addEventListener("click", async ()=>{
+    const p = view[V.i]; if(!p) return;
+    const url = productUrl(p), btn = $("#vShare"), was = btn.textContent;
+    const done = m => { btn.textContent = m; setTimeout(()=> btn.textContent = was, 1800); };
+    try{
+      if(navigator.share){ await navigator.share({title:p.name, text:p.name+" · "+rupee(p.price), url}); return; }
+      await navigator.clipboard.writeText(url); done("Link copied");
+    }catch(err){
+      if(err && err.name === "AbortError") return;   // user dismissed the share sheet
+      done("Copy failed");
+    }
+  });
   $("#vPrev").addEventListener("click", ()=> vShow(V.i-1));
   $("#vNext").addEventListener("click", ()=> vShow(V.i+1));
   $("#vIn").addEventListener("click",  ()=>{ const s=V.stage.getBoundingClientRect(); vZoomAt(s.left+s.width/2, s.top+s.height/2, V.scale*1.5); });
