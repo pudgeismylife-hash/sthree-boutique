@@ -72,8 +72,10 @@ handoff tokens.
 Live at **https://pudgeismylife-hash.github.io/sthree-boutique/**
 
 Her real catalogue is live: **25 products** at her own prices, loaded from the
-Drive product sheets. Category tiles filter the grid. Jewellery is 17 of the 25.
-The hero image is still a placeholder.
+Drive product sheets. Category tiles filter the grid and there is a search;
+tapping any photo opens a zoomable product view whose enquiry carries the piece,
+its code and a link back to it. Jewellery is 17 of the 25. The hero is built
+from four of her own photographs.
 
 ## What we still need from Priyanka
 
@@ -81,8 +83,9 @@ The hero image is still a placeholder.
 
 | Item | Why it matters |
 |---|---|
-| **Hero photo, 1080×1350 portrait** | The top of the page is still a grey placeholder. Her existing photos are 716×716 and cannot fill it. Biggest single visual gap. |
-| **Sizes** | Her product sheets have none. Clothing is hard to sell without it, even over WhatsApp. |
+| **Sizes** | Her product sheets have none. Clothing is hard to sell without it, even over WhatsApp. Jewellery shows "Free size"; clothing shows no selector at all. |
+| **Fabric, fit, wash care** | Per piece. The product view has rows for these and shows them only when supplied — right now every one is empty. |
+| **More photos** | One per piece today. Two or three angles each would make the zoom worth having. |
 | **Stock status** | No indication which of the 25 pieces are available. She already marks "Sold — stock ll be back soon" on Instagram. Product structured data omits availability until this exists. |
 | **A real customer review** | The invented testimonial has been removed and the band is hidden. It reappears the moment a genuine review is added to the `reviews` list. Ask a happy customer for one line. |
 
@@ -100,9 +103,6 @@ The hero image is still a placeholder.
 **Missing stock**
 
 Press-on nails and bags are listed as categories with no photos and no products. Both show as "Coming soon".
-
-| **Fabric, fit, wash care** | Per piece. The product view has rows for these and shows them only when supplied; right now every one is empty. |
-| **More photos** | One per piece today. Two or three angles each would make the zoom worth having. |
 
 **Smaller**
 
