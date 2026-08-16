@@ -15,6 +15,7 @@
 <meta property="og:locale" content="en_IN">
 <!-- Link thumbnail. Must be absolute public URLs — a relative path or an
      embedded image produces no preview. Filled in by build-hosted.js. -->
+<link rel="canonical" href="__SITE_URL__/">
 <meta property="og:url" content="__SITE_URL__/">
 <meta property="og:image" content="__SITE_URL__/og-image.jpg">
 <meta property="og:image:secure_url" content="__SITE_URL__/og-image.jpg">
@@ -31,6 +32,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 
+<!-- __PRODUCT_SCHEMA__ -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ClothingStore","name":"Sthree Boutique","description":"Western and ethnic wear, co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported and Indian.","founder":{"@type":"Person","name":"Priyanka Monteiro"},"foundingDate":"2026-06-14","address":{"@type":"PostalAddress","streetAddress":"Bikarnakatte","addressLocality":"Mangalore","addressRegion":"Karnataka","addressCountry":"IN"},"openingHours":"Mo-Su 09:00-20:00","telephone":"+917625077531","email":"priyankamonteiro@gmail.com","areaServed":["IN","Worldwide"],"sameAs":["https://instagram.com/sthreeboutique2026"]}
 </script>
@@ -85,6 +87,13 @@ h1,h2,h3{font-family:var(--display);font-weight:300;margin:0;text-wrap:balance}
 .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
 section{padding-block:30px}
 @media (min-width:900px){ section{padding-block:64px} }
+
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--ink);color:var(--cream);padding:12px 18px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+}
+.skip:focus{left:0}
 
 /* ── announcement ─────────────────────────────────────────── */
 .announce{
@@ -452,6 +461,7 @@ footer li a:hover{color:var(--gold)}
 </head>
 <body>
 
+<a class="skip" href="#main">Skip to content</a>
 <div class="announce">Imported &amp; Indian · Mangalore</div>
 
 <header>
@@ -488,6 +498,7 @@ footer li a:hover{color:var(--gold)}
   <a class="btn" id="navCta">Shop on WhatsApp</a>
 </div>
 
+<main id="main">
 <div class="hero">
   <picture>
     <source media="(min-width:900px)" srcset="assets/hero-wide.jpg">
@@ -530,12 +541,13 @@ footer li a:hover{color:var(--gold)}
   </div>
 </section>
 
-<div class="quote">
+<div class="quote" id="quoteBand" hidden>
   <div class="wrap">
-    <p>She picked three things I would never have tried and all three worked.</p>
-    <cite>Anusha R. · Kadri</cite>
+    <p id="quoteText"></p>
+    <cite id="quoteCite"></cite>
   </div>
 </div>
+</main>
 
 <footer>
   <div class="wrap">
@@ -677,6 +689,11 @@ const categories = [
 /* The real catalogue, from the boutique's own product sheets.
    Prices are exactly as supplied. Spelling of product names has been
    tidied (Linen, designer, polyester, palazzo, sequin, studded). */
+/* Real customer reviews only. The band stays hidden while this is empty —
+   a made-up testimonial with a real-sounding name is worse than none.
+   To add one:  { quote:"…", who:"Divya S.", place:"Kadri" }              */
+const reviews = [];
+
 const P = "assets/products/";
 const arrivals = [
   // Ethnic
@@ -753,7 +770,7 @@ const arrivals = [
   $("#cats").innerHTML = categories.map(c=>{
     const count = arrivals.filter(a=>a.cat===c.key).length;
     const art = c.img
-      ? `<div class="ph"><img src="${c.img}" alt="${esc(c.name)}" loading="lazy" decoding="async"></div>`
+      ? `<div class="ph"><img src="${thumb(c.img)}" alt="${esc(c.name)}" width="360" height="480" loading="lazy" decoding="async"></div>`
       : `<div class="ph"><span>Coming soon</span></div>`;
     return `<button class="cat" data-cat="${c.key}"${c.soon?' disabled':''} aria-pressed="false">
       ${art}
@@ -777,6 +794,10 @@ const arrivals = [
     seq[p.cat] = (seq[p.cat] || 0) + 1;
     p.code = "SB-" + (CAT_CODE[p.cat] || "GEN") + "-" + String(seq[p.cat]).padStart(2,"0");
   });
+
+  /* Cards show a small copy; the viewer loads the full-size photo. The cards
+     were pulling 720px images to draw them at ~170px. */
+  const thumb = src => src.replace("assets/products/", "assets/products/thumb/");
 
   const siteBase = (CONFIG.site && CONFIG.site.indexOf("__") === -1)
     ? CONFIG.site.replace(/\/$/,"")
@@ -807,7 +828,7 @@ const arrivals = [
     grid.innerHTML = list.map((i,n)=>`
       <article class="card">
         <button class="shot" data-i="${n}" aria-label="View ${esc(i.name)} larger">
-          <span class="ph"><img src="${i.img}" alt="${esc(i.name)}" loading="lazy" decoding="async"></span>
+          <span class="ph"><img src="${thumb(i.img)}" alt="${esc(i.name)}" width="360" height="450" loading="lazy" decoding="async"></span>
         </button>
         <span class="origin">${esc(i.label)}</span>
         <div class="name">${esc(i.name)}</div>
@@ -1099,6 +1120,14 @@ const arrivals = [
     a.className = "map ph tone3";
     a.innerHTML = "<span>Bikarnakatte, Mangalore<br>open in maps</span>";
     map.replaceWith(a);
+  }
+
+  /* review band — only ever shows a real one */
+  if(reviews.length){
+    const r = reviews[Math.floor(Math.random()*reviews.length)];
+    $("#quoteText").textContent = r.quote;
+    $("#quoteCite").textContent = r.who + (r.place ? " · " + r.place : "");
+    $("#quoteBand").removeAttribute("hidden");
   }
 
   /* mobile nav */
