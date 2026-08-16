@@ -371,6 +371,9 @@ footer li a:hover{color:var(--gold)}
 .viewer-meta{flex:1;min-width:150px;display:flex;flex-direction:column;gap:2px}
 .viewer-meta .vname{font-family:var(--display);font-size:19px;line-height:1.2}
 .viewer-meta .vprice{font-family:var(--display);font-size:17px;color:var(--gold)}
+.viewer-meta .vcode{
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--grey);margin-top:2px;
+}
 .viewer-zoom{display:flex;align-items:center;gap:4px;flex:none}
 .viewer-zoom button{
   width:40px;height:40px;border:1px solid var(--rule);cursor:pointer;font-size:17px;
@@ -548,6 +551,7 @@ footer li a:hover{color:var(--gold)}
       <span class="origin" id="vLabel"></span>
       <span class="vname" id="vName"></span>
       <span class="vprice" id="vPrice"></span>
+      <span class="vcode" id="vCode"></span>
     </div>
     <div class="viewer-zoom">
       <button id="vOut" aria-label="Zoom out">−</button>
@@ -577,6 +581,7 @@ const CONFIG = {
   delivery : "All over India and worldwide",
   founded  : "2026",
   mapsQuery: "Sthree Boutique, Bikarnakatte, Mangalore, Karnataka",
+  site     : "__SITE_URL__",              // filled by the build; used for product links
 
   // Filled in by build-hosted.js from assets/logo-web.png
   logo     : ""
@@ -684,7 +689,30 @@ const arrivals = [
   /* the collection */
   const grid = $("#items");
   let view = arrivals.slice();          // what is currently on screen
-  const enquiry = i => wa("Hi Sthree Boutique, I'd like to know more about the " + i.name + " (" + rupee(i.price) + ").");
+
+  /* Give every piece a stable key (from its photo, so it never shifts) and a
+     readable code. An enquiry then carries the name, price, code and a link
+     straight to that piece — WhatsApp can only send text, so the link is how
+     the owner sees which photo the customer means. */
+  const CAT_CODE = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG"};
+  const seq = {};
+  arrivals.forEach(p=>{
+    p.key = p.img.replace(/^.*\//,"").replace(/\.jpg$/,"");
+    seq[p.cat] = (seq[p.cat] || 0) + 1;
+    p.code = "SB-" + (CAT_CODE[p.cat] || "GEN") + "-" + String(seq[p.cat]).padStart(2,"0");
+  });
+
+  const siteBase = (CONFIG.site && CONFIG.site.indexOf("__") === -1)
+    ? CONFIG.site.replace(/\/$/,"")
+    : (location.origin + location.pathname).replace(/\/index\.html$/,"").replace(/\/$/,"");
+  const productUrl = p => siteBase + "/?p=" + encodeURIComponent(p.key);
+
+  const enquiry = p => wa(
+    "Hi Sthree Boutique, I'd like to enquire about:\n\n" +
+    "*" + p.name + "*\n" +
+    rupee(p.price) + "  ·  " + p.code + "\n\n" +
+    productUrl(p)
+  );
 
   function render(){
     let list = arrivals;
@@ -796,7 +824,10 @@ const arrivals = [
     $("#vName").textContent  = p.name;
     $("#vPrice").textContent = rupee(p.price);
     $("#vCount").textContent = (V.i+1) + " of " + view.length;
+    $("#vCode").textContent = p.code;
     const link = $("#vWa"); link.href = enquiry(p);
+    // reflect the open piece in the address bar so it can be shared
+    try { history.replaceState(null, "", "?p=" + encodeURIComponent(p.key)); } catch(_){}
     const many = view.length > 1;
     $("#vPrev").hidden = !many; $("#vNext").hidden = !many;
     vReset();
@@ -813,8 +844,20 @@ const arrivals = [
   function vClose(){
     V.el.setAttribute("hidden","");
     document.body.style.overflow = "";
+    try { history.replaceState(null, "", location.pathname); } catch(_){}
     if(V.opener && document.contains(V.opener)) V.opener.focus({preventScroll:true});
   }
+
+  /* Arriving from an enquiry link: clear any filter, then open that piece. */
+  (function deepLink(){
+    const want = new URLSearchParams(location.search).get("p");
+    if(!want) return;
+    const p = arrivals.find(a=>a.key === want);
+    if(!p) return;
+    active = null; term = ""; syncCats(); render();
+    const n = view.findIndex(a=>a.key === want);
+    if(n > -1) setTimeout(()=> vOpen(n, null), 60);
+  })();
 
   grid.addEventListener("click", e=>{
     const b = e.target.closest(".shot");
