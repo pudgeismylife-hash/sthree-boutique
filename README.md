@@ -30,8 +30,8 @@ script in `sthree-boutique.html`:
 
 ```js
 const CONFIG = {
-  whatsapp : "917625077531",             // primary, per the branding handoff
-  whatsappAlt: "919036087420",           // secondary line
+  whatsapp : "917625077531",             // primary
+  whatsappAlt: "",                       // second line — see open items below
   tel      : "+917625077531",
   email    : "priyankamonteiro@gmail.com",
   address  : "Bikarnakatte, Mangalore, Karnataka",
