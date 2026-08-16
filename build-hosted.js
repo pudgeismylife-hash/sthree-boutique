@@ -94,7 +94,63 @@ function productSchema(s, base) {
   const json = JSON.stringify({"@context":"https://schema.org","@type":"ItemList",
     name:"Sthree Boutique collection", numberOfItems:list.length, itemListElement:list});
   return { html: s.replace("<!-- __PRODUCT_SCHEMA__ -->",
-    '<script type="application/ld+json">' + json + '<\/script>'), count: list.length };
+    '<script type="application/ld+json">' + json + '<\/script>'), count: list.length, items };
+}
+
+/* A printable list for the boutique: every piece with its thumbnail, code and
+   three checkboxes, so photos come back named and matchable. Built from the
+   same catalogue, so it cannot fall out of step with the site. */
+function shotList(items) {
+  const CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL"};
+  const LABEL = {ethnic:"Ethnic wear", western:"Western wear", coord:"Co-ord sets", jewellery:"Jewellery"};
+  const seq = {};
+  const rows = items.map(p => {
+    seq[p.cat] = (seq[p.cat] || 0) + 1;
+    const thumb = DIR + p.img.replace("assets/products/", "assets/products/thumb/");
+    return {
+      cat: p.cat, name: p.name, price: p.price,
+      code: "SB-" + (CAT[p.cat] || "GEN") + "-" + String(seq[p.cat]).padStart(2, "0"),
+      b64: fs.existsSync(thumb) ? fs.readFileSync(thumb).toString("base64") : ""
+    };
+  });
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  let h = `<meta charset="utf-8"><title>Sthree Boutique — photo shot list</title>
+<style>
+body{font-family:system-ui,"Segoe UI",sans-serif;background:#FAF6F0;color:#14110F;margin:0;padding:24px}
+h1{font-family:Georgia,serif;font-weight:400;font-size:26px;margin:0 0 4px}
+p.sub{margin:0 0 18px;color:#57514A;font-size:13px;max-width:70ch;line-height:1.6}
+.rules{background:#fff;border:1px solid rgba(20,17,15,.12);padding:14px 18px;margin-bottom:22px;font-size:13px;line-height:1.7;max-width:80ch}
+.rules b{color:#A98037}
+h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 8px;border-bottom:1px solid rgba(20,17,15,.12);padding-bottom:5px}
+table{border-collapse:collapse;width:100%;max-width:900px}
+td{border-bottom:1px solid rgba(20,17,15,.09);padding:7px 8px;vertical-align:middle;font-size:13px}
+td.img{width:56px}img{width:48px;height:60px;object-fit:cover;display:block}
+td.code{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:#A98037;white-space:nowrap}
+td.box{white-space:nowrap;font-size:16px;letter-spacing:5px;color:#8A8177}
+@media print{body{background:#fff}.rules{break-inside:avoid}}
+</style>
+<h1>Photo shot list — Sthree Boutique</h1>
+<p class="sub">One row per piece. Take <b>3 photos of each</b> and name the files with the code shown.</p>
+<div class="rules">
+<b>Do not send photos on WhatsApp as pictures</b> — WhatsApp shrinks them and the quality is lost for good.
+Upload to Google Drive instead, or on WhatsApp use <b>Document</b> (paperclip &rarr; Document) so they arrive full size.<br>
+<b>Name each file with the code:</b> SB-JWL-01-1.jpg, SB-JWL-01-2.jpg, SB-JWL-01-3.jpg<br>
+<b>The 3 shots:</b> 1 = the whole piece, front. 2 = worn, or draped. 3 = close up of the fabric, work or clasp.<br>
+<b>Light:</b> stand near a window in daytime. No flash. Same spot and same background every time.
+</div>`;
+  for (const cat of ["ethnic", "western", "coord", "jewellery"]) {
+    const grp = rows.filter(r => r.cat === cat);
+    if (!grp.length) continue;
+    h += `<h2>${LABEL[cat]} — ${grp.length} pieces</h2><table>`;
+    for (const r of grp) {
+      const img = r.b64 ? `<img src="data:image/jpeg;base64,${r.b64}" alt="">` : "";
+      h += `<tr><td class="img">${img}</td><td class="code">${r.code}</td><td>${esc(r.name)}</td>`
+         + `<td class="code">Rs ${r.price.toLocaleString("en-IN")}</td><td class="box">☐ ☐ ☐</td></tr>`;
+    }
+    h += `</table>`;
+  }
+  fs.writeFileSync(DIR + "photo-shot-list.html", h, "utf8");
+  return rows.length;
 }
 
 /* ── strip the document wrapper for the artifact host ───────────── */
@@ -129,6 +185,7 @@ let pages = setLogo(src, logoName);
 pages = setSiteUrl(pages, SITE_URL || "__SITE_URL__");
 const schema = productSchema(pages, SITE_URL || "");
 pages = schema.html;
+const shots = shotList(schema.items);
 check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og:image", "assets/products/"]);
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
 
@@ -143,6 +200,7 @@ fs.writeFileSync(DIR + "sthree-boutique-share.html", share, "utf8");
 
 const kb = n => Math.round(n / 1024) + " KB";
 console.log("schema " + schema.count + " products");
+console.log("shots  photo-shot-list.html (" + shots + " pieces)");
 console.log("logo   " + logoName + " (" + kb(logoBytes.length) + ")");
 console.log("index.html                    " + kb(pages.length) + "   links " + logoName);
 console.log("sthree-boutique-hosted.html   " + kb(artifact.length) + "   logo inlined");

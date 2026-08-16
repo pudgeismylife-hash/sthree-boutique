@@ -20,6 +20,7 @@ It opens straight from a file or from any static host.
 | `sthree-boutique-hosted.html` | Built — copy for the private Claude preview link. |
 | `assets/` | Logo artwork. `logo-web.png` is used on the site; the full-size and dark variants are kept alongside it. |
 | `og-image.jpg` | 1200×630 link-preview thumbnail (WhatsApp, Instagram, Facebook). |
+| `photo-shot-list.html` | Built — printable list of every piece with its code and three checkboxes, to send to the boutique when collecting photos. |
 | `app-handoff/` | Separate design bundle for the mobile storefront app. |
 | `brand-handoff/` | Branding handoff for direction 3a, which this site implements. |
 
@@ -50,6 +51,24 @@ After any edit:
 ```bash
 node build-hosted.js
 ```
+
+That one command rebuilds the three site copies, regenerates the Product
+structured data, and refreshes the photo shot list — so none of them can drift
+away from the catalogue.
+
+## Collecting photos
+
+WhatsApp re-compresses pictures to about 800px and discards the original, so
+photos sent that way arrive unusable. Ask for them through **Google Drive**, or
+on WhatsApp via **Document** (paperclip → Document).
+
+Name files by product code — `SB-JWL-01-1.jpg`, `-2`, `-3` — so 25 pieces ×
+3 angles can be matched automatically instead of by eye. `photo-shot-list.html`
+carries the codes with thumbnails; send it to the boutique.
+
+Images live at three sizes: `assets/products/` (720×900, used by the zoomable
+viewer), `assets/products/thumb/` (360px, used by cards and tiles) and
+`assets/hero-*.jpg`. Regenerate thumbnails after adding photos.
 
 ## Link previews
 
