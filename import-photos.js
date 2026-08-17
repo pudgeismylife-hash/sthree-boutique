@@ -174,23 +174,40 @@ const py = [
   "from PIL import Image", "import sys",
   "src, full, thumb = sys.argv[1], sys.argv[2], sys.argv[3]",
   "CREAM=(250,246,240)",
-  "im = Image.open(src).convert('RGB')",
+  "raw = Image.open(src)",
+  /* A cut-out arrives with a real alpha channel. Keeping it matters: the
+     product stage is cream-alt while a composited photograph would be cream,
+     which left a visible rectangle around every piece. Transparent WebP costs
+     about 6 KB more than the flattened JPEG and removes that edge. */
+  "has_alpha = raw.mode in ('RGBA','LA') or 'transparency' in raw.info",
+  "im = raw.convert('RGBA') if has_alpha else raw.convert('RGB')",
   "im.thumbnail((720, 900), Image.LANCZOS)",
   /* The full-size file is the photograph, not the photograph on a cream mat.
      It used to be letterboxed onto 720x900, which meant the zoom viewer fitted
      a mostly-empty canvas into the stage and showed the piece small in the
      middle of it — the photograph was only 48% of its own file. */
-  "im.save(full, quality=88, optimize=True, progressive=True)",
+  "flat = im",
+  "if has_alpha:",
+  "    im.save(full[:-4] + '.webp', 'WEBP', quality=90, method=6)",
+  "    flat = Image.new('RGB', im.size, CREAM); flat.paste(im, (0,0), im)",
+  "flat.save(full, quality=88, optimize=True, progressive=True)",
   "tw, th = 360, 450",
-  "t = Image.new('RGB',(tw,th),CREAM)",
-  "if im.width/im.height <= 1.30:",
-  "    s = max(tw/im.width, th/im.height)",
-  "    r = im.resize((max(1,round(im.width*s)), max(1,round(im.height*s))), Image.LANCZOS)",
-  "    t.paste(r, (-(r.width-tw)//2, -(r.height-th)//2))",
-  "else:",
-  "    r = im.resize((tw, max(1,round(im.height*tw/im.width))), Image.LANCZOS)",
-  "    t.paste(r, (0, (th-r.height)//2))",
-  "t.save(thumb, quality=82, optimize=True, progressive=True)"
+  /* The card thumbnail fills its frame: a single subject is cropped to fill, a
+     wide composite is scaled to the width instead, because cropping one of
+     those to a portrait frame cuts straight through the middle of it. */
+  "def fit(source, bg):",
+  "    t = Image.new(source.mode, (tw, th), bg)",
+  "    if source.width/source.height <= 1.30:",
+  "        sc = max(tw/source.width, th/source.height)",
+  "        r = source.resize((max(1,round(source.width*sc)), max(1,round(source.height*sc))), Image.LANCZOS)",
+  "        t.paste(r, (-(r.width-tw)//2, -(r.height-th)//2))",
+  "    else:",
+  "        r = source.resize((tw, max(1,round(source.height*tw/source.width))), Image.LANCZOS)",
+  "        t.paste(r, (0, (th-r.height)//2))",
+  "    return t",
+  "if has_alpha:",
+  "    fit(im, (0,0,0,0)).save(thumb[:-4] + '.webp', 'WEBP', quality=86, method=6)",
+  "fit(flat, CREAM).save(thumb, quality=82, optimize=True, progressive=True)"
 ].join("\n");
 const script = path.join(require("os").tmpdir(), "sthree-resize.py");
 fs.writeFileSync(script, py, "utf8");
@@ -215,8 +232,19 @@ for (const r of PASS) {
     execFileSync(PYTHON, [script, path.join(folder, r.shots[n]), OUT_FULL + name, OUT_THUMB + name], { stdio: "pipe" });
     list.push(name); written++;
   }
-  const arr = "images:[" + list.map(s => 'P+"' + s + '"').join(",") + "]";
-  const re = new RegExp('(key:"' + r.key.replace(/[-_]/g, "[-_]") + '",\\s*)images:\\[[^\\]]*\\]');
+  /* If the batch was cut out, transparent WebP copies sit beside the JPEGs.
+     Flagging the product lets the page ask for them where the browser can take
+     them, and fall back to the JPEG where it cannot. */
+  const hasAlpha = r.views.some(n => {
+    try {
+      const b = fs.readFileSync(path.join(folder, r.shots[n]));
+      return b.slice(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])) &&
+             fs.existsSync(OUT_FULL + r.key + "-a" + n + ".webp");
+    } catch (_) { return false; }
+  });
+  const arr = (hasAlpha ? "alpha:true, " : "") +
+    "images:[" + list.map(s => 'P+"' + s + '"').join(",") + "]";
+  const re = new RegExp('(key:"' + r.key.replace(/[-_]/g, "[-_]") + '",\\s*)(?:alpha:true,\\s*)?images:\\[[^\\]]*\\]');
   if (!re.test(out)) { console.log("  WARN could not wire " + r.code); continue; }
   out = out.replace(re, "$1" + arr);
 

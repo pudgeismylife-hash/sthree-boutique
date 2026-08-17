@@ -109,6 +109,30 @@ images. Every view is a crop of the boutique's own photograph — nothing is gen
 A piece gets only the views its photograph really contains; the importer accepts one,
 two or three rather than padding a set out with an invented angle.
 
+### The product gallery
+
+A product's `images` array is the gallery — one photograph, two, three or more,
+with no change to any component. The strip appears only when there is more than one.
+
+```js
+{ ..., views:["Front","Side","Back"], alpha:true,
+  images:[P+"gowns_1-a1.jpg", P+"gowns_1-a2.jpg", P+"gowns_1-a3.jpg"] }
+```
+
+`views` names the angles. It is optional: a product that does not say what its
+angles are gets "Photo 1, 2, 3" rather than a guess. Names are never inferred from
+position — they used to be, and a dress's back view was announced as "Detail".
+
+`alpha:true` is set by the importer when the batch was cut out. Transparent WebP
+copies are written beside the JPEGs, the page asks for them where the browser can
+read them, and falls back to the JPEG where it cannot. Transparency matters here:
+the stage is cream-alt and a flattened photograph is cream, which left a visible
+rectangle around every piece.
+
+A customer can change angle by tapping a thumbnail, swiping the photograph
+sideways on a phone, or pressing the left and right arrow keys. Swiping is ignored
+while zoomed in, where a horizontal drag is panning.
+
 ### Installing photos
 
 Name files `<CODE>-1.jpg`, `-2`, `-3` — full view, worn, detail — then:

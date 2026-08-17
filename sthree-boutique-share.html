@@ -412,7 +412,13 @@ footer li a:hover{color:var(--gold)}
 @media (min-width:900px){
   .viewer-body{grid-template-rows:minmax(0,1fr) auto;grid-template-columns:minmax(0,1.35fr) minmax(340px,.65fr)}
   .viewer-stagewrap{grid-column:1;grid-row:1}
-  .vthumbs{grid-column:1;grid-row:2}
+  .vthumbs button span{
+  display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--grey);margin-top:4px;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.vthumbs button[aria-selected="true"] span{color:var(--gold)}
+.vthumbs{grid-column:1;grid-row:2}
   .viewer-panel{grid-column:2;grid-row:1/3;border-left:1px solid var(--hairline);border-top:0!important}
 }
 
@@ -423,12 +429,17 @@ footer li a:hover{color:var(--gold)}
 }
 .vthumbs::-webkit-scrollbar{display:none}
 .vthumbs[hidden]{display:none}
+/* The button is the picture plus its name underneath, so it has to be taller
+   than the thumbnail itself or the name is clipped away. */
 .vthumbs button{
-  flex:0 0 auto;width:54px;height:68px;padding:0;border:1px solid var(--hairline);
-  cursor:pointer;background:var(--cream-alt);overflow:hidden;
+  flex:0 0 auto;width:54px;height:auto;padding:0;border:0;
+  cursor:pointer;background:none;overflow:visible;
 }
-.vthumbs button img{width:100%;height:100%;object-fit:cover;display:block}
-.vthumbs button[aria-selected="true"]{border-color:var(--gold);outline:1px solid var(--gold);outline-offset:-2px}
+.vthumbs button img{
+  width:100%;height:68px;object-fit:cover;display:block;
+  border:1px solid var(--hairline);background:var(--cream-alt);
+}
+.vthumbs button[aria-selected="true"] img{border-color:var(--gold);border-width:2px}
 
 /* details panel — the same anatomy a shop product page uses */
 .viewer-panel{
@@ -509,9 +520,18 @@ footer li a:hover{color:var(--gold)}
 }
 .viewer-count{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
 .viewer-icon{width:44px;height:44px;display:grid;place-items:center;font-size:17px;cursor:pointer;color:var(--ink)}
+/* Absolutely filling its wrapper, so the stage has a definite height and the
+   photograph's max-height:100% actually resolves against it. Left at auto the
+   stage grows to the picture's natural height, and a tall cut-out then paints
+   straight over the gallery strip and the product details below it. */
 .viewer-stage{
-  position:relative;overflow:hidden;touch-action:none;background:var(--cream-alt);
-  display:grid;place-items:center;cursor:zoom-in;
+  position:absolute;inset:0;overflow:hidden;touch-action:none;background:var(--cream-alt);
+  /* The row is given an explicit 100% rather than left to size itself. An auto
+     row grows to whatever the picture's natural height is, and the picture's own
+     max-height:100% then has nothing definite to resolve against and is ignored
+     — so a tall photograph rendered full size and was cropped by the stage. */
+  display:grid;grid-template-rows:100%;grid-template-columns:100%;place-items:center;
+  cursor:zoom-in;
 }
 .viewer-stage.is-zoomed{cursor:grab}
 .viewer-stage.is-grabbing{cursor:grabbing}
@@ -907,12 +927,12 @@ const arrivals = [
   { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, kw:"saree sari ethnic", fabric:"Silk, mirror handwork", key:"sarees_2", images:[P+"sarees_2.jpg"] },
   { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", fabric:"Georgette, sequin embroidery", key:"sarees_3", images:[P+"sarees_3.jpg"] },
   // Western
-  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", fabric:"Polyester", key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
-  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", fabric:"Linen cotton", key:"gowns_1", images:[P+"gowns_1-a1.jpg",P+"gowns_1-a2.jpg",P+"gowns_1-a3.jpg"] },
+  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", fabric:"Polyester", views:["Both pieces","Kaftan","Inner"], key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
+  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", fabric:"Linen cotton", views:["Front","Side","Back"], key:"gowns_1", alpha:true, images:[P+"gowns_1-a1.jpg",P+"gowns_1-a2.jpg",P+"gowns_1-a3.jpg"] },
   { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, kw:"dress gown western frock", fabric:"Linen cotton", key:"gowns_2", images:[P+"gowns_2.jpg"] },
   // Co-ord sets
-  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", fabric:"Cotton, cutwork embroidery", key:"cloth_section_western_wear_2", images:[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"] },
-  { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  kw:"cordset co-ord coord palazzo set", key:"cloth_section_western_wear_3", images:[P+"cloth_section_western_wear_3-a1.jpg",P+"cloth_section_western_wear_3-a2.jpg"] },
+  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", fabric:"Cotton, cutwork embroidery", views:["Both views","Worn","On hangers"], key:"cloth_section_western_wear_2", images:[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"] },
+  { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  kw:"cordset co-ord coord palazzo set", views:["Full length","Closer"], key:"cloth_section_western_wear_3", images:[P+"cloth_section_western_wear_3-a1.jpg",P+"cloth_section_western_wear_3-a2.jpg"] },
   // Jewellery — earrings
   { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  kw:"earrings earring studs stud jhumka", key:"earring_1", images:[P+"earring_1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Chrysanthemum studs",                   price:110,  kw:"earrings earring studs stud jhumka", key:"earring_2", images:[P+"earring_2.jpg"] },
@@ -988,6 +1008,18 @@ const arrivals = [
   /* Cards and tiles show a small copy; the viewer loads the full-size photo.
      Declared before first use — the category tiles below need it. */
   const thumb = src => src.replace("assets/products/", "assets/products/thumb/");
+
+  /* Cut-out photographs are stored twice: a transparent WebP and a flattened
+     JPEG. Transparency is what stops a pale rectangle showing around the piece,
+     since the stage is cream-alt and a flattened photograph is cream. Older
+     browsers that cannot read WebP simply get the JPEG. */
+  const CAN_WEBP = (() => {
+    try {
+      const c = document.createElement("canvas"); c.width = c.height = 1;
+      return c.toDataURL("image/webp").indexOf("data:image/webp") === 0;
+    } catch (_) { return false; }
+  })();
+  const shot = (p, src) => (p.alpha && CAN_WEBP) ? src.replace(/\.jpg$/, ".webp") : src;
 
   /* The listing image is the first gallery photo where a gallery exists.
      `img` stays as it is — it is what product links are keyed on, so it must
@@ -1113,7 +1145,7 @@ const arrivals = [
     grid.innerHTML = list.map((i,n)=>`
       <article class="card">
         <button class="shot" data-i="${n}" aria-label="View ${esc(i.name)} larger">
-          <span class="ph"><img src="${thumb(primary(i))}" alt="${esc(i.name)}" width="360" height="450" loading="lazy" decoding="async"></span>
+          <span class="ph"><img src="${thumb(shot(i, primary(i)))}" alt="${esc(i.name)}" width="360" height="450" loading="lazy" decoding="async"></span>
         </button>
         <span class="origin">${esc(i.label)}</span>
         <div class="name">${esc(i.name)}</div>
@@ -1205,22 +1237,23 @@ const arrivals = [
 
     /* A piece may carry several photos: [primary, worn, detail]. Products
        with one photo behave exactly as before and the strip stays hidden. */
-    V.shots = p.images;
+    V.shots = (p.images && p.images.length ? p.images : [primary(p)]).map(x => shot(p, x));
     V.shot = 0;
     const strip = $("#vThumbs");
     if(V.shots.length > 1){
       strip.removeAttribute("hidden");
-      const LABEL = ["Full view","Worn","Detail"];
+      /* View names come from the product, never from the position. They used to
+         be hardcoded ["Full view","Worn","Detail"], which announced this dress's
+         back view as "Detail" and its side as "Worn". A product that has not
+         said what its angles are gets numbered rather than mislabelled. */
+      V.names = p.views && p.views.length ? p.views : V.shots.map((_,k)=>"Photo " + (k+1));
       strip.innerHTML = V.shots.map((src,k)=>
-        `<button role="tab" aria-selected="${k===0}" aria-label="${esc(LABEL[k]||("Photo "+(k+1)))}">
+        `<button role="tab" aria-selected="${k===0}" aria-label="${esc(V.names[k] || ("Photo "+(k+1)))}">
            <img src="${thumb(src)}" alt="" loading="lazy" decoding="async">
+           <span>${esc(V.names[k] || ("Photo "+(k+1)))}</span>
          </button>`).join("");
-      strip.querySelectorAll("button").forEach((b,k)=> b.addEventListener("click", ()=>{
-        V.shot = k;
-        strip.querySelectorAll("button").forEach((x,j)=> x.setAttribute("aria-selected", String(j===k)));
-        V.img.src = V.shots[k];
-        vReset();
-      }));
+      strip.querySelectorAll("button").forEach((b,k)=>
+        b.addEventListener("click", ()=> vShot(k)));
     } else {
       strip.setAttribute("hidden",""); strip.innerHTML = "";
     }
@@ -1331,6 +1364,22 @@ const arrivals = [
       if(on) el.setAttribute("inert",""); else el.removeAttribute("inert");
     }
   }
+  /* Switching angle: used by the thumbnails, by a swipe and by the arrow keys,
+     so all three stay in step. Works for however many photographs a piece has —
+     one, two, three or more — with no change here. */
+  function vShot(k){
+    if(!V.shots || V.shots.length < 2) return;
+    k = (k + V.shots.length) % V.shots.length;          // wraps, so a swipe never dead-ends
+    V.shot = k;
+    V.img.src = V.shots[k];
+    const strip = $("#vThumbs");
+    strip.querySelectorAll("button").forEach((x,j)=>{
+      x.setAttribute("aria-selected", String(j===k));
+      if(j===k && x.scrollIntoView) x.scrollIntoView({block:"nearest", inline:"nearest"});
+    });
+    vReset();
+  }
+
   function vOpen(n, opener){
     V.opener = opener || null;
     V.el.removeAttribute("hidden");
@@ -1378,6 +1427,28 @@ const arrivals = [
       done("Copy failed");
     }
   });
+  /* Swipe between angles on a phone. Only when the photograph is not zoomed:
+     while zoomed, a horizontal drag is panning the picture and must stay that
+     way. Vertical movement disqualifies the gesture so a scroll is never
+     mistaken for a swipe. */
+  (function swipe(){
+    const st = V.stage; let x0=null, y0=null, t0=0;
+    st.addEventListener("touchstart", e=>{
+      if(e.touches.length !== 1 || V.scale > 1.02){ x0=null; return; }
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
+    }, {passive:true});
+    st.addEventListener("touchend", e=>{
+      if(x0 === null || V.scale > 1.02) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - x0, dy = t.clientY - y0;
+      x0 = null;
+      if(Date.now() - t0 > 700) return;                 // a slow drag is not a swipe
+      if(Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.6) return;
+      if(!V.shots || V.shots.length < 2) return;
+      vShot(V.shot + (dx < 0 ? 1 : -1));
+    }, {passive:true});
+  })();
+
   $("#vPrev").addEventListener("click", ()=> vShow(V.i-1));
   $("#vNext").addEventListener("click", ()=> vShow(V.i+1));
   $("#vIn").addEventListener("click",  ()=>{ const s=V.stage.getBoundingClientRect(); vZoomAt(s.left+s.width/2, s.top+s.height/2, V.scale*1.5); });
@@ -1386,6 +1457,10 @@ const arrivals = [
   addEventListener("keydown", e=>{
     if(V.el.hasAttribute("hidden")) return;
     if(e.key === "Escape"){ vClose(); }
+    /* Left and right move between the angles of this piece when it has more
+       than one, which is what a customer expects while looking at a product. */
+    else if(e.key === "ArrowRight" && V.shots && V.shots.length > 1){ e.preventDefault(); vShot(V.shot + 1); }
+    else if(e.key === "ArrowLeft"  && V.shots && V.shots.length > 1){ e.preventDefault(); vShot(V.shot - 1); }
     else if(e.key === "ArrowLeft"){ vShow(V.i-1); }
     else if(e.key === "ArrowRight"){ vShow(V.i+1); }
     else if(e.key === "+" || e.key === "="){ const s=V.stage.getBoundingClientRect(); vZoomAt(s.left+s.width/2,s.top+s.height/2,V.scale*1.5); }
