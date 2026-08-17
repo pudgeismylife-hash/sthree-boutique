@@ -439,6 +439,13 @@ footer li a:hover{color:var(--gold)}
 .vactions{margin-top:16px;display:flex;flex-direction:column;gap:8px}
 .vactions .btn{width:100%;text-align:center}
 .vactions-row{display:flex;gap:8px}
+/* Says what the button will actually do, because a customer about to be handed
+   off to another app deserves to know before they tap. */
+.vwhat{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--grey);margin:2px 0 0;text-align:center;line-height:1.5;
+}
+.vghost.vshare{width:100%;margin-top:6px;color:var(--ink-soft);border-color:var(--hairline)}
 .vghost{
   flex:1;text-align:center;padding:13px;border:1px solid var(--rule);cursor:pointer;
   font-size:10px;letter-spacing:.14em;text-transform:uppercase;
@@ -470,6 +477,7 @@ footer li a:hover{color:var(--gold)}
 .vhow ol li{margin-bottom:3px}
 .vhow .rem{font-size:12px;color:var(--grey)}
 .vnotes{margin-top:14px;font-size:12px;line-height:1.6;color:var(--ink-soft)}
+.vnotes:empty{display:none}
 .vnotes p{margin:0 0 6px}
 .vnotes .missing{color:var(--grey);font-style:italic}
 .viewer[hidden]{display:none}
@@ -702,12 +710,15 @@ footer li a:hover{color:var(--gold)}
         <div class="vsizes-row" id="vSizeRow"></div>
       </div>
 
+      <!-- One way to buy, because there is only one way to buy. "Enquire" and
+           "Ask a question" both opened WhatsApp to the same number with almost
+           the same message, which made a customer choose between two doors into
+           the same room — and the second door sent the weaker message, with no
+           price, no code and no link back. -->
       <div class="vactions">
-        <a class="btn" id="vWa" target="_blank" rel="noopener">Enquire on WhatsApp</a>
-        <div class="vactions-row">
-          <a class="vghost" id="vAsk" target="_blank" rel="noopener">Ask a question</a>
-          <button class="vghost" id="vShare" type="button">Share</button>
-        </div>
+        <a class="btn" id="vWa" target="_blank" rel="noopener">Order on WhatsApp</a>
+        <p class="vwhat" id="vWhat"></p>
+        <button class="vghost vshare" id="vShare" type="button">Share this piece</button>
       </div>
 
       <dl class="vspec" id="vSpec"></dl>
@@ -1201,8 +1212,14 @@ const arrivals = [
     $("#vNotes").innerHTML = p.desc ? `<p>${esc(p.desc)}</p>` :
       (missing ? `<p class="missing">Fabric, fit and care details coming soon — ask on WhatsApp and we'll tell you everything.</p>` : "");
 
-    const link = $("#vWa"); link.href = enquiry(p, chosen);
-    $("#vAsk").href = wa("Hi Sthree Boutique, I have a question about the " + p.name + " (" + p.code + ").");
+    const link = $("#vWa");
+    link.href = enquiry(p, chosen);
+    /* "Order" is the wrong word for a piece with no price on it yet — she
+       cannot order what she has not been quoted. */
+    link.textContent = priced(p) ? "Order on WhatsApp" : "Ask the price on WhatsApp";
+    $("#vWhat").textContent = priced(p)
+      ? "Opens WhatsApp with this piece, its price and its code"
+      : "Opens WhatsApp with this piece and its code";
     // reflect the open piece in the address bar so it can be shared
     try { history.replaceState(null, "", "?p=" + encodeURIComponent(p.key)); } catch(_){}
     const many = view.length > 1;
