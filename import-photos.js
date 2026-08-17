@@ -176,12 +176,11 @@ const py = [
   "CREAM=(250,246,240)",
   "im = Image.open(src).convert('RGB')",
   "im.thumbnail((720, 900), Image.LANCZOS)",
-  # The full-size file is the photograph, not the photograph on a cream mat.
-  # It used to be letterboxed onto 720x900, which meant the zoom viewer fitted
-  # a mostly-empty canvas into the stage and showed the piece small in the
-  # middle of it — the photograph was only 48% of its own file.
+  /* The full-size file is the photograph, not the photograph on a cream mat.
+     It used to be letterboxed onto 720x900, which meant the zoom viewer fitted
+     a mostly-empty canvas into the stage and showed the piece small in the
+     middle of it — the photograph was only 48% of its own file. */
   "im.save(full, quality=88, optimize=True, progressive=True)",
-  "c = im",
   "tw, th = 360, 450",
   "t = Image.new('RGB',(tw,th),CREAM)",
   "if im.width/im.height <= 1.30:",

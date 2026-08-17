@@ -324,6 +324,24 @@
       "images": [
         "nails_5-a1.jpg"
       ]
+    },
+    "SB-WES-02": {
+      "productKey": "gowns_1",
+      "siteCode": "SB-WES-02",
+      "productName": "Linen cotton dress with belt, black",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "source/staged-dress",
+      "sourceFiles": [
+        "SB-WES-02-1.jpg",
+        "SB-WES-02-2.jpg",
+        "SB-WES-02-3.jpg"
+      ],
+      "images": [
+        "gowns_1-a1.jpg",
+        "gowns_1-a2.jpg",
+        "gowns_1-a3.jpg"
+      ]
     }
   }
 }
