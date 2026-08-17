@@ -13,9 +13,12 @@ It opens straight from a file or from any static host.
 
 | File | What it is |
 |---|---|
+| `PROJECT-CONTEXT.md` | **Start here.** Everything needed to pick this work up cold. |
 | `sthree-boutique.html` | **The source.** Edit this one. |
 | `build-hosted.js` | Produces every distributable copy from the source. |
-| `import-photos.js` | Installs product photographs from a folder, checking every code against the catalogue first. |
+| `import-photos.js` | Installs product photographs, validating against the lock before writing. |
+| `product-image-lock.json` | Source of truth for product-image mapping. LOCKED entries are never changed by an import. |
+| `photo-map.json` | Translates an outside batch's codes onto catalogue product keys. |
 | `index.html` | Built — the public site (GitHub Pages serves this). |
 | `sthree-boutique-share.html` | Built — standalone copy to send as a file on WhatsApp. |
 | `sthree-boutique-hosted.html` | Built — copy for the private Claude preview link. |
