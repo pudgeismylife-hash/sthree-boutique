@@ -53,7 +53,7 @@ const html = fs.readFileSync(SRC_HTML, "utf8");
 const m = html.match(/const arrivals = \[([\s\S]*?)\n\];/);
 if (!m) { console.error("FAIL could not read the catalogue"); process.exit(1); }
 const items = eval("[" + m[1] + "]");
-const CAT = { ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL" };
+const CAT = { ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG" };
 const seq = {}, byKey = new Map();
 for (const p of items) {
   seq[p.cat] = (seq[p.cat] || 0) + 1;

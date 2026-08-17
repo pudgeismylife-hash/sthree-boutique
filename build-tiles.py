@@ -26,6 +26,12 @@ THUMB_SIZE = (360, 480)
 
 # category -> the photograph its tile is built from, and why that one.
 TILES = {
+    "cat-nails": (
+        os.path.join(HERE, "assets", "products", "nails_4-a1.jpg"),
+        "the wine gloss set, from the boutique's own catalogue photograph -- the "
+        "strongest of the five at tile size, being one solid colour rather than "
+        "fine detail that disappears when small",
+    ),
     "cat-coord": (
         os.path.join(HERE, "source", "staged", "SB-JWL-08-2.jpg"),
         "the cotton embroidery cordset worn, from the boutique's own catalogue "

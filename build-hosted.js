@@ -72,7 +72,7 @@ function productSchema(s, base) {
   try { items = eval("[" + m[1] + "]"); }
   catch (e) { console.error("FAIL could not parse arrivals:", e.message); process.exit(1); }
 
-  const seq = {}, CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL"};
+  const seq = {}, CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG"};
   const list = items.map((p, n) => {
     seq[p.cat] = (seq[p.cat] || 0) + 1;
     const key = p.key;
@@ -84,13 +84,17 @@ function productSchema(s, base) {
         image: base + "/" + p.images[0], url: base + "/?p=" + key,
         brand: {"@type": "Brand", name: "Sthree Boutique"},
         category: p.label,
-        offers: {
+        // The offer is omitted entirely for a piece the boutique has not
+        // priced. A Product without an Offer is valid; an Offer without a
+        // price is not, and inventing one to satisfy a validator would put a
+        // figure she never gave in front of a search engine.
+        ...(p.price == null ? {} : { offers: {
           // availability is deliberately omitted: the boutique has not
           // supplied stock status, and asserting InStock could be wrong.
           "@type": "Offer", price: String(p.price), priceCurrency: "INR",
           url: base + "/?p=" + key,
           seller: {"@type": "Organization", name: "Sthree Boutique"}
-        }
+        }})
       }
     };
   });
@@ -104,8 +108,8 @@ function productSchema(s, base) {
    three checkboxes, so photos come back named and matchable. Built from the
    same catalogue, so it cannot fall out of step with the site. */
 function shotList(items) {
-  const CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL"};
-  const LABEL = {ethnic:"Ethnic wear", western:"Western wear", coord:"Co-ord sets", jewellery:"Jewellery"};
+  const CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG"};
+  const LABEL = {ethnic:"Ethnic wear", western:"Western wear", coord:"Co-ord sets", jewellery:"Jewellery", nails:"Press-on nails", bags:"Bags"};
   const seq = {};
   const rows = items.map(p => {
     seq[p.cat] = (seq[p.cat] || 0) + 1;
@@ -163,14 +167,14 @@ Upload to Google Drive instead, or on WhatsApp use <b>Document</b> (paperclip &r
    shows today. */
 function ownerQuestions(items) {
   const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  const rupee = n => "Rs " + Number(n).toLocaleString("en-IN");
+  const rupee = n => n == null ? "not priced yet" : "Rs " + Number(n).toLocaleString("en-IN");
   const thumbOf = p => {
     const t = DIR + p.images[0].replace("assets/products/", "assets/products/thumb/");
     return fs.existsSync(t) ? `<img src="data:image/jpeg;base64,${fs.readFileSync(t).toString("base64")}" alt="">` : "";
   };
   /* Codes are derived the same way as the schema and the shot list, from
      category order, so all three name a piece identically. */
-  const CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL"};
+  const CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG"};
   const seq = {}, code = new Map();
   for (const p of items) {
     seq[p.cat] = (seq[p.cat] || 0) + 1;
@@ -183,8 +187,10 @@ function ownerQuestions(items) {
   const priceOf = k => { const p = byKey(k); return p ? rupee(p.price) : ""; };
   const codeKey = k => { const p = byKey(k); return p ? codeOf(p) : ""; };
 
-  const clothing = items.filter(p => p.cat !== "jewellery");
+  const GARMENT = ["ethnic", "western", "coord"];
+  const clothing = items.filter(p => GARMENT.includes(p.cat));
   const jewellery = items.filter(p => p.cat === "jewellery");
+  const unpriced = items.filter(p => p.price == null);
   const earrings = jewellery.filter(p => /^earring_/.test(p.key));
 
   let h = `<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -227,7 +233,18 @@ simply stays off the site rather than being guessed at.</p>
 blank below is a row that is hidden from customers today. Filling one in makes it appear.
 </div>
 
-<h2>1 &nbsp;Your second WhatsApp number</h2>
+${unpriced.length ? `<h2>1 &nbsp;What do these cost?</h2>
+<p class="why">${unpriced.length} piece${unpriced.length === 1 ? "" : "s"} on the site ${unpriced.length === 1 ? "has" : "have"} no price,
+so ${unpriced.length === 1 ? "it shows" : "they show"} <b>&ldquo;Price on WhatsApp&rdquo;</b> instead of a number. The photographs you sent
+carry no price, and the &#8377;999 printed on the maker's instruction card is <b>their</b> MRP,
+not yours &mdash; we will not put that on your site as your price. Write what you sell each for
+and the number appears.</p>
+<div class="tw"><table><tr><th></th><th>Code</th><th>Piece</th><th>Your price</th></tr>
+${unpriced.map(p => `<tr><td class="img">${thumbOf(p)}</td><td class="code">${codeOf(p)}</td>`
+  + `<td>${esc(p.name)}</td><td class="fill"></td></tr>`).join("")}
+</table></div>
+
+<h2>2 &nbsp;Your second WhatsApp number</h2>` : `<h2>1 &nbsp;Your second WhatsApp number</h2>`}
 <p class="why">You wrote <b>903608742</b> &mdash; that is nine digits and a mobile number needs ten,
 so we have left it off the site rather than publish a number that might not reach you. One
 handoff note says 9036087427 and another says 9036087420. Please write it out in full.</p>
@@ -392,8 +409,8 @@ function productPages(items, base) {
   const dir = DIR + "p/";
   fs.mkdirSync(dir, { recursive: true });
 
-  const LABEL = {ethnic:"Ethnic wear", western:"Western wear", coord:"Co-ord set", jewellery:"Jewellery"};
-  const seq = {}, CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL"};
+  const LABEL = {ethnic:"Ethnic wear", western:"Western wear", coord:"Co-ord set", jewellery:"Jewellery", nails:"Press-on nails", bags:"Bags"};
+  const seq = {}, CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG"};
   let written = 0, noCard = [];
 
   for (const p of items) {
@@ -402,8 +419,9 @@ function productPages(items, base) {
     const card = "assets/og/" + p.key + ".jpg";
     if (!fs.existsSync(DIR + card)) noCard.push(p.key);
 
-    const price = "₹" + Number(p.price).toLocaleString("en-IN");
-    const title = p.name + " — " + price;
+    const priced = p.price != null;
+    const price = priced ? "₹" + Number(p.price).toLocaleString("en-IN") : "Price on WhatsApp";
+    const title = priced ? p.name + " — " + price : p.name;
     const desc  = price + " · " + (LABEL[p.cat] || p.label) + " · " + code +
                   " · Sthree Boutique, Bikarnakatte, Mangalore. Order on WhatsApp.";
     const here  = base + "/p/" + p.key + ".html";
@@ -435,8 +453,8 @@ function productPages(items, base) {
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${esc(p.name)}">
-<meta property="product:price:amount" content="${esc(String(p.price))}">
-<meta property="product:price:currency" content="INR">
+${priced ? `<meta property="product:price:amount" content="${esc(String(p.price))}">
+<meta property="product:price:currency" content="INR">` : ""}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">

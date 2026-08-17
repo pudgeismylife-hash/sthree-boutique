@@ -211,7 +211,11 @@ Send that rather than retyping the list.
 
 **Missing stock**
 
-Press-on nails and bags are listed as categories with no photos and no products. Both show as "Coming soon".
+Bags are listed as a category with no photos and no products, and show as "Coming soon".
+Press-on nails are live with five designs, but none of them has a price: they carry
+`price:null`, the card reads "Price on WhatsApp", and the enquiry goes out without a
+figure. A product may always omit its price — nothing on the page, in the structured
+data or in a link preview will invent one.
 
 **Smaller**
 

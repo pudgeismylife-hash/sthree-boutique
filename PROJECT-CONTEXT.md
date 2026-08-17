@@ -98,7 +98,8 @@ hand in `source/customer-source.json`, sha1-tied to the picture they were read f
 
 ## State as of 17 Aug 2026
 
-- 25 products, real names and prices, 6 categories with filtering plus search.
+- 30 products across 6 categories with filtering plus search. 25 are priced; the five
+  press-on nail designs are not, and say so rather than showing a number.
 - Zoomable product view: pinch, wheel, double-tap, drag-to-pan, thumbnail strip.
 - Enquiries carry product, price, code and a link back to the piece.
 - 9 products carry 3 Antigravity images each and are **LOCKED**. The other 16 keep
@@ -122,7 +123,10 @@ since her sheet called all six "Antitarnish earring" · spelling corrections
 orange linen dresses are one product or two · imported vs Indian per item · delivery
 cost and timeline.
 
-**Missing stock:** press-on nails and bags show "Coming soon".
+**Missing stock:** bags still show "Coming soon". Press-on nails are live — five designs
+from her catalogue PDF — but **unpriced**: they carry `price:null` and the card reads
+"Price on WhatsApp". The ₹999 on the maker's instruction card is that maker's MRP, not
+hers, so it is not used. `owner-questions.html` now opens by asking for the five prices.
 
 **Needs a decision:** no analytics, so nobody can tell whether the site produces
 enquiries. Requires an account and an ID.

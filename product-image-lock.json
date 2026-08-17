@@ -254,6 +254,76 @@
         "SB-JWL-10-3.jpg"
       ],
       "images": []
+    },
+    "SB-NLS-01": {
+      "productKey": "nails_1",
+      "siteCode": "SB-NLS-01",
+      "productName": "Blush floral press-on nails",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "source/staged-nails",
+      "sourceFiles": [
+        "SB-NLS-01-1.jpg"
+      ],
+      "images": [
+        "nails_1-a1.jpg"
+      ]
+    },
+    "SB-NLS-02": {
+      "productKey": "nails_2",
+      "siteCode": "SB-NLS-02",
+      "productName": "Champagne glitter press-on nails",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "source/staged-nails",
+      "sourceFiles": [
+        "SB-NLS-02-1.jpg"
+      ],
+      "images": [
+        "nails_2-a1.jpg"
+      ]
+    },
+    "SB-NLS-03": {
+      "productKey": "nails_3",
+      "siteCode": "SB-NLS-03",
+      "productName": "Botanical line press-on nails",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "source/staged-nails",
+      "sourceFiles": [
+        "SB-NLS-03-1.jpg"
+      ],
+      "images": [
+        "nails_3-a1.jpg"
+      ]
+    },
+    "SB-NLS-04": {
+      "productKey": "nails_4",
+      "siteCode": "SB-NLS-04",
+      "productName": "Wine gloss press-on nails",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "source/staged-nails",
+      "sourceFiles": [
+        "SB-NLS-04-1.jpg"
+      ],
+      "images": [
+        "nails_4-a1.jpg"
+      ]
+    },
+    "SB-NLS-05": {
+      "productKey": "nails_5",
+      "siteCode": "SB-NLS-05",
+      "productName": "Silver filigree press-on nails",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "source/staged-nails",
+      "sourceFiles": [
+        "SB-NLS-05-1.jpg"
+      ],
+      "images": [
+        "nails_5-a1.jpg"
+      ]
     }
   }
 }
