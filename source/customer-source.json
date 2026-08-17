@@ -1,0 +1,111 @@
+{
+  "_comment": "What the boutique's catalogue PDFs actually say. The PDFs carry no text layer -- every product name and price is drawn into the photograph itself -- so these were read by eye from the pictures and written down here. Each entry can be checked against source/extracted/<file>. 'caption' and 'price' are transcriptions, quoted exactly as printed including the boutique's own spelling; nothing here is inferred, corrected or filled in. sha1 ties a transcription to the exact image it was read from, so a changed picture is caught instead of silently inheriting the old words.",
+  "_transcribedOn": "2026-08-17",
+  "_pdfs": "source/customer-pdf/",
+  "sources": {
+    "Anklets_p1": {
+      "sha1": "590e227b930a754677eedaac1b9dca128ae3944b",
+      "caption": "Anklets",
+      "price": 280,
+      "priceAsPrinted": "280/-",
+      "shows": "Gold anklet worn on a dark display foot: rhinestone-set section on one side, a gold bow at the centre front, swirl-link chain running to the other side.",
+      "productKey": "anklets_1",
+      "siteCode": "SB-JWL-16",
+      "matchedOn": "name 'Anklets' and price 280 both agree with the catalogue entry 'Anklet' at Rs 280"
+    },
+    "Anklets_p2": {
+      "sha1": "d9c0e302de18a16bb4507ab08905f5eada9bac9a",
+      "caption": "Antitarnish anklet",
+      "price": 280,
+      "priceAsPrinted": "Pr-280",
+      "shows": "Fine gold anklet on a white foot form against black: thin chain with small gold beads and a drop at the end.",
+      "productKey": "anklets_2",
+      "siteCode": "SB-JWL-17",
+      "matchedOn": "name 'Antitarnish anklet' and price 280 both agree with the catalogue entry 'Anti-tarnish anklet' at Rs 280"
+    },
+    "armcuff_p1": {
+      "sha1": "e93d389d662d50fdd0babe4402be9a4e9d0ecb37",
+      "caption": "Nature inspired butterfly armcuff",
+      "price": 280,
+      "priceAsPrinted": "280/-",
+      "shows": "Gold armcuff worn on an upper arm: two filigree butterflies on a fine open coil.",
+      "productKey": "armcuff_1",
+      "siteCode": "SB-JWL-14",
+      "matchedOn": "'butterfly armcuff' and price 280 both agree with the catalogue entry 'Butterfly armcuff' at Rs 280"
+    },
+    "armcuff_p2": {
+      "sha1": "634604934d52d2f00daaee763fc7b4c2409457ba",
+      "caption": "Sculpted double floral open armcuff",
+      "price": 280,
+      "priceAsPrinted": "Pr-280/-",
+      "shows": "Gold armcuff worn on an upper arm: two sculpted daisy flowers on an open double band.",
+      "productKey": "armcuff_2",
+      "siteCode": "SB-JWL-15",
+      "matchedOn": "caption matches the catalogue name 'Sculpted double floral open armcuff' word for word, price 280 agrees"
+    },
+    "bracelet_p1": {
+      "sha1": "dcd42d7881fa512281b2bbd3f9cfcca1479f4e8f",
+      "caption": "Evileye charm bracelet",
+      "price": 350,
+      "priceAsPrinted": "Pr-350/-",
+      "shows": "Gold bangle-style bracelet in a presentation box, with evil-eye charms, a pave bead, gold beads and a blue teardrop stone.",
+      "productKey": "bracelet_1",
+      "siteCode": "SB-JWL-13",
+      "matchedOn": "'Evileye charm bracelet' and price 350 both agree with the catalogue entry 'Evil eye charm bracelet' at Rs 350"
+    },
+    "Black_clover_set_p1": {
+      "sha1": "16b58cf4f21d5901ae497f24e50a93df7eeeec3c",
+      "caption": "Black clover set",
+      "price": 499,
+      "priceAsPrinted": "499/-",
+      "shows": "Gold and black four-leaf-clover parure on satin: necklace, bracelet, ring and a pair of studs, all with black clover motifs.",
+      "productKey": "black_clover_set_1",
+      "siteCode": "SB-JWL-10",
+      "matchedOn": "caption matches the catalogue name 'Black clover set' word for word, price 499 agrees"
+    },
+    "Cloth_section_western_wear_p1": {
+      "sha1": "3898a65475f1d526d6ed2f8ba5d9cae6c2e59c97",
+      "caption": "Round neck polyster kafthan with inner",
+      "price": 1280,
+      "priceAsPrinted": "Price - 1,280/-",
+      "shows": "Two garments side by side on hangers: a plain fuchsia sleeveless inner with matching shorts, and the kaftan itself in a coral, pink and orange abstract print with gold embroidery at the neckline.",
+      "productKey": "cloth_section_western_wear_1",
+      "siteCode": "SB-WES-01",
+      "matchedOn": "caption matches the catalogue name (site spells it 'Round-neck polyester kaftan with inner'), price 1280 agrees",
+      "note": "One photograph containing both pieces of the one product -- the inner and the kaftan. Not two products."
+    },
+    "Cloth_section_western_wear_p2": {
+      "sha1": "40e65ee8692e9d24372675ce389bd9129c6b99c5",
+      "caption": "Cotton embroidery with elastic hand cordset",
+      "price": 1352,
+      "priceAsPrinted": "Price - 1,352",
+      "shows": "Brown cotton co-ord with cream and brown floral cutwork embroidery along the hems: left half worn by a model outdoors, right half the top and wide trousers on hangers.",
+      "productKey": "cloth_section_western_wear_2",
+      "siteCode": "SB-COR-01",
+      "matchedOn": "caption matches the catalogue name 'Cotton embroidery elastic-hand cordset', price 1352 agrees",
+      "note": "One photograph holding two genuine views of the same co-ord -- worn, and flat on hangers."
+    },
+    "Cloth_section_western_wear_p3": {
+      "sha1": "097f8b8e18469ae380872afa1448861669ec286c",
+      "caption": "Plazo cordset with inner lining",
+      "price": 950,
+      "priceAsPrinted": "Price - 950/-",
+      "shows": "Charcoal/black co-ord worn by a model beside a blue car: V-neck three-quarter-sleeve top with gold-outlined floral embroidery down the front, matching palazzo trousers.",
+      "productKey": "cloth_section_western_wear_3",
+      "siteCode": "SB-COR-02",
+      "matchedOn": "caption matches the catalogue name 'Palazzo cordset with inner lining', price 950 agrees"
+    },
+    "Cloth_section_western_wear_p4": {
+      "sha1": "fdd20e0c7c3bf1d07961cf1cb352ff3c116a332f",
+      "caption": "Western wear",
+      "price": null,
+      "priceAsPrinted": null,
+      "shows": "Indigo asymmetric tunic with red and cream geometric embroidery down the front, tassels at the hem, worn with wide indigo palazzo trousers -- shown both on a model and on a hanger.",
+      "productKey": null,
+      "siteCode": null,
+      "status": "SKIPPED",
+      "reason": "No price is printed on this page and the caption is only the category, 'Western wear'. There is no matching product in the catalogue. Rule: no confirmed price, no live product -- do not create one and do not attach these images to any other piece.",
+      "matchedOn": null
+    }
+  }
+}

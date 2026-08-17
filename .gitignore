@@ -11,3 +11,6 @@ _drive/
 
 # unrelated project living in this folder
 griha-pravesh/
+
+# extracted from source/customer-pdf by extract-source.py — regenerate, don't commit
+source/extracted/
