@@ -14,7 +14,10 @@
 */
 const fs = require("fs");
 
-const DIR = "C:/Maya test/";
+/* The project folder is wherever this script lives, so the build runs from any
+   checkout on any machine rather than one hardcoded path. Kept with a trailing
+   slash and forward slashes, as every path below is built by concatenation. */
+const DIR = __dirname.replace(/\\/g, "/").replace(/\/?$/, "/");
 const SRC = DIR + "sthree-boutique.html";
 
 /* Public base URL of the live site, no trailing slash. Until this is set,

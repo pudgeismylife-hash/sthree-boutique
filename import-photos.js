@@ -26,7 +26,8 @@ const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
 
-const DIR        = "C:/Maya test/";
+/* The project folder is wherever this script lives — see build-hosted.js. */
+const DIR        = __dirname.replace(/\\/g, "/").replace(/\/?$/, "/");
 const SRC_HTML   = DIR + "sthree-boutique.html";
 const LOCK_FILE  = DIR + "product-image-lock.json";
 const MAP_FILE   = DIR + "photo-map.json";
