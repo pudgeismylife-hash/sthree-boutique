@@ -6,6 +6,18 @@
 <title>Sthree Boutique — Bikarnakatte, Mangalore</title>
 <meta name="description" content="Sthree Boutique, Bikarnakatte, Mangalore. Western and ethnic wear, co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported &amp; Indian, delivered across India and worldwide. Order on WhatsApp.">
 <meta name="theme-color" content="#FAF6F0">
+<!-- Installable to a phone's home screen, with her mark as the app icon. These
+     are real files rather than the data URI the script used to set, because an
+     installer and a crawler both read the markup without running the page. -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Sthree">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
 
 <meta property="og:title" content="Sthree Boutique — Bikarnakatte, Mangalore">
@@ -945,7 +957,10 @@ const arrivals = [
     m.name = "viewport"; m.content = "width=device-width,initial-scale=1,viewport-fit=cover";
     document.head.appendChild(m);
   }
-  if(CONFIG.logo){
+  /* The icon is declared in the markup as real files now. The standalone copy,
+     which travels as a single file with nothing beside it, still needs the
+     inlined logo — but the hosted site must keep its own icons. */
+  if(CONFIG.logo && CONFIG.logo.startsWith("data:") && !document.querySelector("link[rel='manifest']")){
     let link = document.querySelector("link[rel~='icon']");
     if(!link){ link = document.createElement("link"); link.rel = "icon"; document.head.appendChild(link); }
     link.href = CONFIG.logo;
@@ -1501,6 +1516,12 @@ const arrivals = [
   $("#menuClose").addEventListener("click", ()=> close(true));
   panel.querySelectorAll("nav a").forEach(a=> a.addEventListener("click", ()=> close(false)));
   addEventListener("keydown", e=>{ if(e.key === "Escape" && panel.classList.contains("open")) close(true); });
+
+  /* Registering makes the site installable. Guarded because a service worker
+     cannot exist on file://, which is how the standalone copy is opened. */
+  if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+    addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
+  }
 
   $("#yr").textContent = new Date().getFullYear();
 })();

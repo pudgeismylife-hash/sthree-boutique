@@ -1,0 +1,19 @@
+{
+  "name": "Sthree Boutique",
+  "short_name": "Sthree",
+  "description": "Western and ethnic wear, co-ord sets, anti-tarnish jewellery and press-on nails. Bikarnakatte, Mangalore. Order on WhatsApp.",
+  "start_url": "./?src=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF6F0",
+  "theme_color": "#FAF6F0",
+  "lang": "en-IN",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    { "src": "assets/icons/favicon-32.png",   "sizes": "32x32",   "type": "image/png" },
+    { "src": "assets/icons/icon-192.png",     "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png",     "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
