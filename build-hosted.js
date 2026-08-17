@@ -336,6 +336,101 @@ lost for good. Use Google Drive, or on WhatsApp attach them with <b>Document</b>
   return { clothing: clothing.length, jewellery: jewellery.length };
 }
 
+/* One small page per product, carrying that product's own link preview.
+   WhatsApp, Instagram and Facebook read the preview out of the HTML they are
+   given and never run its JavaScript, so a single page that switches products
+   client-side can only ever offer one preview for all 25. These give each piece
+   its own, then send a real visitor on to the piece itself.
+
+   ?p=<key> keeps working exactly as before; this is an extra address, not a
+   replacement, so every link already shared stays valid. */
+function productPages(items, base) {
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const dir = DIR + "p/";
+  fs.mkdirSync(dir, { recursive: true });
+
+  const LABEL = {ethnic:"Ethnic wear", western:"Western wear", coord:"Co-ord set", jewellery:"Jewellery"};
+  const seq = {}, CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL"};
+  let written = 0, noCard = [];
+
+  for (const p of items) {
+    seq[p.cat] = (seq[p.cat] || 0) + 1;
+    const code = "SB-" + (CAT[p.cat] || "GEN") + "-" + String(seq[p.cat]).padStart(2, "0");
+    const card = "assets/og/" + p.key + ".jpg";
+    if (!fs.existsSync(DIR + card)) noCard.push(p.key);
+
+    const price = "₹" + Number(p.price).toLocaleString("en-IN");
+    const title = p.name + " — " + price;
+    const desc  = price + " · " + (LABEL[p.cat] || p.label) + " · " + code +
+                  " · Sthree Boutique, Bikarnakatte, Mangalore. Order on WhatsApp.";
+    const here  = base + "/p/" + p.key + ".html";
+    const real  = base + "/?p=" + encodeURIComponent(p.key);
+    /* Crawlers are given absolute addresses, which they require, but the
+       redirect and the visible link are relative so the page also works opened
+       from disk, from a preview host, or from anywhere the site is copied to
+       rather than jumping to the live domain. */
+    const rel   = "../?p=" + encodeURIComponent(p.key);
+
+    fs.writeFileSync(dir + p.key + ".html",
+`<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(title)} — Sthree Boutique</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${esc(real)}">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Sthree Boutique">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${esc(here)}">
+<meta property="og:image" content="${esc(base + "/" + card)}">
+<meta property="og:image:secure_url" content="${esc(base + "/" + card)}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(p.name)}">
+<meta property="product:price:amount" content="${esc(String(p.price))}">
+<meta property="product:price:currency" content="INR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:image" content="${esc(base + "/" + card)}">
+<style>
+body{margin:0;background:#FAF6F0;color:#14110F;font-family:system-ui,"Segoe UI",sans-serif;
+  display:grid;place-items:center;min-height:100vh;padding:24px;line-height:1.6}
+.c{max-width:420px;text-align:center}
+img{max-width:100%;height:auto;display:block;margin:0 auto 18px;border:1px solid rgba(20,17,15,.12)}
+h1{font-family:Georgia,serif;font-weight:400;font-size:23px;margin:0 0 4px}
+p{margin:0 0 18px;color:#57514A;font-size:14px}
+.pr{color:#A98037;font-family:ui-monospace,Consolas,monospace}
+a.b{display:inline-block;background:#14110F;color:#FAF6F0;text-decoration:none;
+  padding:12px 22px;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+a.b:focus-visible{outline:2px solid #A98037;outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="c">
+<img src="../${esc(card)}" alt="${esc(p.name)}" width="1200" height="630">
+<h1>${esc(p.name)}</h1>
+<p><span class="pr">${esc(price)}</span> · ${esc(LABEL[p.cat] || p.label)} · ${esc(code)}</p>
+<p><a class="b" href="${esc(rel)}">View this piece</a></p>
+</div>
+<script>
+/* Send a real visitor to the piece itself. replace(), not assign(), so Back
+   returns to wherever they came from instead of bouncing them here again. */
+location.replace(${JSON.stringify(rel)});
+<\/script>
+</body>
+</html>
+`, "utf8");
+    written++;
+  }
+  return { written, noCard };
+}
+
 /* ── strip the document wrapper for the artifact host ───────────── */
 function unwrap(s) {
   const out = s
@@ -370,6 +465,7 @@ const schema = productSchema(pages, SITE_URL || "");
 pages = schema.html;
 const shots = shotList(schema.items);
 const asks = ownerQuestions(schema.items);
+const stubs = productPages(schema.items, SITE_URL || "");
 check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og:image", "assets/products/"]);
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
 
@@ -386,6 +482,11 @@ const kb = n => Math.round(n / 1024) + " KB";
 console.log("schema " + schema.count + " products");
 console.log("shots  photo-shot-list.html (" + shots + " pieces)");
 console.log("asks   owner-questions.html (" + asks.clothing + " clothing, " + asks.jewellery + " jewellery)");
+console.log("share  p/*.html (" + stubs.written + " product link previews)");
+if (stubs.noCard.length) {
+  console.log("       WARN no preview card for: " + stubs.noCard.join(", "));
+  console.log("       run:  python3 build-og-images.py --apply");
+}
 console.log("logo   " + logoName + " (" + kb(logoBytes.length) + ")");
 console.log("index.html                    " + kb(pages.length) + "   links " + logoName);
 console.log("sthree-boutique-hosted.html   " + kb(artifact.length) + "   logo inlined");

@@ -36,8 +36,12 @@ node build-hosted.js
 
 That produces `index.html` (the public site), `sthree-boutique-share.html` (standalone
 copy to send as a file), `sthree-boutique-hosted.html` (the preview copy),
-the Product structured data, `photo-shot-list.html`, and `owner-questions.html`.
-Nothing can drift.
+the Product structured data, `photo-shot-list.html`, `owner-questions.html`, and `p/` —
+one small page per product carrying its own WhatsApp link preview. Nothing can drift.
+
+The preview **cards** in `assets/og/` are built separately by
+`python3 build-og-images.py --apply`, only when a product photo changes, so the main
+build needs no Python. The build warns if a product has no card.
 
 The build runs from wherever the repo sits — the scripts take their folder from their
 own location, so `C:\Maya test` is no longer required.

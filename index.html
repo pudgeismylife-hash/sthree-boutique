@@ -829,7 +829,12 @@ const arrivals = [
   const siteBase = (CONFIG.site && CONFIG.site.indexOf("__") === -1)
     ? CONFIG.site.replace(/\/$/,"")
     : (location.origin + location.pathname).replace(/\/index\.html$/,"").replace(/\/$/,"");
-  const productUrl = p => siteBase + "/?p=" + encodeURIComponent(p.key);
+  /* Shared and sent links point at the piece's own small page, because that is
+     what carries its picture and price into a WhatsApp preview — the catalogue
+     page can only ever offer one preview for all 25. Opening it forwards
+     straight here. ?p=<key> is untouched and still opens the piece directly, so
+     every link shared before this change keeps working. */
+  const productUrl = p => siteBase + "/p/" + p.key + ".html";
 
   const enquiry = (p, size) => wa(
     "Hi Sthree Boutique, I'd like to enquire about:\n\n" +

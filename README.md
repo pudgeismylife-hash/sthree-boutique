@@ -20,6 +20,9 @@ It opens straight from a file or from any static host.
 | `extract-source.py` | Unpacks the photographs out of the boutique's catalogue PDFs. |
 | `prep-source-views.py` | Cuts the printed caption off each photograph and splits composites into separate views, ready for the importer. |
 | `build-tiles.py` | Rebuilds a category tile from a chosen product photograph. Tiles are composites, so an import never refreshes them. |
+| `build-og-images.py` | Builds `assets/og/<key>.jpg`, the 1200×630 card each product link previews with. |
+| `p/` | Built — one small page per product carrying its own link preview, forwarding to the piece. |
+| `assets/og/` | Built — the per-product preview cards. |
 | `source/customer-pdf/` | The boutique's catalogue PDFs — the source of truth for what each product actually looks like. |
 | `source/customer-source.json` | Every product name and price as printed in those PDFs, transcribed by hand because the PDFs have no text layer. |
 | `product-image-lock.json` | Source of truth for product-image mapping. LOCKED entries are never changed by an import. |
@@ -125,6 +128,33 @@ blind would have put a kaftan photo on a necklace. The dry run exists to catch
 exactly that.
 
 ## Link previews
+
+Every product has its own preview. Paste a product link into WhatsApp and it shows
+that piece, its name and its price, instead of the boutique logo — which matters when
+orders arrive by shared link.
+
+WhatsApp, Instagram and Facebook read the preview out of the HTML they are handed and
+never run its JavaScript, so a single page that switches products client-side can only
+ever offer one preview for all 25. The build therefore writes one small page per
+product in `p/`, each carrying its own tags and forwarding a real visitor to the piece.
+The Share button and every WhatsApp enquiry now send that address.
+
+`?p=<key>` is unchanged and still opens a piece directly, so links shared before this
+keep working.
+
+The preview cards themselves are built separately, because they need Pillow and
+`node build-hosted.js` must stay dependency-free:
+
+```bash
+python3 build-og-images.py --apply    # only when a product photo changes
+node build-hosted.js
+```
+
+The build warns if a product has no card. No text is drawn into a card: WhatsApp
+already prints the name and price beside it, and burning words into an image ties the
+build to a font that is not on every machine.
+
+## Site-wide link preview
 
 For the logo to appear as the thumbnail when the link is shared on WhatsApp, the site
 must be publicly reachable and `SITE_URL` at the top of `build-hosted.js` must be set to
