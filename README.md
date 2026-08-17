@@ -15,6 +15,7 @@ It opens straight from a file or from any static host.
 |---|---|
 | `sthree-boutique.html` | **The source.** Edit this one. |
 | `build-hosted.js` | Produces every distributable copy from the source. |
+| `import-photos.js` | Installs product photographs from a folder, checking every code against the catalogue first. |
 | `index.html` | Built — the public site (GitHub Pages serves this). |
 | `sthree-boutique-share.html` | Built — standalone copy to send as a file on WhatsApp. |
 | `sthree-boutique-hosted.html` | Built — copy for the private Claude preview link. |
@@ -68,7 +69,27 @@ carries the codes with thumbnails; send it to the boutique.
 
 Images live at three sizes: `assets/products/` (720×900, used by the zoomable
 viewer), `assets/products/thumb/` (360px, used by cards and tiles) and
-`assets/hero-*.jpg`. Regenerate thumbnails after adding photos.
+`assets/hero-*.jpg`.
+
+### Installing photos
+
+Name files `<CODE>-1.jpg`, `-2`, `-3` — full view, worn, detail — then:
+
+```bash
+node import-photos.js "path/to/folder"          # report only, writes nothing
+node import-photos.js "path/to/folder" --apply  # resize, install, wire up
+node build-hosted.js
+```
+
+It resizes to both sizes, adds an `images` list to each product, and the viewer
+grows a thumbnail strip automatically. Products with one photo are unaffected.
+
+**Always read the dry run first.** Codes are the only thing tying a photo to a
+product, and a folder prepared elsewhere may number things differently. A batch
+supplied in Aug 2026 used `SB-JWL-01`–`10` for anklets, arm cuffs and kaftans,
+while those same codes on this site are earrings and necklaces — applying it
+blind would have put a kaftan photo on a necklace. The dry run exists to catch
+exactly that.
 
 ## Link previews
 
