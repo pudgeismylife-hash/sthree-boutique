@@ -72,13 +72,13 @@ function productSchema(s, base) {
   const seq = {}, CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL"};
   const list = items.map((p, n) => {
     seq[p.cat] = (seq[p.cat] || 0) + 1;
-    const key = p.img.replace(/^.*\//, "").replace(/\.jpg$/, "");
+    const key = p.key;
     const code = "SB-" + (CAT[p.cat] || "GEN") + "-" + String(seq[p.cat]).padStart(2, "0");
     return {
       "@type": "ListItem", position: n + 1,
       item: {
         "@type": "Product", name: p.name, sku: code,
-        image: base + "/" + ((p.images && p.images.length) ? p.images[0] : p.img), url: base + "/?p=" + key,
+        image: base + "/" + p.images[0], url: base + "/?p=" + key,
         brand: {"@type": "Brand", name: "Sthree Boutique"},
         category: p.label,
         offers: {
@@ -106,7 +106,7 @@ function shotList(items) {
   const seq = {};
   const rows = items.map(p => {
     seq[p.cat] = (seq[p.cat] || 0) + 1;
-    const thumb = DIR + p.img.replace("assets/products/", "assets/products/thumb/");
+    const thumb = DIR + p.images[0].replace("assets/products/", "assets/products/thumb/");
     return {
       cat: p.cat, name: p.name, price: p.price,
       code: "SB-" + (CAT[p.cat] || "GEN") + "-" + String(seq[p.cat]).padStart(2, "0"),

@@ -1,0 +1,181 @@
+{
+  "_comment": "Single source of truth for product-image mapping. A product code is the permanent identity of its image set. LOCKED entries must not be remapped, reordered or overwritten by any import; changing one requires an explicit unlock. Never infer assignment from array position, product number, filename order or alphabetical order.",
+  "_generated": "2026-08-17",
+  "products": {
+    "SB-JWL-01": {
+      "productKey": "anklets_1",
+      "siteCode": "SB-JWL-16",
+      "productName": "Anklet",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-01-1.jpg",
+        "SB-JWL-01-2.jpg",
+        "SB-JWL-01-3.jpg"
+      ],
+      "images": [
+        "anklets_1-a1.jpg",
+        "anklets_1-a2.jpg",
+        "anklets_1-a3.jpg"
+      ]
+    },
+    "SB-JWL-02": {
+      "productKey": "anklets_2",
+      "siteCode": "SB-JWL-17",
+      "productName": "Anti-tarnish anklet",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-02-1.jpg",
+        "SB-JWL-02-2.jpg",
+        "SB-JWL-02-3.jpg"
+      ],
+      "images": [
+        "anklets_2-a1.jpg",
+        "anklets_2-a2.jpg",
+        "anklets_2-a3.jpg"
+      ]
+    },
+    "SB-JWL-03": {
+      "productKey": "armcuff_1",
+      "siteCode": "SB-JWL-14",
+      "productName": "Butterfly armcuff",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-03-1.jpg",
+        "SB-JWL-03-2.jpg",
+        "SB-JWL-03-3.jpg"
+      ],
+      "images": [
+        "armcuff_1-a1.jpg",
+        "armcuff_1-a2.jpg",
+        "armcuff_1-a3.jpg"
+      ]
+    },
+    "SB-JWL-04": {
+      "productKey": "armcuff_2",
+      "siteCode": "SB-JWL-15",
+      "productName": "Sculpted double floral open armcuff",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-04-1.jpg",
+        "SB-JWL-04-2.jpg",
+        "SB-JWL-04-3.jpg"
+      ],
+      "images": [
+        "armcuff_2-a1.jpg",
+        "armcuff_2-a2.jpg",
+        "armcuff_2-a3.jpg"
+      ]
+    },
+    "SB-JWL-05": {
+      "productKey": "bracelet_1",
+      "siteCode": "SB-JWL-13",
+      "productName": "Evil eye charm bracelet",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-05-1.jpg",
+        "SB-JWL-05-2.jpg",
+        "SB-JWL-05-3.jpg"
+      ],
+      "images": [
+        "bracelet_1-a1.jpg",
+        "bracelet_1-a2.jpg",
+        "bracelet_1-a3.jpg"
+      ]
+    },
+    "SB-JWL-06": {
+      "productKey": "black_clover_set_1",
+      "siteCode": "SB-JWL-10",
+      "productName": "Black clover set",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-06-1.jpg",
+        "SB-JWL-06-2.jpg",
+        "SB-JWL-06-3.jpg"
+      ],
+      "images": [
+        "black_clover_set_1-a1.jpg",
+        "black_clover_set_1-a2.jpg",
+        "black_clover_set_1-a3.jpg"
+      ]
+    },
+    "SB-JWL-07": {
+      "productKey": "cloth_section_western_wear_1",
+      "siteCode": "SB-WES-01",
+      "productName": "Round-neck polyester kaftan with inner",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-07-1.jpg",
+        "SB-JWL-07-2.jpg",
+        "SB-JWL-07-3.jpg"
+      ],
+      "images": [
+        "cloth_section_western_wear_1-a1.jpg",
+        "cloth_section_western_wear_1-a2.jpg",
+        "cloth_section_western_wear_1-a3.jpg"
+      ]
+    },
+    "SB-JWL-08": {
+      "productKey": "cloth_section_western_wear_2",
+      "siteCode": "SB-COR-01",
+      "productName": "Cotton embroidery elastic-hand cordset",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-08-1.jpg",
+        "SB-JWL-08-2.jpg",
+        "SB-JWL-08-3.jpg"
+      ],
+      "images": [
+        "cloth_section_western_wear_2-a1.jpg",
+        "cloth_section_western_wear_2-a2.jpg",
+        "cloth_section_western_wear_2-a3.jpg"
+      ]
+    },
+    "SB-JWL-09": {
+      "productKey": "cloth_section_western_wear_3",
+      "siteCode": "SB-COR-02",
+      "productName": "Palazzo cordset with inner lining",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "sourceFiles": [
+        "SB-JWL-09-1.jpg",
+        "SB-JWL-09-2.jpg",
+        "SB-JWL-09-3.jpg"
+      ],
+      "images": [
+        "cloth_section_western_wear_3-a1.jpg",
+        "cloth_section_western_wear_3-a2.jpg",
+        "cloth_section_western_wear_3-a3.jpg"
+      ]
+    },
+    "SB-JWL-10": {
+      "productKey": null,
+      "siteCode": null,
+      "productName": "Western Wear Indigo Asymmetric Tassel Tunic & Wide Palazzo Set",
+      "status": "SKIPPED",
+      "reason": "no matching product in the catalogue and no confirmed price; do not create, do not assign elsewhere",
+      "sourceFiles": [
+        "SB-JWL-10-1.jpg",
+        "SB-JWL-10-2.jpg",
+        "SB-JWL-10-3.jpg"
+      ],
+      "images": []
+    }
+  }
+}
