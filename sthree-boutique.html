@@ -552,7 +552,11 @@ footer li a:hover{color:var(--gold)}
 }
 .viewer-hint.gone{opacity:0}
 @media (max-width:899px){
-  .viewer-stagewrap{height:46svh;min-height:220px}
+  .viewer-stagewrap{height:52svh;min-height:260px}
+  /* The hint sat centred along the bottom and the zoom control sits bottom
+     right, so on a phone they overlapped and the hint was clipped mid-word.
+     It moves to the top of the stage, where nothing else is. */
+  .viewer-hint{bottom:auto;top:10px}
   .viewer-panel{max-height:none}
   .viewer-nav{width:40px;height:40px;font-size:22px}
 }

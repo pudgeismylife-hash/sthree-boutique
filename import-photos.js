@@ -175,10 +175,13 @@ const py = [
   "src, full, thumb = sys.argv[1], sys.argv[2], sys.argv[3]",
   "CREAM=(250,246,240)",
   "im = Image.open(src).convert('RGB')",
-  "im.thumbnail((720-64, 900-64), Image.LANCZOS)",
-  "c = Image.new('RGB',(720,900),CREAM)",
-  "c.paste(im, ((720-im.width)//2, (900-im.height)//2))",
-  "c.save(full, quality=86, optimize=True, progressive=True)",
+  "im.thumbnail((720, 900), Image.LANCZOS)",
+  # The full-size file is the photograph, not the photograph on a cream mat.
+  # It used to be letterboxed onto 720x900, which meant the zoom viewer fitted
+  # a mostly-empty canvas into the stage and showed the piece small in the
+  # middle of it — the photograph was only 48% of its own file.
+  "im.save(full, quality=88, optimize=True, progressive=True)",
+  "c = im",
   "tw, th = 360, 450",
   "t = Image.new('RGB',(tw,th),CREAM)",
   "if im.width/im.height <= 1.30:",
