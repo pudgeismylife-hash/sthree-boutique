@@ -833,15 +833,15 @@ const reviews = [];
 const P = "assets/products/";
 const arrivals = [
   // Ethnic
-  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, kw:"saree sari ethnic", key:"sarees_1", images:[P+"sarees_1.jpg"] },
-  { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, kw:"saree sari ethnic", key:"sarees_2", images:[P+"sarees_2.jpg"] },
-  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", key:"sarees_3", images:[P+"sarees_3.jpg"] },
+  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, kw:"saree sari ethnic", fabric:"Poly cotton, zari weaving", key:"sarees_1", images:[P+"sarees_1.jpg"] },
+  { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, kw:"saree sari ethnic", fabric:"Silk, mirror handwork", key:"sarees_2", images:[P+"sarees_2.jpg"] },
+  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", fabric:"Georgette, sequin embroidery", key:"sarees_3", images:[P+"sarees_3.jpg"] },
   // Western
-  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
-  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", key:"gowns_1", images:[P+"gowns_1.jpg"] },
-  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, kw:"dress gown western frock", key:"gowns_2", images:[P+"gowns_2.jpg"] },
+  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", fabric:"Polyester", key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
+  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", fabric:"Linen cotton", key:"gowns_1", images:[P+"gowns_1.jpg"] },
+  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, kw:"dress gown western frock", fabric:"Linen cotton", key:"gowns_2", images:[P+"gowns_2.jpg"] },
   // Co-ord sets
-  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", key:"cloth_section_western_wear_2", images:[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"] },
+  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", fabric:"Cotton, cutwork embroidery", key:"cloth_section_western_wear_2", images:[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"] },
   { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  kw:"cordset co-ord coord palazzo set", key:"cloth_section_western_wear_3", images:[P+"cloth_section_western_wear_3-a1.jpg",P+"cloth_section_western_wear_3-a2.jpg"] },
   // Jewellery — earrings
   { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  kw:"earrings earring studs stud jhumka", key:"earring_1", images:[P+"earring_1.jpg"] },
@@ -1180,7 +1180,7 @@ const arrivals = [
 
     /* Spec rows — each appears only when the boutique has supplied it. */
     const spec = [
-      ["Category", ({ethnic:"Ethnic wear",western:"Western wear",coord:"Co-ord set",jewellery:"Jewellery"})[p.cat]],
+      ["Category", ({ethnic:"Ethnic wear",western:"Western wear",coord:"Co-ord set",jewellery:"Jewellery",nails:"Press-on nails",bags:"Bags"})[p.cat]],
       ["Fabric",   p.fabric],
       ["Fit",      p.fit],
       ["Care",     p.care],
@@ -1193,8 +1193,9 @@ const arrivals = [
        on a set of press-on nails reads as a page that does not know what it is
        selling. */
     const GARMENT = ["ethnic","western","coord"];
-    const missing = GARMENT.includes(p.cat)
-      ? ["fabric","fit","care"].filter(f=>!p[f]).length : 0;
+    const WORD = {fabric:"Fabric", fit:"fit", care:"wash care"};
+    const gaps = GARMENT.includes(p.cat)
+      ? ["fabric","fit","care"].filter(f=>!p[f]) : [];
     /* Wearing instructions for this category, when there are any. */
     (function how(){
       const h = (CONFIG.howTo || {})[p.cat], box = $("#vHow");
@@ -1209,8 +1210,15 @@ const arrivals = [
         (h.inBox ? `<p class="rem">${esc(h.inBox)}</p>` : "");
     })();
 
+        /* Name only what is genuinely still unknown. Saying "fabric" is missing on a
+       piece whose fabric is printed two rows above reads as a page that has not
+       looked at itself. */
+    const gapText = gaps.map((f,i) => i === 0 ? WORD[f] : WORD[f]);
+    const listed = gapText.length > 1
+      ? gapText.slice(0,-1).join(", ") + " and " + gapText[gapText.length-1]
+      : gapText[0];
     $("#vNotes").innerHTML = p.desc ? `<p>${esc(p.desc)}</p>` :
-      (missing ? `<p class="missing">Fabric, fit and care details coming soon — ask on WhatsApp and we'll tell you everything.</p>` : "");
+      (gaps.length ? `<p class="missing">${esc(listed)} details coming soon — ask on WhatsApp and we'll tell you everything.</p>` : "");
 
     const link = $("#vWa");
     link.href = enquiry(p, chosen);
