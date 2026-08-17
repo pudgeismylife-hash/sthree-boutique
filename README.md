@@ -25,6 +25,7 @@ It opens straight from a file or from any static host.
 | `assets/` | Logo artwork. `logo-web.png` is used on the site; the full-size and dark variants are kept alongside it. |
 | `og-image.jpg` | 1200×630 link-preview thumbnail (WhatsApp, Instagram, Facebook). |
 | `photo-shot-list.html` | Built — printable list of every piece with its code and three checkboxes, to send to the boutique when collecting photos. |
+| `owner-questions.html` | Built — every outstanding question on one page (sizes, stock, fabric, the second number, the earring names, delivery), with a blank against each. Send it to Priyanka. |
 | `app-handoff/` | Separate design bundle for the mobile storefront app. |
 | `brand-handoff/` | Branding handoff for direction 3a, which this site implements. |
 
@@ -121,6 +122,10 @@ its code and a link back to it. Jewellery is 17 of the 25. The hero is built
 from four of her own photographs.
 
 ## What we still need from Priyanka
+
+`owner-questions.html` is this section as one page she can answer in a single pass —
+built from the catalogue, so the pieces and prices it quotes back to her cannot drift.
+Send that rather than retyping the list.
 
 **Blocking a proper launch**
 
