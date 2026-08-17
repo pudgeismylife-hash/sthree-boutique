@@ -1,0 +1,13 @@
+{
+  "_comment": "Maps incoming photo codes onto catalogue products when a batch uses its own numbering. Matched on product name, not on the code, because the same code can mean different products in different systems. Verified against SB-JWL-Products/product-index.csv on 17 Aug 2026.",
+  "SB-JWL-01": { "key": "anklets_1",                    "was": "Bow Rhinestone 18K Gold Finish Anklet" },
+  "SB-JWL-02": { "key": "anklets_2",                    "was": "Multi-Strand Anti-Tarnish Heart Charm Anklet" },
+  "SB-JWL-03": { "key": "armcuff_1",                    "was": "Nature-Inspired Filigree Butterfly Open Arm Cuff" },
+  "SB-JWL-04": { "key": "armcuff_2",                    "was": "Sculpted Double Daisy Floral Open Arm Cuff" },
+  "SB-JWL-05": { "key": "bracelet_1",                   "was": "Evil Eye Sapphire & Crystal Charm Snake Chain Bracelet" },
+  "SB-JWL-06": { "key": "black_clover_set_1",           "was": "Black Onyx Four-Leaf Clover 4-Piece Luxury Jewellery Set" },
+  "SB-JWL-07": { "key": "cloth_section_western_wear_1", "was": "Round Neck Polyester Printed Kaftan with Inner Set" },
+  "SB-JWL-08": { "key": "cloth_section_western_wear_2", "was": "Chocolate Brown Cotton Scalloped Cutwork Embroidery Co-ord Set" },
+  "SB-JWL-09": { "key": "cloth_section_western_wear_3", "was": "Midnight Charcoal Palazzo Co-ord Set with Inner Lining & Linear Floral Zari" },
+  "SB-JWL-10": { "key": null,                           "was": "Western Wear Indigo Asymmetric Tassel Tunic & Wide Palazzo Set", "note": "no matching product in the catalogue and no price in the source; needs adding with a price before its photos can be used" }
+}

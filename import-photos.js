@@ -56,19 +56,40 @@ for (const p of items) {
 
 /* ── what is in the folder ────────────────────────────────────────────── */
 const files = fs.readdirSync(folder).filter(f => /\.(jpe?g|png|webp)$/i.test(f));
+/* An outside batch may number things its own way. photo-map.json translates
+   its codes onto catalogue products, matched on product name. Without a map,
+   codes are taken to mean the catalogue's own codes. */
+let MAP = null;
+const mapPath = DIR + "photo-map.json";
+if (fs.existsSync(mapPath)) {
+  MAP = JSON.parse(fs.readFileSync(mapPath, "utf8"));
+  console.log("using photo-map.json to translate incoming codes\n");
+}
+const byKey = new Map([...byCode.values()].map(p => [p.key, p]));
+
 const parsed = [], skipped = [];
 for (const f of files) {
   const hit = f.match(/^(SB-[A-Z]{3}-\d{2})-([123])\.(jpe?g|png|webp)$/i);
   if (!hit) { skipped.push([f, "name does not match <CODE>-<1|2|3>.jpg"]); continue; }
   const code = hit[1].toUpperCase(), n = +hit[2];
-  if (!byCode.has(code)) { skipped.push([f, "no product with code " + code]); continue; }
-  parsed.push({ file: f, code, n });
+
+  let product = null;
+  if (MAP && MAP[code]) {
+    if (!MAP[code].key) { skipped.push([f, "mapped to nothing: " + (MAP[code].note || "no product")]); continue; }
+    product = byKey.get(MAP[code].key);
+    if (!product) { skipped.push([f, "map points at unknown key " + MAP[code].key]); continue; }
+  } else {
+    product = byCode.get(code);
+    if (!product) { skipped.push([f, "no product with code " + code]); continue; }
+  }
+  parsed.push({ file: f, code, n, product });
 }
 
-const groups = new Map();
+const groups = new Map();          // keyed by the catalogue product, not the incoming code
 for (const r of parsed) {
-  if (!groups.has(r.code)) groups.set(r.code, []);
-  groups.get(r.code).push(r);
+  const k = r.product.key;
+  if (!groups.has(k)) groups.set(k, []);
+  groups.get(k).push(r);
 }
 
 console.log("catalogue codes : " + byCode.size);
@@ -80,12 +101,13 @@ if (skipped.length) {
   if (skipped.length > 20) console.log("  … and " + (skipped.length - 20) + " more");
 }
 console.log("\nper product:");
-for (const [code, rows] of [...groups].sort()) {
+for (const [, rows] of [...groups].sort()) {
   const have = rows.map(r => r.n).sort().join(",");
-  const p = byCode.get(code);
-  console.log("  " + code + "  " + (have === "1,2,3" ? "1,2,3 complete" : have + " incomplete").padEnd(18) + p.name);
+  const p = rows[0].product;
+  console.log("  " + rows[0].code + " -> " + p.code.padEnd(11)
+    + (have === "1,2,3" ? "1,2,3" : have + " (partial)").padEnd(13) + p.name);
 }
-const missing = [...byCode.keys()].filter(c => !groups.has(c));
+const missing = [...byCode.values()].filter(p => !groups.has(p.key)).map(p => p.code);
 if (missing.length) console.log("\nno photos yet   : " + missing.length + " products (" + missing.slice(0,6).join(", ") + (missing.length>6?" …":"") + ")");
 
 if (!apply) {
@@ -115,25 +137,25 @@ fs.writeFileSync(script, py, "utf8");
 
 let written = 0;
 const wired = new Map();
-for (const [code, rows] of groups) {
-  const p = byCode.get(code);
-  const list = [];
+for (const [key, rows] of groups) {
+  const p = rows[0].product;
+  const list = [p.img];                       // her own photograph stays first
   for (const r of rows.sort((a, b) => a.n - b.n)) {
-    const outName = p.key + "-" + r.n + ".jpg";
+    const outName = p.key + "-a" + r.n + ".jpg";
     execFileSync("python", [script, path.join(folder, r.file), OUT_FULL + outName, OUT_THUMB + outName], { stdio: "pipe" });
     list.push(P + outName);
     written++;
   }
-  wired.set(code, list);
+  wired.set(key, list);
 }
 console.log("\nwrote " + written + " photos at two sizes each");
 
 /* ── wire the image lists into the catalogue ──────────────────────────── */
 let out = html, patched = 0;
-for (const [code, list] of wired) {
-  const p = byCode.get(code);
+for (const [key, list] of wired) {
+  const p = byKey.get(key);
   const needle = new RegExp('(\\{ cat:"' + p.cat + '"[^\\n]*?img:P\\+"' + p.key.replace(/[-_]/g, "[-_]") + '\\.jpg")');
-  if (!needle.test(out)) { console.log("  WARN could not wire " + code); continue; }
+  if (!needle.test(out)) { console.log("  WARN could not wire " + p.code); continue; }
   const arr = ", images:[" + list.map(s => 'P+"' + s.replace(P, "") + '"').join(",") + "]";
   out = out.replace(needle, "$1" + arr);
   patched++;
