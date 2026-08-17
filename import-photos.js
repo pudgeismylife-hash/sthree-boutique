@@ -139,7 +139,7 @@ let written = 0;
 const wired = new Map();
 for (const [key, rows] of groups) {
   const p = rows[0].product;
-  const list = [p.img];                       // her own photograph stays first
+  const list = [];                            // the imported photos are the gallery
   for (const r of rows.sort((a, b) => a.n - b.n)) {
     const outName = p.key + "-a" + r.n + ".jpg";
     execFileSync("python", [script, path.join(folder, r.file), OUT_FULL + outName, OUT_THUMB + outName], { stdio: "pipe" });

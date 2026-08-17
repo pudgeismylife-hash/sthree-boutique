@@ -78,7 +78,7 @@ function productSchema(s, base) {
       "@type": "ListItem", position: n + 1,
       item: {
         "@type": "Product", name: p.name, sku: code,
-        image: base + "/" + p.img, url: base + "/?p=" + key,
+        image: base + "/" + ((p.images && p.images.length) ? p.images[0] : p.img), url: base + "/?p=" + key,
         brand: {"@type": "Brand", name: "Sthree Boutique"},
         category: p.label,
         offers: {
