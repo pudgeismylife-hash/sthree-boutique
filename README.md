@@ -17,6 +17,11 @@ It opens straight from a file or from any static host.
 | `sthree-boutique.html` | **The source.** Edit this one. |
 | `build-hosted.js` | Produces every distributable copy from the source. |
 | `import-photos.js` | Installs product photographs, validating against the lock before writing. |
+| `extract-source.py` | Unpacks the photographs out of the boutique's catalogue PDFs. |
+| `prep-source-views.py` | Cuts the printed caption off each photograph and splits composites into separate views, ready for the importer. |
+| `build-tiles.py` | Rebuilds a category tile from a chosen product photograph. Tiles are composites, so an import never refreshes them. |
+| `source/customer-pdf/` | The boutique's catalogue PDFs — the source of truth for what each product actually looks like. |
+| `source/customer-source.json` | Every product name and price as printed in those PDFs, transcribed by hand because the PDFs have no text layer. |
 | `product-image-lock.json` | Source of truth for product-image mapping. LOCKED entries are never changed by an import. |
 | `photo-map.json` | Translates an outside batch's codes onto catalogue product keys. |
 | `index.html` | Built — the public site (GitHub Pages serves this). |
@@ -74,6 +79,30 @@ carries the codes with thumbnails; send it to the boutique.
 Images live at three sizes: `assets/products/` (720×900, used by the zoomable
 viewer), `assets/products/thumb/` (360px, used by cards and tiles) and
 `assets/hero-*.jpg`.
+
+### From a catalogue PDF
+
+When the boutique sends a catalogue PDF rather than named files:
+
+```bash
+python3 extract-source.py --apply       # unpack the photographs from source/customer-pdf/
+python3 prep-source-views.py --apply    # cut off the printed caption, split composites
+node import-photos.js source/staged     # dry run — read it
+node import-photos.js source/staged --apply --unlock <CODE>
+python3 build-tiles.py --apply          # only if a category tile should change
+node build-hosted.js
+```
+
+The PDFs carry **no text layer** — the product name and price are drawn into the
+photograph itself, so nothing can read them automatically. They are transcribed by
+hand into `source/customer-source.json`, each tied by sha1 to the image it was read
+from so a changed picture is caught rather than silently keeping the old wording.
+
+`prep-source-views.py` removes the printed caption before anything reaches the site,
+and splits a page that holds two genuine views (worn / on hangers) into separate
+images. Every view is a crop of the boutique's own photograph — nothing is generated.
+A piece gets only the views its photograph really contains; the importer accepts one,
+two or three rather than padding a set out with an invented angle.
 
 ### Installing photos
 

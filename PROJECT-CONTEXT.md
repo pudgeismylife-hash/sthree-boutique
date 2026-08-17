@@ -82,8 +82,15 @@ thumbnail and three checkboxes.
 
 **Derived images are not covered by the importer.** The hero band and the category
 tiles are separate composites built from product photos. Replacing a product photo
-does not update them; they must be rebuilt by hand or they keep showing the old
-picture.
+does not update them. `build-tiles.py` now rebuilds a category tile from a named
+photograph, so at least that choice is written down and repeatable; the hero band is
+still by hand.
+
+**From a catalogue PDF:** `extract-source.py --apply` unpacks the photographs,
+`prep-source-views.py --apply` cuts off the caption printed into each picture and
+splits composites, then the normal importer takes `source/staged`. The PDFs have no
+text layer — names and prices are drawn into the images — so they are transcribed by
+hand in `source/customer-source.json`, sha1-tied to the picture they were read from.
 
 ## State as of 17 Aug 2026
 
@@ -116,6 +123,12 @@ cost and timeline.
 **Needs a decision:** no analytics, so nobody can tell whether the site produces
 enquiries. Requires an account and an ID.
 
-**Known weak spot:** the Co-ord sets category tile. Both co-ord products were imported,
-so their only current image is a flat render; there is no real photograph left for that
-category. One real photo fixes it.
+**Fixed 17 Aug 2026:** the Co-ord sets tile now uses the boutique's own photograph of
+the cotton embroidery cordset, rebuilt by `build-tiles.py`.
+
+**Open conflict:** six jewellery products (SB-JWL-01 to 06) still show generated
+renders while the boutique's own photograph of each sits in `source/customer-pdf/`.
+Two of them, the anklets, are drawn as flat-lay bracelets with a clasp rather than as
+anklets. They are flagged `sourceReview: REVIEW_REQUIRED` in the lock, with status
+deliberately left `LOCKED` so no import can take them silently. Replacing one is
+`node import-photos.js <folder> --apply --unlock SB-JWL-0<n>`.

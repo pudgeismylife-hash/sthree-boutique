@@ -18,7 +18,16 @@
         "anklets_1-a1.jpg",
         "anklets_1-a2.jpg",
         "anklets_1-a3.jpg"
-      ]
+      ],
+      "sourceReview": {
+        "state": "REVIEW_REQUIRED",
+        "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
+        "customerSource": "source/customer-pdf/Anklets.pdf",
+        "sourceImage": "Anklets_p1",
+        "sourceSha1": "590e227b930a754677eedaac1b9dca128ae3944b",
+        "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-01"
+      }
     },
     "SB-JWL-02": {
       "productKey": "anklets_2",
@@ -36,7 +45,16 @@
         "anklets_2-a1.jpg",
         "anklets_2-a2.jpg",
         "anklets_2-a3.jpg"
-      ]
+      ],
+      "sourceReview": {
+        "state": "REVIEW_REQUIRED",
+        "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
+        "customerSource": "source/customer-pdf/Anklets.pdf",
+        "sourceImage": "Anklets_p2",
+        "sourceSha1": "d9c0e302de18a16bb4507ab08905f5eada9bac9a",
+        "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-02"
+      }
     },
     "SB-JWL-03": {
       "productKey": "armcuff_1",
@@ -54,7 +72,16 @@
         "armcuff_1-a1.jpg",
         "armcuff_1-a2.jpg",
         "armcuff_1-a3.jpg"
-      ]
+      ],
+      "sourceReview": {
+        "state": "REVIEW_REQUIRED",
+        "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
+        "customerSource": "source/customer-pdf/armcuff.pdf",
+        "sourceImage": "armcuff_p1",
+        "sourceSha1": "e93d389d662d50fdd0babe4402be9a4e9d0ecb37",
+        "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-03"
+      }
     },
     "SB-JWL-04": {
       "productKey": "armcuff_2",
@@ -72,7 +99,16 @@
         "armcuff_2-a1.jpg",
         "armcuff_2-a2.jpg",
         "armcuff_2-a3.jpg"
-      ]
+      ],
+      "sourceReview": {
+        "state": "REVIEW_REQUIRED",
+        "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
+        "customerSource": "source/customer-pdf/armcuff.pdf",
+        "sourceImage": "armcuff_p2",
+        "sourceSha1": "634604934d52d2f00daaee763fc7b4c2409457ba",
+        "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-04"
+      }
     },
     "SB-JWL-05": {
       "productKey": "bracelet_1",
@@ -90,7 +126,16 @@
         "bracelet_1-a1.jpg",
         "bracelet_1-a2.jpg",
         "bracelet_1-a3.jpg"
-      ]
+      ],
+      "sourceReview": {
+        "state": "REVIEW_REQUIRED",
+        "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
+        "customerSource": "source/customer-pdf/bracelet.pdf",
+        "sourceImage": "bracelet_p1",
+        "sourceSha1": "dcd42d7881fa512281b2bbd3f9cfcca1479f4e8f",
+        "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-05"
+      }
     },
     "SB-JWL-06": {
       "productKey": "black_clover_set_1",
@@ -108,7 +153,16 @@
         "black_clover_set_1-a1.jpg",
         "black_clover_set_1-a2.jpg",
         "black_clover_set_1-a3.jpg"
-      ]
+      ],
+      "sourceReview": {
+        "state": "REVIEW_REQUIRED",
+        "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
+        "customerSource": "source/customer-pdf/Black_clover_set.pdf",
+        "sourceImage": "Black_clover_set_p1",
+        "sourceSha1": "16b58cf4f21d5901ae497f24e50a93df7eeeec3c",
+        "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-06"
+      }
     },
     "SB-JWL-07": {
       "productKey": "cloth_section_western_wear_1",
@@ -116,7 +170,7 @@
       "productName": "Round-neck polyester kaftan with inner",
       "status": "LOCKED",
       "lockedOn": "2026-08-17",
-      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "source": "boutique catalogue PDF: source/customer-pdf/Cloth_section_western_wear.pdf page 1",
       "sourceFiles": [
         "SB-JWL-07-1.jpg",
         "SB-JWL-07-2.jpg",
@@ -126,7 +180,16 @@
         "cloth_section_western_wear_1-a1.jpg",
         "cloth_section_western_wear_1-a2.jpg",
         "cloth_section_western_wear_1-a3.jpg"
-      ]
+      ],
+      "sourceImage": "Cloth_section_western_wear_p1",
+      "sourceSha1": "3898a65475f1d526d6ed2f8ba5d9cae6c2e59c97",
+      "derivation": "crops of the boutique's own photograph, caption and sheet removed by prep-source-views.py; nothing generated or repainted",
+      "views": [
+        "both pieces as supplied",
+        "the kaftan",
+        "the inner"
+      ],
+      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product"
     },
     "SB-JWL-08": {
       "productKey": "cloth_section_western_wear_2",
@@ -134,7 +197,7 @@
       "productName": "Cotton embroidery elastic-hand cordset",
       "status": "LOCKED",
       "lockedOn": "2026-08-17",
-      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "source": "boutique catalogue PDF: source/customer-pdf/Cloth_section_western_wear.pdf page 2",
       "sourceFiles": [
         "SB-JWL-08-1.jpg",
         "SB-JWL-08-2.jpg",
@@ -144,7 +207,16 @@
         "cloth_section_western_wear_2-a1.jpg",
         "cloth_section_western_wear_2-a2.jpg",
         "cloth_section_western_wear_2-a3.jpg"
-      ]
+      ],
+      "sourceImage": "Cloth_section_western_wear_p2",
+      "sourceSha1": "40e65ee8692e9d24372675ce389bd9129c6b99c5",
+      "derivation": "crops of the boutique's own photograph, caption and sheet removed by prep-source-views.py; nothing generated or repainted",
+      "views": [
+        "both views as supplied",
+        "worn",
+        "top and trousers on hangers"
+      ],
+      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product"
     },
     "SB-JWL-09": {
       "productKey": "cloth_section_western_wear_3",
@@ -152,17 +224,23 @@
       "productName": "Palazzo cordset with inner lining",
       "status": "LOCKED",
       "lockedOn": "2026-08-17",
-      "source": "Antigravity batch, C:/Property/SB-JWL-Products",
+      "source": "boutique catalogue PDF: source/customer-pdf/Cloth_section_western_wear.pdf page 3",
       "sourceFiles": [
         "SB-JWL-09-1.jpg",
-        "SB-JWL-09-2.jpg",
-        "SB-JWL-09-3.jpg"
+        "SB-JWL-09-2.jpg"
       ],
       "images": [
         "cloth_section_western_wear_3-a1.jpg",
-        "cloth_section_western_wear_3-a2.jpg",
-        "cloth_section_western_wear_3-a3.jpg"
-      ]
+        "cloth_section_western_wear_3-a2.jpg"
+      ],
+      "sourceImage": "Cloth_section_western_wear_p3",
+      "sourceSha1": "097f8b8e18469ae380872afa1448861669ec286c",
+      "derivation": "crops of the boutique's own photograph, caption and sheet removed by prep-source-views.py; nothing generated or repainted",
+      "views": [
+        "worn, full length",
+        "closer on the top and its zari work"
+      ],
+      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product"
     },
     "SB-JWL-10": {
       "productKey": null,

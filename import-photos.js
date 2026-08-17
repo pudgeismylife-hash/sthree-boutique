@@ -93,9 +93,14 @@ for (const [code, shots] of [...batch].sort()) {
   }
   if (entry && entry.status === "SKIPPED") { fail("marked SKIPPED in the lock: " + (entry.reason || "review required")); continue; }
 
-  // 3 & 4. all three files present and named for this code
-  const missing = [1,2,3].filter(n => !shots[n]);
-  if (missing.length) { fail("missing image " + missing.join(", ") + " for this code"); continue; }
+  /* 3 & 4. the views present must be named for this code and run 1,2,3 with no
+     gap. One or two is allowed: a photograph sometimes holds only one honest
+     view of a piece, and padding it out with an invented angle or a crop
+     enlarged past legibility would be worse than showing fewer. */
+  const have = [1,2,3].filter(n => shots[n]);
+  if (!have.length)                      { fail("no image 1 for this code"); continue; }
+  if (have[have.length-1] !== have.length) { fail("views must be numbered 1" +
+    (have.length>1 ? "-"+have.length : "") + " with no gap; got " + have.join(",")); continue; }
 
   // 1. does the code resolve to a catalogue product?
   let key = null, via = "code";
@@ -127,7 +132,7 @@ for (const [code, shots] of [...batch].sort()) {
   if (otherLocked)     { fail("product " + key + " is already LOCKED to " + otherLocked[0]); continue; }
 
   claimed.set(key, code);
-  PASS.push({ code, key, product, shots, via, replacing: UNLOCK.has(code) });
+  PASS.push({ code, key, product, shots, via, views: have, replacing: UNLOCK.has(code) });
 }
 
 /* ── report ────────────────────────────────────────────────────────────── */
@@ -172,12 +177,24 @@ const py = [
 const script = path.join(require("os").tmpdir(), "sthree-resize.py");
 fs.writeFileSync(script, py, "utf8");
 
+/* "python" on Windows, "python3" almost everywhere else. Pick whichever is
+   actually there and can load Pillow, rather than failing halfway through a
+   batch with a bare ENOENT. */
+const PYTHON = ["python3", "python"].find(bin => {
+  try { execFileSync(bin, ["-c", "import PIL"], { stdio: "pipe" }); return true; }
+  catch (_) { return false; }
+});
+if (!PYTHON) {
+  console.error("FAIL  need python with Pillow installed  (pip install pillow)");
+  process.exit(1);
+}
+
 let out = html, written = 0;
 for (const r of PASS) {
   const list = [];
-  for (const n of [1,2,3]) {
+  for (const n of r.views) {
     const name = r.key + "-a" + n + ".jpg";
-    execFileSync("python", [script, path.join(folder, r.shots[n]), OUT_FULL + name, OUT_THUMB + name], { stdio: "pipe" });
+    execFileSync(PYTHON, [script, path.join(folder, r.shots[n]), OUT_FULL + name, OUT_THUMB + name], { stdio: "pipe" });
     list.push(name); written++;
   }
   const arr = "images:[" + list.map(s => 'P+"' + s + '"').join(",") + "]";
@@ -188,7 +205,7 @@ for (const r of PASS) {
   lock.products[r.code] = {
     productKey: r.key, siteCode: r.product.siteCode, productName: r.product.name,
     status: "LOCKED", lockedOn: new Date().toISOString().slice(0, 10),
-    source: folder, sourceFiles: [1,2,3].map(n => r.shots[n]), images: list
+    source: folder, sourceFiles: r.views.map(n => r.shots[n]), images: list
   };
 }
 fs.writeFileSync(SRC_HTML, out, "utf8");
