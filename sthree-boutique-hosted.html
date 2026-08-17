@@ -129,13 +129,18 @@ header nav{display:none}
 }
 
 /* ── mobile nav overlay ───────────────────────────────────── */
+/* Closed, the panel is only slid off-screen, so without visibility:hidden its
+   seven links stay in the tab order and focus vanishes into nothing. Visibility
+   is switched back instantly on open but only after the slide-out has finished
+   on close, so the animation is unaffected. */
 .navpanel{
   position:fixed;inset:0;z-index:60;background:var(--cream);
   display:flex;flex-direction:column;padding:18px;
-  transform:translateY(-100%);transition:transform .25s ease;
+  transform:translateY(-100%);visibility:hidden;
+  transition:transform .25s ease, visibility 0s linear .25s;
   overflow-y:auto;overscroll-behavior:contain;
 }
-.navpanel.open{transform:none}
+.navpanel.open{transform:none;visibility:visible;transition:transform .25s ease}
 .navpanel .top{display:flex;justify-content:flex-end}
 .navpanel nav{display:flex;flex-direction:column;margin-top:8px;flex:1;justify-content:center;gap:2px}
 .navpanel nav a{
@@ -496,7 +501,7 @@ footer li a:hover{color:var(--gold)}
   </div>
 </div>
 
-<div class="navpanel" id="navPanel" aria-hidden="true">
+<div class="navpanel" id="navPanel" aria-hidden="true" inert>
   <div class="top"><button class="icon" id="menuClose" aria-label="Close menu">✕</button></div>
   <nav aria-label="Mobile">
     <a href="#categories">Western</a>
@@ -600,7 +605,7 @@ footer li a:hover{color:var(--gold)}
 </div>
 
 <!-- Product viewer: tap a photo to open it large and zoom in -->
-<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Product photo" hidden>
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="vName" hidden>
   <div class="viewer-top">
     <span class="viewer-count" id="vCount"></span>
     <button class="viewer-icon" id="vClose" aria-label="Close">✕</button>
@@ -1004,9 +1009,21 @@ const arrivals = [
     $("#vPrev").hidden = !many; $("#vNext").hidden = !many;
     vReset();
   }
+  /* aria-modal="true" tells a screen reader the rest of the page is unavailable
+     but does nothing to the tab order, so Tab still walks the catalogue behind
+     the open dialog. Make the siblings inert while it is open. The nav panel is
+     left alone because it carries its own inert state, which this must not
+     clear on close. */
+  function vBehindInert(on){
+    for(const el of document.body.children){
+      if(el === V.el || el.id === "navPanel") continue;
+      if(on) el.setAttribute("inert",""); else el.removeAttribute("inert");
+    }
+  }
   function vOpen(n, opener){
     V.opener = opener || null;
     V.el.removeAttribute("hidden");
+    vBehindInert(true);
     document.body.style.overflow = "hidden";
     vShow(n);
     $("#vHint").classList.remove("gone");
@@ -1015,6 +1032,7 @@ const arrivals = [
   }
   function vClose(){
     V.el.setAttribute("hidden","");
+    vBehindInert(false);
     document.body.style.overflow = "";
     try { history.replaceState(null, "", location.pathname); } catch(_){}
     if(V.opener && document.contains(V.opener)) V.opener.focus({preventScroll:true});
@@ -1171,12 +1189,26 @@ const arrivals = [
 
   /* mobile nav */
   const panel = $("#navPanel"), btn = $("#menuBtn");
-  const open = () => { panel.classList.add("open"); panel.setAttribute("aria-hidden","false"); btn.setAttribute("aria-expanded","true"); document.body.style.overflow="hidden"; };
-  const close = () => { panel.classList.remove("open"); panel.setAttribute("aria-hidden","true"); btn.setAttribute("aria-expanded","false"); document.body.style.overflow=""; };
+  const open = () => {
+    panel.classList.add("open"); panel.removeAttribute("inert");
+    panel.setAttribute("aria-hidden","false"); btn.setAttribute("aria-expanded","true");
+    document.body.style.overflow="hidden";
+    $("#menuClose").focus({preventScroll:true});
+  };
+  /* Closing by the ✕ or Escape puts focus back on the menu button, the way the
+     viewer returns it to the card that opened it. Closing by following a link
+     must not, or focus would be yanked back to the header instead of landing on
+     the section the link just jumped to. */
+  const close = (restore) => {
+    panel.classList.remove("open"); panel.setAttribute("inert","");
+    panel.setAttribute("aria-hidden","true"); btn.setAttribute("aria-expanded","false");
+    document.body.style.overflow="";
+    if(restore) btn.focus({preventScroll:true});
+  };
   btn.addEventListener("click", open);
-  $("#menuClose").addEventListener("click", close);
-  panel.querySelectorAll("nav a").forEach(a=> a.addEventListener("click", close));
-  addEventListener("keydown", e=>{ if(e.key === "Escape") close(); });
+  $("#menuClose").addEventListener("click", ()=> close(true));
+  panel.querySelectorAll("nav a").forEach(a=> a.addEventListener("click", ()=> close(false)));
+  addEventListener("keydown", e=>{ if(e.key === "Escape" && panel.classList.contains("open")) close(true); });
 
   $("#yr").textContent = new Date().getFullYear();
 })();
