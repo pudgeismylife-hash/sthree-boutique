@@ -153,10 +153,45 @@ header nav{display:none}
 .navpanel .btn{margin-top:18px;width:100%;text-align:center}
 
 /* ── hero ─────────────────────────────────────────────────── */
-.hero{height:300px;position:relative;overflow:hidden;background:var(--cream-alt)}
-.hero picture,.hero img{display:block;width:100%;height:100%}
-.hero img{object-fit:cover;object-position:center 32%}
-@media (min-width:900px){ .hero{height:520px} }
+/* ── hero ─────────────────────────────────────────────────────
+   The whole collection running edge to edge behind one cream band.
+   Built from the live product photographs rather than baked into a
+   composite: a composite has to be rebuilt by hand every time a photo
+   changes, which is how a superseded picture once survived here. */
+.hero{position:relative;overflow:hidden;background:var(--ink)}
+.hero-field{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;opacity:.62}
+.hero-field img{width:100%;height:168px;object-fit:cover;object-position:50% 8%;display:block}
+/* On a phone the band sits under the photographs rather than across them: the
+   copy is nearly as tall as the field there, so overlaying it left the
+   collection as two slivers. It only floats across the field once there is
+   room for both. */
+.hero-panel{
+  background:var(--cream);border-top:1px solid var(--rule);
+  padding:18px 0 20px;
+}
+.hero-panel .wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.hero-copy{flex:1 1 300px;min-width:0}
+.hero-act{flex:0 0 auto}
+.hero h1{font-size:26px;line-height:1.08;margin:0 0 6px}
+.hero-panel p.lede{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0;max-width:46ch}
+.hero-note{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--grey);margin:9px 0 0;
+}
+@media (min-width:600px){
+  .hero-field img{height:190px}
+  .hero h1{font-size:34px}
+}
+@media (min-width:900px){
+  .hero-field{grid-template-columns:repeat(6,1fr)}
+  .hero-field img{height:215px}
+  .hero-panel{
+    position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+    border-bottom:1px solid var(--rule);padding:20px 0;
+  }
+  .hero h1{font-size:40px}
+  .hero-act{text-align:right}
+}
 
 /* ── image placeholders ───────────────────────────────────────
    Every photo slot is a placeholder until the client's photography
@@ -521,18 +556,20 @@ footer li a:hover{color:var(--gold)}
 
 <main id="main">
 <div class="hero">
-  <picture>
-    <source media="(min-width:900px)" srcset="assets/hero-wide.jpg">
-    <source media="(min-width:600px)" srcset="assets/hero-mid.jpg">
-    <img src="assets/hero-narrow.jpg" alt="Sarees, dresses and anti-tarnish jewellery from Sthree Boutique" fetchpriority="high" decoding="async">
-  </picture>
-</div>
-
-<div class="wrap intro">
-  <p class="eyebrow">Quality. Style. Personality.</p>
-  <h1>The boutique where fashion meets personality.</h1>
-  <p>Western and ethnic wear, co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported and Indian, delivered all over India and worldwide.</p>
-  <a class="btn" id="introCta">Shop on WhatsApp</a>
+  <div class="hero-field" id="heroField" aria-hidden="true"></div>
+  <div class="hero-panel">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="eyebrow" id="heroEyebrow"></p>
+        <h1>The boutique where fashion meets personality.</h1>
+        <p class="lede">Western and ethnic wear, co-ord sets and anti-tarnish jewellery. Imported and Indian, delivered all over India and worldwide.</p>
+      </div>
+      <div class="hero-act">
+        <a class="btn" id="introCta">Order on WhatsApp</a>
+        <p class="hero-note" id="heroNote"></p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <section id="categories">
@@ -683,6 +720,18 @@ const CONFIG = {
   // Sizes per category. Clothing sizes are NOT yet confirmed by the owner —
   // leave these empty until she supplies them rather than guessing, since a
   // wrong size list causes wrong orders. Jewellery is genuinely free size.
+  /* The photographs behind the hero band, in the order they appear. Six show on
+     a phone, twelve on a wide screen, so the first six are chosen to carry the
+     range on their own. Only the boutique's own photographs belong here — the
+     build refuses to start if any entry is a generated render, and refuses if a
+     key is not in the catalogue, so this cannot quietly rot. */
+  heroField: [
+    "sarees_2", "cloth_section_western_wear_2", "earring_4",
+    "gowns_1", "sarees_1", "ring_2",
+    "cloth_section_western_wear_1", "necklace_2", "sarees_3",
+    "earring_3", "gowns_2", "cloth_section_western_wear_3"
+  ],
+
   defaultSizes: {
     ethnic:    [],
     western:   [],
@@ -797,8 +846,60 @@ const arrivals = [
      not change even when the pictures do. */
   const primary = p => p.images[0];
 
-  /* categories — tiles filter the collection below */
   const rupee = n => "₹" + n.toLocaleString("en-IN");
+
+  /* ── hero ────────────────────────────────────────────────────────────
+     The collection itself is the picture. Six photographs on a phone and
+     twelve on a wide screen, chosen from CONFIG.heroField and drawn from the
+     live catalogue, so replacing a product photograph updates the hero too.
+     The count and the opening prices are read off the catalogue rather than
+     written down, so neither can end up claiming something untrue. */
+  (function hero(){
+    const field = $("#heroField");
+    if(!field) return;
+    const byKey = new Map(arrivals.map(p => [p.key, p]));
+    const pieces = CONFIG.heroField.map(k => byKey.get(k)).filter(Boolean);
+    const wide = matchMedia("(min-width:900px)");
+
+    function paint(){
+      // Only fetch what is actually shown: a phone never downloads the six
+      // photographs that would sit off the end of its grid.
+      const n = wide.matches ? 12 : 6;
+      /* assets/hero/<key>.jpg, not the catalogue thumbnail: the thumbnails are
+         letterboxed on cream, so the band would show each piece small inside its
+         own border with the cream going grey over the dark ground. These are cut
+         from the same photographs by build-og-images.py. */
+      field.innerHTML = pieces.slice(0, n).map(p =>
+        `<img src="assets/hero/${p.key}.jpg" alt="" width="440" height="550" decoding="async">`
+      ).join("");
+    }
+    paint();
+    wide.addEventListener("change", paint);
+
+    /* "Twenty-five pieces" reads like a boutique; "25 pieces" reads like a
+       warehouse. Spelled out to ninety-nine, then it falls back to digits. */
+    const ONES = ["","one","two","three","four","five","six","seven","eight","nine","ten",
+      "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+    const TENS = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+    const spell = v => v < 20 ? ONES[v]
+      : v < 100 ? TENS[Math.floor(v/10)] + (v % 10 ? "-" + ONES[v % 10] : "")
+      : String(v);
+    const n = arrivals.length;
+    const said = spell(n) || String(n);
+    $("#heroEyebrow").textContent =
+      said.charAt(0).toUpperCase() + said.slice(1) + (n === 1 ? " piece" : " pieces") +
+      " · " + CONFIG.address.split(",").map(s => s.trim()).slice(0, 2).join(", ");
+
+    const from = cat => {
+      const inCat = arrivals.filter(p => p.cat === cat);
+      return inCat.length ? Math.min(...inCat.map(p => p.price)) : null;
+    };
+    const parts = [["Sarees", from("ethnic")], ["Jewellery", from("jewellery")]]
+      .filter(([, v]) => v).map(([k, v]) => k + " from " + rupee(v));
+    $("#heroNote").textContent = parts.join(" · ");
+  })();
+
+  /* categories — tiles filter the collection below */
   $("#cats").innerHTML = categories.map(c=>{
     const count = arrivals.filter(a=>a.cat===c.key).length;
     const art = c.img

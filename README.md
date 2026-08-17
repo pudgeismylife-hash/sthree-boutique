@@ -20,7 +20,8 @@ It opens straight from a file or from any static host.
 | `extract-source.py` | Unpacks the photographs out of the boutique's catalogue PDFs. |
 | `prep-source-views.py` | Cuts the printed caption off each photograph and splits composites into separate views, ready for the importer. |
 | `build-tiles.py` | Rebuilds a category tile from a chosen product photograph. Tiles are composites, so an import never refreshes them. |
-| `build-og-images.py` | Builds `assets/og/<key>.jpg`, the 1200×630 card each product link previews with. |
+| `build-og-images.py` | Builds `assets/og/<key>.jpg`, the 1200×630 card each product link previews with, and `assets/hero/<key>.jpg`, the crops behind the hero band. |
+| `assets/hero/` | Built — per-product crops used by the hero band. |
 | `p/` | Built — one small page per product carrying its own link preview, forwarding to the piece. |
 | `assets/og/` | Built — the per-product preview cards. |
 | `source/customer-pdf/` | The boutique's catalogue PDFs — the source of truth for what each product actually looks like. |
@@ -79,9 +80,10 @@ Name files by product code — `SB-JWL-01-1.jpg`, `-2`, `-3` — so 25 pieces ×
 3 angles can be matched automatically instead of by eye. `photo-shot-list.html`
 carries the codes with thumbnails; send it to the boutique.
 
-Images live at three sizes: `assets/products/` (720×900, used by the zoomable
-viewer), `assets/products/thumb/` (360px, used by cards and tiles) and
-`assets/hero-*.jpg`.
+Images live at these sizes: `assets/products/` (720×900, used by the zoomable
+viewer), `assets/products/thumb/` (360px, used by cards and tiles), `assets/hero/`
+(440×550 crops behind the hero band) and `assets/og/` (1200×630 link-preview cards).
+The last two are cut by `build-og-images.py`.
 
 ### From a catalogue PDF
 

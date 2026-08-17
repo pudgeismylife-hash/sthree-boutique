@@ -84,11 +84,11 @@ discards the original, so they arrive unusable. Ask via Google Drive, or WhatsAp
 **Document** mode. Send her `photo-shot-list.html` — it carries every code with a
 thumbnail and three checkboxes.
 
-**Derived images are not covered by the importer.** The hero band and the category
-tiles are separate composites built from product photos. Replacing a product photo
-does not update them. `build-tiles.py` now rebuilds a category tile from a named
-photograph, so at least that choice is written down and repeatable; the hero band is
-still by hand.
+**The hero is no longer a composite.** It is built in the page from the pieces named in
+`CONFIG.heroField`, over crops cut by `build-og-images.py` into `assets/hero/`. The build
+refuses to run if that list names a piece missing from the catalogue, a piece whose
+picture is a generated render, or one with no crop on disk. The **category tiles** are
+still composites — `build-tiles.py` rebuilds one from a named photograph.
 
 **From a catalogue PDF:** `extract-source.py --apply` unpacks the photographs,
 `prep-source-views.py --apply` cuts off the caption printed into each picture and

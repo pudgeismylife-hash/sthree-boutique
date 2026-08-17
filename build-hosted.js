@@ -336,6 +336,49 @@ lost for good. Use Google Drive, or on WhatsApp attach them with <b>Document</b>
   return { clothing: clothing.length, jewellery: jewellery.length };
 }
 
+/* The hero band shows the collection itself, so it can put a photograph in the
+   most prominent place on the site. Two ways that could go wrong, both refused
+   here rather than noticed later: naming a piece that is not in the catalogue,
+   and naming one whose picture is a generated render rather than the boutique's
+   own photograph. The old baked hero carried a render for weeks precisely
+   because nothing checked. */
+function checkHeroField(s, items) {
+  const m = s.match(/heroField:\s*\[([\s\S]*?)\]/);
+  if (!m) { console.error("FAIL could not find CONFIG.heroField"); process.exit(1); }
+  const keys = [...m[1].matchAll(/"([^"]+)"/g)].map(x => x[1]);
+  if (!keys.length) { console.error("FAIL CONFIG.heroField is empty"); process.exit(1); }
+
+  const known = new Map(items.map(p => [p.key, p]));
+  const unknown = keys.filter(k => !known.has(k));
+  if (unknown.length) {
+    console.error("FAIL heroField names piece(s) not in the catalogue: " + unknown.join(", "));
+    process.exit(1);
+  }
+
+  const lockPath = DIR + "product-image-lock.json";
+  if (fs.existsSync(lockPath)) {
+    const lock = JSON.parse(fs.readFileSync(lockPath, "utf8")).products || {};
+    const rendered = new Map();
+    for (const [code, v] of Object.entries(lock)) {
+      if (v.productKey && v.sourceReview) rendered.set(v.productKey, code);
+    }
+    const bad = keys.filter(k => rendered.has(k));
+    if (bad.length) {
+      console.error("FAIL the hero may only show the boutique's own photographs.");
+      for (const k of bad) console.error("     " + k + " (" + rendered.get(k) + ") is a generated render");
+      process.exit(1);
+    }
+  }
+  /* every hero photograph must actually have a cut crop on disk */
+  const noCrop = keys.filter(k => !fs.existsSync(DIR + "assets/hero/" + k + ".jpg"));
+  if (noCrop.length) {
+    console.error("FAIL no hero crop for: " + noCrop.join(", "));
+    console.error("     run:  python3 build-og-images.py --apply");
+    process.exit(1);
+  }
+  return keys.length;
+}
+
 /* One small page per product, carrying that product's own link preview.
    WhatsApp, Instagram and Facebook read the preview out of the HTML they are
    given and never run its JavaScript, so a single page that switches products
@@ -466,6 +509,7 @@ pages = schema.html;
 const shots = shotList(schema.items);
 const asks = ownerQuestions(schema.items);
 const stubs = productPages(schema.items, SITE_URL || "");
+const heroN = checkHeroField(src, schema.items);
 check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og:image", "assets/products/"]);
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
 
@@ -483,6 +527,7 @@ console.log("schema " + schema.count + " products");
 console.log("shots  photo-shot-list.html (" + shots + " pieces)");
 console.log("asks   owner-questions.html (" + asks.clothing + " clothing, " + asks.jewellery + " jewellery)");
 console.log("share  p/*.html (" + stubs.written + " product link previews)");
+console.log("hero   " + heroN + " photographs, all the boutique's own");
 if (stubs.noCard.length) {
   console.log("       WARN no preview card for: " + stubs.noCard.join(", "));
   console.log("       run:  python3 build-og-images.py --apply");

@@ -48,13 +48,14 @@ def catalogue():
     for m in re.finditer(r"\{[^{}]*\}", block.group(1)):
         row = m.group(0)
         key = re.search(r'key:"([^"]+)"', row)
+        cat = re.search(r'cat:"([^"]+)"', row)
         imgs = re.search(r"images:\[([^\]]*)\]", row)
         if not key or not imgs:
             continue
         first = re.search(r'P\+"([^"]+)"', imgs.group(1))
         if not first:
             continue
-        items.append((key.group(1), prefix + first.group(1)))
+        items.append((key.group(1), prefix + first.group(1), cat.group(1) if cat else ""))
     return items
 
 
@@ -94,13 +95,39 @@ def card(photo_path, logo):
     return canvas
 
 
+HERO = os.path.join(HERE, "assets", "hero")
+HERO_SIZE = (440, 550)          # 4:5, covers the hero cell at either breakpoint
+
+
+def hero_crop(photo_path, cat=""):
+    """A tight portrait crop for the hero band.
+
+    The stored photographs are letterboxed on cream, and the margin differs for
+    every one, so the band cannot just cover-crop them: the piece ends up small
+    inside its own border, and that cream going translucent over the dark ground
+    turns the whole band grey. Trim to the picture first, then fill."""
+    im = Image.open(photo_path).convert("RGB")
+    im = im.crop(trim_box(im))
+    tw, th = HERO_SIZE
+    s = max(tw / im.width, th / im.height)
+    im = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
+    x = (im.width - tw) // 2
+    # A full-length figure is cropped near the top so the face stays in; a
+    # jewellery close-up is centred, because anchoring it high lands on hair and
+    # ear and loses the piece entirely.
+    y = (im.height - th) // 2 if cat == "jewellery" else round(im.height * 0.06)
+    y = min(max(0, y), max(0, im.height - th))
+    return im.crop((x, y, x + tw, y + th))
+
+
 def main():
     items = catalogue()
     logo = Image.open(LOGO).convert("RGBA")
     if APPLY:
         os.makedirs(OUT, exist_ok=True)
+        os.makedirs(HERO, exist_ok=True)
     made = missing = 0
-    for key, rel in items:
+    for key, rel, cat in items:
         src = os.path.join(HERE, rel)
         if not os.path.exists(src):
             print("  MISS %-32s no photograph at %s" % (key, rel))
@@ -109,6 +136,8 @@ def main():
         if APPLY:
             card(src, logo).save(os.path.join(OUT, key + ".jpg"),
                                  quality=84, optimize=True, progressive=True)
+            hero_crop(src, cat).save(os.path.join(HERO, key + ".jpg"),
+                                quality=80, optimize=True, progressive=True)
         made += 1
     print("%d product card(s)%s" % (made, "" if APPLY else " would be built"))
     if missing:
