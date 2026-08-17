@@ -120,6 +120,51 @@ def hero_crop(photo_path, cat=""):
     return im.crop((x, y, x + tw, y + th))
 
 
+THUMB = os.path.join(HERE, "assets", "products", "thumb")
+THUMB_SIZE = (360, 450)
+FULL = os.path.join(HERE, "assets", "products")
+
+
+def make_thumb(path):
+    """The card thumbnail, filling its frame.
+
+    The full-size files are letterboxed on cream so the zoom viewer always gets a
+    consistent canvas, but a card then shows that padding too: measured across
+    the catalogue, the photograph was filling only 45% of its own file, and as
+    little as 10%. Trim to the picture, then fill the card.
+
+    A single subject is cropped to fill. A wide composite -- two views side by
+    side, a saree shown twice -- is only scaled to the width instead, because
+    cropping one to a portrait frame slices straight through the middle and
+    throws half the photograph away."""
+    im = Image.open(path).convert("RGB")
+    im = im.crop(trim_box(im))
+    tw, th = THUMB_SIZE
+    canvas = Image.new("RGB", (tw, th), CREAM)
+    if im.width / im.height <= 1.30:
+        s = max(tw / im.width, th / im.height)
+        r = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
+        canvas.paste(r, (-(r.width - tw) // 2, -(r.height - th) // 2))
+    else:
+        r = im.resize((tw, max(1, round(im.height * tw / im.width))), Image.LANCZOS)
+        canvas.paste(r, (0, (th - r.height) // 2))
+    return canvas
+
+
+def rebuild_thumbs():
+    """Every thumbnail, not just the ones a card happens to show: the category
+    tiles and the viewer's gallery strip read from here too."""
+    n = 0
+    for f in sorted(os.listdir(FULL)):
+        if not f.lower().endswith(".jpg"):
+            continue
+        if APPLY:
+            make_thumb(os.path.join(FULL, f)).save(
+                os.path.join(THUMB, f), quality=82, optimize=True, progressive=True)
+        n += 1
+    return n
+
+
 def main():
     items = catalogue()
     logo = Image.open(LOGO).convert("RGBA")
@@ -139,7 +184,9 @@ def main():
             hero_crop(src, cat).save(os.path.join(HERO, key + ".jpg"),
                                 quality=80, optimize=True, progressive=True)
         made += 1
+    thumbs = rebuild_thumbs()
     print("%d product card(s)%s" % (made, "" if APPLY else " would be built"))
+    print("%d thumbnail(s)%s, trimmed to fill the card" % (thumbs, "" if APPLY else " would be rebuilt"))
     if missing:
         print("%d product(s) had no photograph and were skipped" % missing)
     if APPLY:

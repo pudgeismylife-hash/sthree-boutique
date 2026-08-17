@@ -163,6 +163,13 @@ if (!PASS.length) { console.log("\nnothing to import."); process.exit(0); }
 /* ── install ───────────────────────────────────────────────────────────── */
 fs.mkdirSync(OUT_FULL, { recursive: true });
 fs.mkdirSync(OUT_THUMB, { recursive: true });
+/* The full-size file keeps its cream margin, so the zoom viewer always gets the
+   same canvas. The thumbnail must not: a card showing that margin puts the
+   piece in the middle of a mostly empty frame, which is how the grid ended up
+   with the photograph filling under half of it. So the thumbnail is cut from
+   the picture itself and fills the card — cropped when it is a single subject,
+   scaled to the width when it is a wide composite, because cropping one of
+   those to a portrait frame cuts straight through the middle of it. */
 const py = [
   "from PIL import Image", "import sys",
   "src, full, thumb = sys.argv[1], sys.argv[2], sys.argv[3]",
@@ -172,7 +179,16 @@ const py = [
   "c = Image.new('RGB',(720,900),CREAM)",
   "c.paste(im, ((720-im.width)//2, (900-im.height)//2))",
   "c.save(full, quality=86, optimize=True, progressive=True)",
-  "c.resize((360,450), Image.LANCZOS).save(thumb, quality=82, optimize=True, progressive=True)"
+  "tw, th = 360, 450",
+  "t = Image.new('RGB',(tw,th),CREAM)",
+  "if im.width/im.height <= 1.30:",
+  "    s = max(tw/im.width, th/im.height)",
+  "    r = im.resize((max(1,round(im.width*s)), max(1,round(im.height*s))), Image.LANCZOS)",
+  "    t.paste(r, (-(r.width-tw)//2, -(r.height-th)//2))",
+  "else:",
+  "    r = im.resize((tw, max(1,round(im.height*tw/im.width))), Image.LANCZOS)",
+  "    t.paste(r, (0, (th-r.height)//2))",
+  "t.save(thumb, quality=82, optimize=True, progressive=True)"
 ].join("\n");
 const script = path.join(require("os").tmpdir(), "sthree-resize.py");
 fs.writeFileSync(script, py, "utf8");
