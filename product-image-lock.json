@@ -2,6 +2,24 @@
   "_comment": "Single source of truth for product-image mapping. A product code is the permanent identity of its image set. LOCKED entries must not be remapped, reordered or overwritten by any import; changing one requires an explicit unlock. Never infer assignment from array position, product number, filename order or alphabetical order.",
   "_generated": "2026-08-17",
   "products": {
+    "SB-ETH-02": {
+      "productKey": "sarees_2",
+      "siteCode": "SB-ETH-02",
+      "productName": "Silk designer mirror handwork saree",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-17",
+      "source": "source/staged-saree",
+      "sourceFiles": [
+        "SB-ETH-02-1.png",
+        "SB-ETH-02-2.png",
+        "SB-ETH-02-3.png"
+      ],
+      "images": [
+        "sarees_2-a1.jpg",
+        "sarees_2-a2.jpg",
+        "sarees_2-a3.jpg"
+      ]
+    },
     "SB-JWL-01": {
       "productKey": "anklets_1",
       "siteCode": "SB-JWL-16",
