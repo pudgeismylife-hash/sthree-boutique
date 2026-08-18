@@ -43,7 +43,11 @@ TARGETS = {
     "armcuff_2-a1": "the sculpted floral armcuff, on flat grey-white",
     "armcuff_2-a2": "same piece, second view",
     "armcuff_2-a3": "same piece, third view",
-    "armcuff_1-a2": "the worn view of the butterfly armcuff, shot on white",
+    "armcuff_1-a2": "the worn view of the butterfly armcuff -- a white studio "
+                    "backdrop, which on a cream stage reads as a white box",
+    "armcuff_1-a3": "the close-up of the same armcuff. Only its white outer "
+                    "frame goes; the cream silk behind the piece stays, because "
+                    "a fill wide enough to take silk tears holes in it instead",
 }
 
 
@@ -54,8 +58,12 @@ def cut(path):
 
     border = np.concatenate([a[0, :, :], a[-1, :, :], a[:, 0, :], a[:, -1, :]])
     bg = np.median(border, axis=0)
-    if not (bg > 235).all():
-        return None, im, bg, 0       # not a white field; leave it alone
+    # A flat, light, near-neutral field: white, or the off-white a studio card
+    # goes on camera. The spread test is what keeps real backdrops out -- the
+    # earrings on warm silk sit at (218,207,186) and the anklet on skin at
+    # (143,118,92), and neither should ever be cut.
+    if bg.min() < 220 or (bg.max() - bg.min()) > 35:
+        return None, im, bg, 0
 
     near = (np.abs(a - bg).max(axis=2) <= TOL)
 
@@ -102,9 +110,9 @@ def main():
             stem, "%dx%d" % im.size, tuple(int(x) for x in bg), kept * 100,
             ", %d enclosed field(s) cleared" % holes if holes else ""))
         print("                   %s" % why)
-        if kept > 0.92:
-            print("                   REFUSED: almost nothing was cut, the fill "
-                  "did not find an edge")
+        if kept > 0.985:
+            print("                   REFUSED: nothing was cut, the fill found no "
+                  "background at the frame edge")
             skipped += 1
             continue
         if APPLY:
