@@ -89,6 +89,42 @@ MAP = {
 }
 
 
+# The jewellery batch arrived as composites: the piece cut out on the left, and
+# two photographs stacked down the right -- worn, and a close-up. One file per
+# product rather than one per view, so the panels are cut here. Boxes were
+# measured off the alpha channel, not guessed: the panel block is the run of
+# fully opaque columns, and the seam between the two panels is the strongest
+# horizontal edge inside it.
+#
+# slug -> (key, main box, top panel, bottom panel, view names, what and why)
+SRC_JWL = os.path.join(HERE, "source", "updated-jewellery")
+COMPOSITES = {
+    "j1": (
+        "armcuff_1", (0, 0, 919, 1024), (919, 0, 1536, 575), (919, 575, 1536, 1024),
+        ["Front", "Worn", "Detail"],
+        "the butterfly armcuff. Matches her own photograph in armcuff.pdf -- "
+        "coiled band, two filigree butterflies, and the worn view mirrors hers. "
+        "Replaces a render flagged REVIEW_REQUIRED that showed a heavier cuff "
+        "with a wider band and stones",
+    ),
+    "j2": (
+        "anklets_1", (0, 0, 930, 1024), (930, 15, 1522, 558), (930, 575, 1522, 994),
+        ["Front", "Worn", "Detail"],
+        "the bow anklet. Matches her own photograph in Anklets.pdf -- half pave "
+        "chain, half rolo, gold bow, worn on the ankle. Replaces a render "
+        "flagged REVIEW_REQUIRED that laid it flat and read as a bracelet",
+    ),
+}
+
+# Single-image files in the same folder.
+SINGLES = {
+    "j3": ("nails_4", "wine chrome almond nails -- her Wine gloss press-on set, "
+                      "previously the catalogue card photograph"),
+    "j4": ("nude-leopard-press-on-nails", "nude leopard print with silver; none "
+                                          "of her sets match, so it goes up new"),
+}
+
+
 def load(slug, view=None):
     name = "%s-%s.png" % (slug, view) if view else "%s.png" % slug
     p = os.path.join(SRC, name)
@@ -109,6 +145,78 @@ def write_pair(src, stem):
         im.save(webp, "WEBP", quality=90, method=6)
         flat.save(jpg, quality=88, optimize=True, progressive=True)
     return im.size, (os.path.getsize(webp) if APPLY else 0), (os.path.getsize(jpg) if APPLY else 0)
+
+
+def write_piece(im, stem):
+    """One already-cut view, as transparent WebP and cream-flattened JPEG."""
+    if im.mode != "RGBA":
+        im = im.convert("RGBA")
+    flat = Image.new("RGB", im.size, CREAM)
+    flat.paste(im, mask=im.getchannel("A"))
+    if APPLY:
+        im.save(os.path.join(OUT, stem + ".webp"), "WEBP", quality=90, method=6)
+        flat.save(os.path.join(OUT, stem + ".jpg"), quality=88, optimize=True, progressive=True)
+    return im.size
+
+
+def jewellery(lock):
+    """The composites and singles in source/updated-jewellery."""
+    if not os.path.isdir(SRC_JWL):
+        return 0
+    n = 0
+    for slug in sorted(list(COMPOSITES) + list(SINGLES)):
+        p = os.path.join(SRC_JWL, slug + ".png")
+        if not os.path.exists(p):
+            print("  MISS %-34s not in source/updated-jewellery" % slug)
+            continue
+        im = Image.open(p)
+        im.load()
+        im = im.convert("RGBA")
+
+        if slug in COMPOSITES:
+            key, main, top, bot, names, why = COMPOSITES[slug]
+            cut = im.crop(main)
+            # trim the cut-out back to the piece; the panels are photographs and
+            # are left exactly as cut
+            bb = cut.getchannel("A").getbbox()
+            parts = [cut.crop(bb) if bb else cut, im.crop(top), im.crop(bot)]
+        else:
+            key, why = SINGLES[slug]
+            names = None
+            bb = im.getchannel("A").getbbox()
+            parts = [im.crop(bb) if bb else im]
+
+        print("%-6s -> %-32s %s" % (slug, key, "3 views" if len(parts) > 1 else "1 image"))
+        print("      %s" % why)
+        for i, part in enumerate(parts, 1):
+            size = write_piece(part, "%s-a%d" % (key, i))
+            print("      a%d  %dx%d%s" % (i, size[0], size[1],
+                                          "  " + names[i - 1] if names else ""))
+            n += 1
+
+        lock.setdefault("products", {})["SB-UP-" + key] = {
+            "productKey": key,
+            "productName": slug,
+            "status": "LOCKED" if APPLY else "PENDING",
+            "lockedOn": "2026-08-18",
+            "source": "source/updated-jewellery (Google Drive, 'Updated photos/jewellary')",
+            "sourceFiles": [slug + ".png"],
+            "images": ["%s-a%d.jpg" % (key, i) for i in range(1, len(parts) + 1)],
+            "recreated": True,
+            "recreatedNote": ("AI-generated product image supplied by the shop, not a "
+                              "photograph of the stock. " + why),
+        }
+        # whatever these replace, they are no longer the wrong piece
+        for code, v in lock.get("products", {}).items():
+            if v.get("productKey") == key and v.get("sourceReview"):
+                v["sourceReview"]["state"] = "RESOLVED"
+                v["sourceReview"]["resolvedOn"] = "2026-08-18"
+                v["sourceReview"]["resolution"] = (
+                    "replaced on 18 Aug 2026 by SB-UP-%s, which matches her own "
+                    "photograph of this piece. Still a recreation, not a "
+                    "photograph of the stock." % key)
+                print("      cleared the REVIEW_REQUIRED flag on %s" % code)
+    return n
 
 
 def main():
@@ -150,6 +258,8 @@ def main():
                 "AI-generated product image supplied by the shop, not a photograph "
                 "of the stock. " + why),
         }
+
+    written += jewellery(lock)
 
     stray = sorted(set(os.listdir(SRC)) - seen)
     if stray:

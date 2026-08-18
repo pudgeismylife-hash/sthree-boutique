@@ -38,13 +38,15 @@
         "anklets_1-a3.jpg"
       ],
       "sourceReview": {
-        "state": "REVIEW_REQUIRED",
+        "state": "RESOLVED",
         "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
         "customerSource": "source/customer-pdf/Anklets.pdf",
         "sourceImage": "Anklets_p1",
         "sourceSha1": "590e227b930a754677eedaac1b9dca128ae3944b",
         "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
-        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-01"
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-01",
+        "resolvedOn": "2026-08-18",
+        "resolution": "replaced on 18 Aug 2026 by SB-UP-anklets_1, which matches her own photograph of this piece. Still a recreation, not a photograph of the stock."
       }
     },
     "SB-JWL-02": {
@@ -92,13 +94,15 @@
         "armcuff_1-a3.jpg"
       ],
       "sourceReview": {
-        "state": "REVIEW_REQUIRED",
+        "state": "RESOLVED",
         "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
         "customerSource": "source/customer-pdf/armcuff.pdf",
         "sourceImage": "armcuff_p1",
         "sourceSha1": "e93d389d662d50fdd0babe4402be9a4e9d0ecb37",
         "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
-        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-03"
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-03",
+        "resolvedOn": "2026-08-18",
+        "resolution": "replaced on 18 Aug 2026 by SB-UP-armcuff_1, which matches her own photograph of this piece. Still a recreation, not a photograph of the stock."
       }
     },
     "SB-JWL-04": {
@@ -422,7 +426,7 @@
     },
     "SB-UP-navy-blue-red-printed-kurta-set": {
       "productKey": "navy-blue-red-printed-kurta-set",
-      "productName": "Indigo Asymmetric Tassel Tunic & Wide Palazzo Set",
+      "productName": "navy-blue-red-printed-kurta-set",
       "status": "LOCKED",
       "lockedOn": "2026-08-18",
       "source": "source/updated-photos (Google Drive, 'Updated photos')",
@@ -437,7 +441,7 @@
         "navy-blue-red-printed-kurta-set-a3.jpg"
       ],
       "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. The piece itself is hers: it is SB-JWL-10 from an earlier batch, skipped then for want of a picture and a price. Name is hers, price still outstanding."
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. navy kurta with a red and white printed panel and tassels; no piece in the catalogue looks like it"
     },
     "SB-UP-nude-gold-floral-press-on-nails": {
       "productKey": "nude-gold-floral-press-on-nails",
@@ -521,6 +525,70 @@
       ],
       "recreated": true,
       "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. magenta saree, navy and gold striped pallu -- her Poly cotton zari weaving saree, previously one photograph against a yellow wall"
+    },
+    "SB-UP-armcuff_1": {
+      "productKey": "armcuff_1",
+      "productName": "j1",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-jewellery (Google Drive, 'Updated photos/jewellary')",
+      "sourceFiles": [
+        "j1.png"
+      ],
+      "images": [
+        "armcuff_1-a1.jpg",
+        "armcuff_1-a2.jpg",
+        "armcuff_1-a3.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. the butterfly armcuff. Matches her own photograph in armcuff.pdf -- coiled band, two filigree butterflies, and the worn view mirrors hers. Replaces a render flagged REVIEW_REQUIRED that showed a heavier cuff with a wider band and stones"
+    },
+    "SB-UP-anklets_1": {
+      "productKey": "anklets_1",
+      "productName": "j2",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-jewellery (Google Drive, 'Updated photos/jewellary')",
+      "sourceFiles": [
+        "j2.png"
+      ],
+      "images": [
+        "anklets_1-a1.jpg",
+        "anklets_1-a2.jpg",
+        "anklets_1-a3.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. the bow anklet. Matches her own photograph in Anklets.pdf -- half pave chain, half rolo, gold bow, worn on the ankle. Replaces a render flagged REVIEW_REQUIRED that laid it flat and read as a bracelet"
+    },
+    "SB-UP-nails_4": {
+      "productKey": "nails_4",
+      "productName": "j3",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-jewellery (Google Drive, 'Updated photos/jewellary')",
+      "sourceFiles": [
+        "j3.png"
+      ],
+      "images": [
+        "nails_4-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. wine chrome almond nails -- her Wine gloss press-on set, previously the catalogue card photograph"
+    },
+    "SB-UP-nude-leopard-press-on-nails": {
+      "productKey": "nude-leopard-press-on-nails",
+      "productName": "j4",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-jewellery (Google Drive, 'Updated photos/jewellary')",
+      "sourceFiles": [
+        "j4.png"
+      ],
+      "images": [
+        "nude-leopard-press-on-nails-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. nude leopard print with silver; none of her sets match, so it goes up new"
     }
   }
 }
