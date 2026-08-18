@@ -32,6 +32,7 @@ SRC = os.path.join(HERE, "source", "updated-photos")
 OUT = os.path.join(HERE, "assets", "products")
 LOCK = os.path.join(HERE, "product-image-lock.json")
 APPLY = "--apply" in sys.argv
+ONLY = ([a.split("=", 1)[1] for a in sys.argv if a.startswith("--only=")] or [None])[0]
 
 CREAM = (250, 246, 240)
 VIEWS = ["front", "3quarter", "back"]
@@ -100,7 +101,7 @@ MAP = {
 SRC_JWL = os.path.join(HERE, "source", "updated-jewellery")
 COMPOSITES = {
     "j1": (
-        "armcuff_1", (0, 0, 919, 1024), (919, 0, 1536, 575), (919, 575, 1536, 1024),
+        "armcuff_1", (0, 0, 916, 1024), (919, 0, 1536, 575), (919, 575, 1536, 1024),
         ["Front", "Worn", "Detail"],
         "the butterfly armcuff. Matches her own photograph in armcuff.pdf -- "
         "coiled band, two filigree butterflies, and the worn view mirrors hers. "
@@ -108,7 +109,7 @@ COMPOSITES = {
         "with a wider band and stones",
     ),
     "j2": (
-        "anklets_1", (0, 0, 930, 1024), (930, 15, 1522, 558), (930, 575, 1522, 994),
+        "anklets_1", (0, 0, 927, 1024), (930, 15, 1522, 558), (930, 575, 1522, 994),
         ["Front", "Worn", "Detail"],
         "the bow anklet. Matches her own photograph in Anklets.pdf -- half pave "
         "chain, half rolo, gold bow, worn on the ankle. Replaces a render "
@@ -165,6 +166,8 @@ def jewellery(lock):
         return 0
     n = 0
     for slug in sorted(list(COMPOSITES) + list(SINGLES)):
+        if ONLY and ONLY not in slug:
+            continue
         p = os.path.join(SRC_JWL, slug + ".png")
         if not os.path.exists(p):
             print("  MISS %-34s not in source/updated-jewellery" % slug)
@@ -226,6 +229,8 @@ def main():
     seen, written, wb, jb = set(), 0, 0, 0
 
     for slug in sorted(MAP):
+        if ONLY:
+            break
         key, kind, why = MAP[slug]
         nail = "press-on-nails" in slug
         srcs = [load(slug)] if nail else [load(slug, v) for v in VIEWS]
