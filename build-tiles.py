@@ -51,13 +51,11 @@ TILES = {
         "and sat small in the middle of the tile",
     ),
     "cat-jewellery": (
-        os.path.join(OUT, "armcuff_1-a1.jpg"),
-        "the butterfly armcuff, as a cut-out. The tile was the petal drop "
-        "earrings, and those are held back now along with every other piece "
-        "that has no cut-out, so it had to come from something still on the "
-        "site. This is the same armcuff whose render was once refused here for "
-        "being flagged REVIEW_REQUIRED; the picture is a different one, matched "
-        "to her own photograph, and the flag is cleared",
+        os.path.join(OUT, "earring_3-a1.jpg"),
+        "the petal drop earrings, as the transparent cut-out. The tile showed "
+        "the same earrings photographed on silk, and that photograph is a "
+        "rectangle of silk on a cream page. The piece is back on the site with "
+        "a real cut-out, so the tile uses that",
     ),
     "cat-nails": (
         os.path.join(OUT, "pink-heart-3d-press-on-nails-a1.jpg"),
@@ -74,9 +72,26 @@ def refuses_render(path):
     lock = json.load(open(LOCK, encoding="utf-8")).get("products", {})
     name = os.path.basename(path)
     for code, v in lock.items():
-        if name in (v.get("images") or []) and v.get("sourceReview"):
+        if name not in (v.get("images") or []):
+            continue
+        sr = v.get("sourceReview")
+        # A review that has been answered is not a standing objection. Testing
+        # for the record rather than its state is what silently broke this build
+        # all morning: the armcuff was settled and the tile still refused it, so
+        # no tile was written and the front page kept yesterday's picture.
+        if sr and sr.get("state") == "REVIEW_REQUIRED":
             return code
     return None
+
+
+def not_transparent(path):
+    """A tile may only be built from a piece that has a real cut-out.
+
+    Every tile source names a .jpg, because that is what the build reads, but
+    each of those is the flattened copy of a transparent original. If the .webp
+    beside it is missing the source is a flat photograph, and a flat photograph
+    put on a tile is a rectangle of somebody's backdrop sitting on cream."""
+    return not os.path.exists(path[:-4] + ".webp")
 
 
 def trim_box(im, tol=12):
@@ -98,19 +113,29 @@ def build(src):
     im = Image.open(src).convert("RGB")
     im = im.crop(trim_box(im))
     tw, th = SIZE
+    canvas = Image.new("RGB", SIZE, CREAM)
     s = th / im.height
     w = max(1, round(im.width * s))
-    canvas = Image.new("RGB", SIZE, CREAM)
     if w <= tw:
         canvas.paste(im.resize((w, th), Image.LANCZOS), ((tw - w) // 2, 0))
         return canvas
-    # Wider than the tile once it is that tall -- a pair of earrings, a set of
-    # nails. Letterboxing those leaves them floating in a short band while the
-    # clothing tiles beside them run full height, and the row reads broken. Fill
-    # instead and take the crop off the sides: a tile is a way in to the
-    # category, not the picture of the piece, which is on the product itself.
-    r = im.resize((w, th), Image.LANCZOS)
-    canvas.paste(r, (-(w - tw) // 2, 0))
+
+    # It does not fit at full height. A genuinely wide subject -- a set of nails
+    # laid out in rows -- is filled and cropped at the sides, because
+    # letterboxing one leaves it floating in a thin band while the clothing
+    # beside it runs full height, and the row reads broken. Cropping costs
+    # nothing there: the pattern repeats.
+    #
+    # A near-square subject is not filled. A pair of earrings is two objects with
+    # space between them, and taking a sixth off each side cuts through both of
+    # them. That one is fitted to the width instead and carries a little cream
+    # above and below.
+    if im.width / im.height > 1.30:
+        r = im.resize((w, th), Image.LANCZOS)
+        canvas.paste(r, (-(w - tw) // 2, 0))
+    else:
+        h = max(1, round(im.height * tw / im.width))
+        canvas.paste(im.resize((tw, h), Image.LANCZOS), (0, (th - h) // 2))
     return canvas
 
 
@@ -119,6 +144,11 @@ def main():
     for name, (src, why) in TILES.items():
         if not os.path.exists(src):
             print("  MISS %-14s source not found: %s" % (name, src))
+            bad += 1
+            continue
+        if not_transparent(src):
+            print("  FAIL %-14s %s has no transparent original" % (
+                name, os.path.basename(src)))
             bad += 1
             continue
         flagged = refuses_render(src)
