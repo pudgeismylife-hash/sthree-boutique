@@ -261,17 +261,19 @@
       "replaced": "the earlier generated render, which showed a flat vector garment rather than this product"
     },
     "SB-JWL-10": {
-      "productKey": null,
+      "productKey": "navy-blue-red-printed-kurta-set",
       "siteCode": null,
       "productName": "Western Wear Indigo Asymmetric Tassel Tunic & Wide Palazzo Set",
-      "status": "SKIPPED",
-      "reason": "no matching product in the catalogue and no confirmed price; do not create, do not assign elsewhere",
+      "status": "RESOLVED",
+      "reason": "was SKIPPED for want of a picture it could be matched to and a confirmed price. The renamed batch of 2026-08-18 supplied three views of this piece under the filename navy-blue-red-printed-kurta-set; the product is live under her own name for it. Still no price -- it asks on WhatsApp.",
       "sourceFiles": [
         "SB-JWL-10-1.jpg",
         "SB-JWL-10-2.jpg",
         "SB-JWL-10-3.jpg"
       ],
-      "images": []
+      "images": [],
+      "resolvedOn": "2026-08-18",
+      "resolvedBy": "SB-UP-navy-blue-red-printed-kurta-set"
     },
     "SB-NLS-01": {
       "productKey": "nails_1",
@@ -420,7 +422,7 @@
     },
     "SB-UP-navy-blue-red-printed-kurta-set": {
       "productKey": "navy-blue-red-printed-kurta-set",
-      "productName": "navy-blue-red-printed-kurta-set",
+      "productName": "Indigo Asymmetric Tassel Tunic & Wide Palazzo Set",
       "status": "LOCKED",
       "lockedOn": "2026-08-18",
       "source": "source/updated-photos (Google Drive, 'Updated photos')",
@@ -435,7 +437,7 @@
         "navy-blue-red-printed-kurta-set-a3.jpg"
       ],
       "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. navy kurta with a red and white printed panel and tassels; no piece in the catalogue looks like it"
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. The piece itself is hers: it is SB-JWL-10 from an earlier batch, skipped then for want of a picture and a price. Name is hers, price still outstanding."
     },
     "SB-UP-nude-gold-floral-press-on-nails": {
       "productKey": "nude-gold-floral-press-on-nails",
