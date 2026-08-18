@@ -120,7 +120,8 @@ header{
   position:sticky;top:0;z-index:40;
 }
 @media (min-width:900px){ header{padding:14px 32px;gap:24px} }
-header .logo{height:84px;width:auto;flex:none}
+header .logo{height:84px;width:auto;flex:none;display:block}
+header .homelink{flex:none;line-height:0;text-decoration:none}
 header .spacer{flex:1}
 .icon{
   width:44px;height:44px;display:grid;place-items:center;flex:none;
@@ -596,12 +597,12 @@ footer li a:hover{color:var(--gold)}
 
 <header>
   <button class="icon menu" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
-  <img class="logo" id="logoImg" src="" alt="Sthree Boutique">
+  <a class="homelink" id="homeLink" href="./" aria-label="Sthree Boutique — back to the start"><img class="logo" id="logoImg" src="" alt="Sthree Boutique"></a>
   <nav aria-label="Primary">
-    <a href="#categories">Western</a>
-    <a href="#categories">Ethnic</a>
-    <a href="#categories">Co-ord sets</a>
-    <a href="#categories">Jewellery</a>
+    <a href="#categories" data-cat="western">Western</a>
+    <a href="#categories" data-cat="ethnic">Ethnic</a>
+    <a href="#categories" data-cat="coord">Co-ord sets</a>
+    <a href="#categories" data-cat="jewellery">Jewellery</a>
     <a href="#visit">Visit</a>
   </nav>
   <span class="spacer"></span>
@@ -619,10 +620,10 @@ footer li a:hover{color:var(--gold)}
 <div class="navpanel" id="navPanel" aria-hidden="true" inert>
   <div class="top"><button class="icon" id="menuClose" aria-label="Close menu">✕</button></div>
   <nav aria-label="Mobile">
-    <a href="#categories">Western</a>
-    <a href="#categories">Ethnic</a>
-    <a href="#categories">Co-ord sets</a>
-    <a href="#categories">Jewellery</a>
+    <a href="#categories" data-cat="western">Western</a>
+    <a href="#categories" data-cat="ethnic">Ethnic</a>
+    <a href="#categories" data-cat="coord">Co-ord sets</a>
+    <a href="#categories" data-cat="jewellery">Jewellery</a>
     <a href="#visit">Visit</a>
   </nav>
   <a class="btn" id="navCta">Shop on WhatsApp</a>
@@ -696,11 +697,11 @@ footer li a:hover{color:var(--gold)}
       <div>
         <h3>Shop</h3>
         <ul>
-          <li><a href="#categories">Western wear</a></li>
-          <li><a href="#categories">Ethnic wear</a></li>
-          <li><a href="#categories">Co-ord sets</a></li>
-          <li><a href="#categories">Jewellery</a></li>
-          <li><a href="#categories">Press-on nails</a></li>
+          <li><a href="#categories" data-cat="western">Western wear</a></li>
+          <li><a href="#categories" data-cat="ethnic">Ethnic wear</a></li>
+          <li><a href="#categories" data-cat="coord">Co-ord sets</a></li>
+          <li><a href="#categories" data-cat="jewellery">Jewellery</a></li>
+          <li><a href="#categories" data-cat="nails">Press-on nails</a></li>
           <li><a href="#categories">Bags</a></li>
         </ul>
       </div>
@@ -1187,17 +1188,53 @@ const arrivals = [
     });
   }
   render();
-  $("#cats").addEventListener("click", e=>{
-    const b = e.target.closest("[data-cat]");
-    if(!b || b.disabled) return;
-    active = (active === b.dataset.cat) ? null : b.dataset.cat;
+  function chooseCat(cat, toggle){
+    active = (toggle && active === cat) ? null : cat;
     syncCats();
     render();
     document.getElementById("arrivals").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+
+  $("#cats").addEventListener("click", e=>{
+    const b = e.target.closest("[data-cat]");
+    if(!b || b.disabled) return;
+    chooseCat(b.dataset.cat, true);      /* a tile toggles: click it again to clear */
+  });
+
+  /* The menu and the footer name the same categories as the tiles, and used to
+     be plain jumps to #categories -- so every one of them landed you in the same
+     place with the same unfiltered grid, and the menu looked broken. They now go
+     through the tiles' own code. The href stays as the fallback for a reader
+     with no JavaScript, and these never toggle: picking Jewellery twice from a
+     menu should leave you on Jewellery, not quietly clear it. */
+  document.addEventListener("click", e=>{
+    const a = e.target.closest('a[data-cat]');
+    if(!a || a.closest("#cats")) return;
+    e.preventDefault();      /* the mobile panel closes itself on any nav link */
+    chooseCat(a.dataset.cat, false);
   });
   $("#clearFilter").addEventListener("click", ()=>{
     active = null; term = ""; $("#searchInput").value = "";
     syncCats(); render();
+  });
+
+  /* The mark goes home, which every shop's does and this one did not -- it was
+     a bare image. Handled here rather than by following the href, because the
+     standalone copy is opened from a file and reloading it there is not the
+     same page; and because "home" from a filtered grid should also drop the
+     filter, which a reload would not do on the hosted copy either. */
+  $("#homeLink").addEventListener("click", e=>{
+    e.preventDefault();
+    active = null; term = "";
+    const box = $("#searchInput");
+    if(box) box.value = "";
+    const bar = $("#searchBar");
+    if(bar && !bar.hasAttribute("hidden")){
+      bar.setAttribute("hidden","");
+      $("#searchBtn").setAttribute("aria-expanded","false");
+    }
+    syncCats(); render();
+    scrollTo({top:0, behavior:"smooth"});
   });
 
   /* ── search ─────────────────────────────────────────────── */
