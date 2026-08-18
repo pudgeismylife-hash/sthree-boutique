@@ -61,6 +61,27 @@ function inlineProducts(s) {
   });
 }
 
+/* The category tiles are the one set of pictures that change without changing
+   name: cat-jewellery.jpg is rewritten in place every time the tile is
+   rebuilt. The service worker serves images from the cache first, on the
+   stated assumption that a changed picture arrives under a changed name --
+   true of every product photograph, and not true of these. The result is a
+   front page that keeps yesterday's tiles no matter how many times it is
+   reloaded, which is exactly what happened today.
+   Stamping the reference with a hash of the file makes a changed tile a
+   different URL, so the cache cannot answer for it. Only index.html is
+   stamped: the standalone copies inline these files as data URIs, and a query
+   string inside one of those would be nonsense. */
+function stampTiles(s) {
+  return s.replace(/assets\/products\/(cat-[A-Za-z0-9_-]+)\.jpg/g, (ref, name) => {
+    const p = DIR + "assets/products/" + name + ".jpg";
+    if (!fs.existsSync(p)) return ref;
+    const h = require("crypto").createHash("sha1").update(fs.readFileSync(p)).digest("hex").slice(0, 8);
+    return ref + "?v=" + h;
+  });
+}
+
+
 /* Emit Product structured data at build time, so search engines see the
    catalogue without having to run the page's JavaScript. Read from the same
    arrivals list the page renders, so the two cannot drift. */
@@ -636,6 +657,7 @@ function check(s, label, needles) {
 /* ── 1. GitHub Pages ────────────────────────────────────────────── */
 let pages = setLogo(src, logoName);
 pages = setSiteUrl(pages, SITE_URL || "__SITE_URL__");
+pages = stampTiles(pages);
 const schema = productSchema(pages, SITE_URL || "");
 pages = schema.html;
 const shots = shotList(schema.items);

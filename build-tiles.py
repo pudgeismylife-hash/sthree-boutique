@@ -51,16 +51,11 @@ TILES = {
         "and sat small in the middle of the tile",
     ),
     "cat-jewellery": (
-        os.path.join(OUT, "bracelet_1-a1.jpg"),
-        "the evil eye charm bracelet, chosen by the owner for this tile on "
-        "18 Aug 2026. Note that SB-JWL-05 is still REVIEW_REQUIRED: her own "
-        "photograph in bracelet.pdf shows the same parts -- evil eye, blue "
-        "teardrop, gold beads, pave rondelles -- but as a slim bangle with the "
-        "charms hanging, where this is a snake chain with the eye set inline. "
-        "Her photograph is small and shot in a gift box, so neither a match nor "
-        "a mismatch can be called. Allowed here by explicit instruction, not by "
-        "clearing the flag",
-        True,
+        os.path.join(OUT, "armcuff_1-a1.jpg"),
+        "the butterfly armcuff, chosen by the owner for this tile. Its review "
+        "is settled -- SB-JWL-03 was matched against her own photograph in "
+        "armcuff.pdf and cleared -- so unlike the bracelet that briefly sat "
+        "here, this one needs no exception",
     ),
     "cat-nails": (
         os.path.join(OUT, "pink-heart-3d-press-on-nails-a1.jpg"),
