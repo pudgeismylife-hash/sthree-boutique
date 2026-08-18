@@ -51,16 +51,23 @@ TILES = {
         "and sat small in the middle of the tile",
     ),
     "cat-jewellery": (
-        os.path.join(OUT, "earring_3-a1.jpg"),
-        "the petal drop earrings, as the transparent cut-out. The tile showed "
-        "the same earrings photographed on silk, and that photograph is a "
-        "rectangle of silk on a cream page. The piece is back on the site with "
-        "a real cut-out, so the tile uses that",
+        os.path.join(OUT, "bracelet_1-a1.jpg"),
+        "the evil eye charm bracelet, chosen by the owner for this tile on "
+        "18 Aug 2026. Note that SB-JWL-05 is still REVIEW_REQUIRED: her own "
+        "photograph in bracelet.pdf shows the same parts -- evil eye, blue "
+        "teardrop, gold beads, pave rondelles -- but as a slim bangle with the "
+        "charms hanging, where this is a snake chain with the eye set inline. "
+        "Her photograph is small and shot in a gift box, so neither a match nor "
+        "a mismatch can be called. Allowed here by explicit instruction, not by "
+        "clearing the flag",
+        True,
     ),
     "cat-nails": (
         os.path.join(OUT, "pink-heart-3d-press-on-nails-a1.jpg"),
         "the pink heart set, from the renamed batch -- the newest stock, and "
-        "the clearest at tile size",
+        "the clearest at tile size. Filled rather than fitted: it is a grid of "
+        "nails, so a crop at the sides loses nothing",
+        False, True,
     ),
 }
 
@@ -104,7 +111,7 @@ def trim_box(im, tol=12):
     return mask.getbbox() or (0, 0, im.width, im.height)
 
 
-def build(src):
+def build(src, fill=False):
     """The piece at full tile height, centred on cream.
 
     Trimmed to the piece first. A necklace photographed small in the middle of
@@ -120,17 +127,14 @@ def build(src):
         canvas.paste(im.resize((w, th), Image.LANCZOS), ((tw - w) // 2, 0))
         return canvas
 
-    # It does not fit at full height. A genuinely wide subject -- a set of nails
-    # laid out in rows -- is filled and cropped at the sides, because
-    # letterboxing one leaves it floating in a thin band while the clothing
-    # beside it runs full height, and the row reads broken. Cropping costs
-    # nothing there: the pattern repeats.
-    #
-    # A near-square subject is not filled. A pair of earrings is two objects with
-    # space between them, and taking a sixth off each side cuts through both of
-    # them. That one is fitted to the width instead and carries a little cream
-    # above and below.
-    if im.width / im.height > 1.30:
+    # It does not fit at full height, so something has to give, and which is not
+    # something the shape can decide. A set of nails is a repeating pattern:
+    # filling it and cropping the sides costs nothing and keeps the tile full,
+    # which is why fill is set on that one. A single object -- a bracelet, a pair
+    # of earrings -- cannot be cropped, because a sixth off each side leaves a
+    # fragment of a clasp and no way to tell what the piece is. Those are fitted
+    # to the width and carry a little cream above and below.
+    if fill:
         r = im.resize((w, th), Image.LANCZOS)
         canvas.paste(r, (-(w - tw) // 2, 0))
     else:
@@ -141,7 +145,10 @@ def build(src):
 
 def main():
     bad = 0
-    for name, (src, why) in TILES.items():
+    for name, entry in TILES.items():
+        src, why = entry[0], entry[1]
+        allow_flagged = len(entry) > 2 and entry[2]
+        fill = len(entry) > 3 and entry[3]
         if not os.path.exists(src):
             print("  MISS %-14s source not found: %s" % (name, src))
             bad += 1
@@ -152,12 +159,15 @@ def main():
             bad += 1
             continue
         flagged = refuses_render(src)
-        if flagged:
+        if flagged and not allow_flagged:
             print("  FAIL %-14s %s is flagged %s -- not her stock" % (
                 name, os.path.basename(src), flagged))
             bad += 1
             continue
-        tile = build(src)
+        if flagged:
+            print("  NOTE %-14s %s is still flagged %s; allowed by instruction" % (
+                name, os.path.basename(src), flagged))
+        tile = build(src, fill)
         print("%-14s <- %s" % (name, os.path.relpath(src, HERE)))
         print("               %s" % why)
         if APPLY:
