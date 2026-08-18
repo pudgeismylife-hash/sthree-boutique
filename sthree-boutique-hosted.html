@@ -917,16 +917,22 @@ const reviews = [];
 const P = "assets/products/";
 const arrivals = [
   // Ethnic
-  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, kw:"saree sari ethnic", fabric:"Poly cotton, zari weaving", key:"sarees_1", images:[P+"sarees_1.jpg"] },
+  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, kw:"saree sari ethnic", fabric:"Poly cotton, zari weaving", views:["Front","3/4","Back"], key:"sarees_1", alpha:true, images:[P+"sarees_1-a1.jpg",P+"sarees_1-a2.jpg",P+"sarees_1-a3.jpg"] },
   { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, kw:"saree sari ethnic", fabric:"Silk, mirror handwork", views:["Front","Side","Back"], key:"sarees_2", alpha:true, images:[P+"sarees_2-a1.jpg",P+"sarees_2-a2.jpg",P+"sarees_2-a3.jpg"] },
-  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", fabric:"Georgette, sequin embroidery", key:"sarees_3", images:[P+"sarees_3.jpg"] },
+  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", fabric:"Georgette, sequin embroidery", views:["Front","3/4","Back"], key:"sarees_3", alpha:true, images:[P+"sarees_3-a1.jpg",P+"sarees_3-a2.jpg",P+"sarees_3-a3.jpg"] },
+
+  /* Two sets that came in with the renamed photo batch and match nothing in her
+     catalogue. No price was given for either, so they ask on WhatsApp rather
+     than carry a number nobody has confirmed. */
+  { cat:"ethnic",    label:"Ethnic",       name:"Navy and red printed kurta set",        price:null, kw:"kurta set kurti palazzo ethnic printed navy", views:["Front","3/4","Back"], key:"navy-blue-red-printed-kurta-set", alpha:true, images:[P+"navy-blue-red-printed-kurta-set-a1.jpg",P+"navy-blue-red-printed-kurta-set-a2.jpg",P+"navy-blue-red-printed-kurta-set-a3.jpg"] },
+  { cat:"ethnic",    label:"Ethnic",       name:"Pink printed salwar suit",              price:null, kw:"salwar suit kurta palazzo dupatta ethnic pink", views:["Front","3/4","Back"], key:"pink-printed-salwar-suit", alpha:true, images:[P+"pink-printed-salwar-suit-a1.jpg",P+"pink-printed-salwar-suit-a2.jpg",P+"pink-printed-salwar-suit-a3.jpg"] },
   // Western
   { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", fabric:"Polyester", views:["Both pieces","Kaftan","Inner"], key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
   { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", fabric:"Linen cotton", views:["Front","Side","Back"], key:"gowns_1", alpha:true, images:[P+"gowns_1-a1.jpg",P+"gowns_1-a2.jpg",P+"gowns_1-a3.jpg"] },
   { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, kw:"dress gown western frock", fabric:"Linen cotton", key:"gowns_2", images:[P+"gowns_2.jpg"] },
   // Co-ord sets
-  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", fabric:"Cotton, cutwork embroidery", views:["Both views","Worn","On hangers"], key:"cloth_section_western_wear_2", images:[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"] },
-  { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  kw:"cordset co-ord coord palazzo set", views:["Full length","Closer"], key:"cloth_section_western_wear_3", images:[P+"cloth_section_western_wear_3-a1.jpg",P+"cloth_section_western_wear_3-a2.jpg"] },
+  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", fabric:"Cotton, cutwork embroidery", views:["Front","3/4","Back"], key:"cloth_section_western_wear_2", alpha:true, images:[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"] },
+  { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  kw:"cordset co-ord coord palazzo set", views:["Front","3/4","Back"], key:"cloth_section_western_wear_3", alpha:true, images:[P+"cloth_section_western_wear_3-a1.jpg",P+"cloth_section_western_wear_3-a2.jpg",P+"cloth_section_western_wear_3-a3.jpg"] },
   // Jewellery — earrings
   { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  kw:"earrings earring studs stud jhumka", key:"earring_1", images:[P+"earring_1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Chrysanthemum studs",                   price:110,  kw:"earrings earring studs stud jhumka", key:"earring_2", images:[P+"earring_2.jpg"] },
@@ -958,7 +964,16 @@ const arrivals = [
   { cat:"nails",     label:"Press-on",     name:"Champagne glitter press-on nails",      price:null, kw:"nails press on press-on nail manicure glitter gold", key:"nails_2", images:[P+"nails_2-a1.jpg"] },
   { cat:"nails",     label:"Press-on",     name:"Botanical line press-on nails",         price:null, kw:"nails press on press-on nail manicure leaf botanical", key:"nails_3", images:[P+"nails_3-a1.jpg"] },
   { cat:"nails",     label:"Press-on",     name:"Wine gloss press-on nails",             price:null, kw:"nails press on press-on nail manicure wine burgundy red almond", key:"nails_4", images:[P+"nails_4-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Silver filigree press-on nails",        price:null, kw:"nails press on press-on nail manicure silver", key:"nails_5", images:[P+"nails_5-a1.jpg"] }
+  { cat:"nails",     label:"Press-on",     name:"Silver filigree press-on nails",        price:null, kw:"nails press on press-on nail manicure silver", key:"nails_5", images:[P+"nails_5-a1.jpg"] },
+
+  /* Three more sets from the renamed photo batch. The names here are her own
+     filenames, not ours. Two of them sit close to sets she already has -- the
+     marble one to Champagne glitter, the floral one to Blush floral and Silver
+     filigree -- and whether any are the same physical set is hers to say, so
+     nothing above was overwritten to make room for these. */
+  { cat:"nails",     label:"Press-on",     name:"Pink heart 3D press-on nails",          price:null, kw:"nails press on press-on nail manicure pink heart hearts 3d", key:"pink-heart-3d-press-on-nails", alpha:true, images:[P+"pink-heart-3d-press-on-nails-a1.jpg"] },
+  { cat:"nails",     label:"Press-on",     name:"Nude gold marble press-on nails",       price:null, kw:"nails press on press-on nail manicure nude gold marble", key:"nude-gold-marble-press-on-nails", alpha:true, images:[P+"nude-gold-marble-press-on-nails-a1.jpg"] },
+  { cat:"nails",     label:"Press-on",     name:"Nude gold floral press-on nails",       price:null, kw:"nails press on press-on nail manicure nude gold floral flower", key:"nude-gold-floral-press-on-nails", alpha:true, images:[P+"nude-gold-floral-press-on-nails-a1.jpg"] }
 ];
 
 (function(){

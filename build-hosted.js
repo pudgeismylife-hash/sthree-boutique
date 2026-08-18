@@ -152,7 +152,8 @@ Upload to Google Drive instead, or on WhatsApp use <b>Document</b> (paperclip &r
     for (const r of grp) {
       const img = r.b64 ? `<img src="data:image/jpeg;base64,${r.b64}" alt="">` : "";
       h += `<tr><td class="img">${img}</td><td class="code">${r.code}</td><td>${esc(r.name)}</td>`
-         + `<td class="code">Rs ${r.price.toLocaleString("en-IN")}</td><td class="box">☐ ☐ ☐</td></tr>`;
+         + `<td class="code">${r.price == null ? "price?" : "Rs " + r.price.toLocaleString("en-IN")}</td>`
+         + `<td class="box">☐ ☐ ☐</td></tr>`;
     }
     h += `</table>`;
   }
@@ -427,6 +428,7 @@ self.addEventListener("fetch", e => {
    own photograph. The old baked hero carried a render for weeks precisely
    because nothing checked. */
 function checkHeroField(s, items) {
+  let made = [];
   const m = s.match(/heroField:\s*\[([\s\S]*?)\]/);
   if (!m) { console.error("FAIL could not find CONFIG.heroField"); process.exit(1); }
   const keys = [...m[1].matchAll(/"([^"]+)"/g)].map(x => x[1]);
@@ -443,14 +445,27 @@ function checkHeroField(s, items) {
   if (fs.existsSync(lockPath)) {
     const lock = JSON.parse(fs.readFileSync(lockPath, "utf8")).products || {};
     const rendered = new Map();
+    const recreated = new Map();
     for (const [code, v] of Object.entries(lock)) {
-      if (v.productKey && v.sourceReview) rendered.set(v.productKey, code);
+      if (!v.productKey) continue;
+      if (v.sourceReview) rendered.set(v.productKey, code);
+      else if (v.recreated) recreated.set(v.productKey, code);
     }
     const bad = keys.filter(k => rendered.has(k));
     if (bad.length) {
       console.error("FAIL the hero may only show the boutique's own photographs.");
       for (const k of bad) console.error("     " + k + " (" + rendered.get(k) + ") is a generated render");
       process.exit(1);
+    }
+    /* A recreation is a different thing from a render of the wrong item, and is
+       not fatal: these were checked against her own photograph of the same piece
+       and match it. But the hero is the one place that trades on being the real
+       shop, so it says so out loud every build rather than going quiet. */
+    made = keys.filter(k => recreated.has(k));
+    if (made.length) {
+      console.log("NOTE " + made.length + " of " + keys.length +
+                  " hero pieces show an AI recreation, not her photograph:");
+      for (const k of made) console.log("     " + k + " (" + recreated.get(k) + ")");
     }
   }
   /* every hero photograph must actually have a cut crop on disk */
@@ -460,7 +475,7 @@ function checkHeroField(s, items) {
     console.error("     run:  python3 build-og-images.py --apply");
     process.exit(1);
   }
-  return keys.length;
+  return { n: keys.length, recreated: made.length };
 }
 
 /* One small page per product, carrying that product's own link preview.
@@ -613,7 +628,8 @@ console.log("schema " + schema.count + " products");
 console.log("shots  photo-shot-list.html (" + shots + " pieces)");
 console.log("asks   owner-questions.html (" + asks.clothing + " clothing, " + asks.jewellery + " jewellery)");
 console.log("share  p/*.html (" + stubs.written + " product link previews)");
-console.log("hero   " + heroN + " photographs, all the boutique's own");
+console.log("hero   " + heroN.n + " pieces, " + (heroN.n - heroN.recreated) +
+            " her own photograph" + (heroN.recreated ? ", " + heroN.recreated + " recreated" : ""));
 console.log("app    sw.js + manifest, installable (cache sthree-" + swVer + ")");
 if (stubs.noCard.length) {
   console.log("       WARN no preview card for: " + stubs.noCard.join(", "));

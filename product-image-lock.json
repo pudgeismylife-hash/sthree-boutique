@@ -360,6 +360,165 @@
         "gowns_1-a2.jpg",
         "gowns_1-a3.jpg"
       ]
+    },
+    "SB-UP-sarees_3": {
+      "productKey": "sarees_3",
+      "productName": "black-brown-border-saree",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "black-brown-border-saree-front.png",
+        "black-brown-border-saree-3quarter.png",
+        "black-brown-border-saree-back.png"
+      ],
+      "images": [
+        "sarees_3-a1.jpg",
+        "sarees_3-a2.jpg",
+        "sarees_3-a3.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. black sequin saree with a copper pallu and scalloped border -- her Georgette sequin embroidery saree, previously one photograph on a hanger against an orange wall"
+    },
+    "SB-UP-cloth_section_western_wear_3": {
+      "productKey": "cloth_section_western_wear_3",
+      "productName": "black-gold-embroidered-kurta-set",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "black-gold-embroidered-kurta-set-front.png",
+        "black-gold-embroidered-kurta-set-3quarter.png",
+        "black-gold-embroidered-kurta-set-back.png"
+      ],
+      "images": [
+        "cloth_section_western_wear_3-a1.jpg",
+        "cloth_section_western_wear_3-a2.jpg",
+        "cloth_section_western_wear_3-a3.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. charcoal kurta, gold outline florals down the front, matching palazzo -- her Palazzo cordset with inner lining"
+    },
+    "SB-UP-cloth_section_western_wear_2": {
+      "productKey": "cloth_section_western_wear_2",
+      "productName": "brown-floral-salwar-suit",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "brown-floral-salwar-suit-front.png",
+        "brown-floral-salwar-suit-3quarter.png",
+        "brown-floral-salwar-suit-back.png"
+      ],
+      "images": [
+        "cloth_section_western_wear_2-a1.jpg",
+        "cloth_section_western_wear_2-a2.jpg",
+        "cloth_section_western_wear_2-a3.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. brown cutwork set, scalloped floral hem on both top and palazzo -- her Cotton embroidery elastic-hand cordset"
+    },
+    "SB-UP-navy-blue-red-printed-kurta-set": {
+      "productKey": "navy-blue-red-printed-kurta-set",
+      "productName": "navy-blue-red-printed-kurta-set",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "navy-blue-red-printed-kurta-set-front.png",
+        "navy-blue-red-printed-kurta-set-3quarter.png",
+        "navy-blue-red-printed-kurta-set-back.png"
+      ],
+      "images": [
+        "navy-blue-red-printed-kurta-set-a1.jpg",
+        "navy-blue-red-printed-kurta-set-a2.jpg",
+        "navy-blue-red-printed-kurta-set-a3.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. navy kurta with a red and white printed panel and tassels; no piece in the catalogue looks like it"
+    },
+    "SB-UP-nude-gold-floral-press-on-nails": {
+      "productKey": "nude-gold-floral-press-on-nails",
+      "productName": "nude-gold-floral-press-on-nails",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "nude-gold-floral-press-on-nails.png"
+      ],
+      "images": [
+        "nude-gold-floral-press-on-nails-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. nude with a raised flower, gold vines and pearls. Sits between her Blush floral and Silver filigree sets -- flagged for her to say"
+    },
+    "SB-UP-nude-gold-marble-press-on-nails": {
+      "productKey": "nude-gold-marble-press-on-nails",
+      "productName": "nude-gold-marble-press-on-nails",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "nude-gold-marble-press-on-nails.png"
+      ],
+      "images": [
+        "nude-gold-marble-press-on-nails-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. nude with gold marbling. Resembles her Champagne glitter set, but not closely enough to overwrite it on a guess -- flagged for her to say"
+    },
+    "SB-UP-pink-heart-3d-press-on-nails": {
+      "productKey": "pink-heart-3d-press-on-nails",
+      "productName": "pink-heart-3d-press-on-nails",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "pink-heart-3d-press-on-nails.png"
+      ],
+      "images": [
+        "pink-heart-3d-press-on-nails-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. pink hearts and pearls on a square nail; none of her five sets match"
+    },
+    "SB-UP-pink-printed-salwar-suit": {
+      "productKey": "pink-printed-salwar-suit",
+      "productName": "pink-printed-salwar-suit",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "pink-printed-salwar-suit-front.png",
+        "pink-printed-salwar-suit-3quarter.png",
+        "pink-printed-salwar-suit-back.png"
+      ],
+      "images": [
+        "pink-printed-salwar-suit-a1.jpg",
+        "pink-printed-salwar-suit-a2.jpg",
+        "pink-printed-salwar-suit-a3.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. pink kurta and palazzo with a printed dupatta. Close to her Round-neck polyester kaftan with inner in colour and print, but not the same garment -- the kaftan's wing sleeves and gold embroidered neckline are not here, the print is a narrow dupatta instead. Kept separate rather than replacing the kaftan's photographs, which would show a customer something she does not sell"
+    },
+    "SB-UP-sarees_1": {
+      "productKey": "sarees_1",
+      "productName": "pink-striped-saree",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-photos (Google Drive, 'Updated photos')",
+      "sourceFiles": [
+        "pink-striped-saree-front.png",
+        "pink-striped-saree-3quarter.png",
+        "pink-striped-saree-back.png"
+      ],
+      "images": [
+        "sarees_1-a1.jpg",
+        "sarees_1-a2.jpg",
+        "sarees_1-a3.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. magenta saree, navy and gold striped pallu -- her Poly cotton zari weaving saree, previously one photograph against a yellow wall"
     }
   }
 }
