@@ -25,6 +25,7 @@ these are AI recreations of the boutique's own catalogue photographs, not
 photographs of the stock, and the lock is where that has to stay visible.
 """
 import json, os, sys
+import numpy as np
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -222,6 +223,84 @@ def jewellery(lock):
     return n
 
 
+# The earring batch, from Google Drive "Updated photos/earing". Every file here
+# was checked for real alpha before anything was written: not "white background"
+# but pixels that are actually clear, 43% to 80% of each frame.
+#
+# Three of them are composites again -- the piece cut out on the left, photographs
+# stacked down the right -- and only the cut-out is taken. The photographs are
+# shot on white, and a white panel on a cream stage is the exact thing that had
+# to be scrubbed off the armcuff; there is no reason to add more of them.
+#
+# Prices and names are not invented here. earring.pdf carries both, and they
+# match what the catalogue already had, so nothing about either changes.
+#
+# slug -> (key, left edge of the panel block or None for a full-frame cut-out, why)
+SRC_EAR = os.path.join(HERE, "source", "updated-earrings")
+EARRINGS = {
+    "e2": ("earring_5", None,
+           "octopus studs, matching her Octopus studs at Rs 120"),
+    "e3": ("earring_3", 932,
+           "leaf and petal drops, matching her Petal drop earrings at Rs 120"),
+    "e4": ("earring_2", 921,
+           "daisy studs, matching her Chrysanthemum studs at Rs 110"),
+    "e5": ("earring_1", 928,
+           "starfish studs, matching her Starfish studs at Rs 120"),
+}
+
+# e1 is a two-heart drop: a stud heart with a larger heart hanging beneath it.
+# Her Heart studs, in the catalogue and on page 6 of earring.pdf, are a single
+# puffy heart with no drop. Not the same earring, so it is not applied to that
+# product and no new product is invented for it either -- she has not said what
+# it is or what it costs.
+UNMATCHED = {
+    "e1": "two-heart drop earring; her Heart studs are a single heart, no drop",
+}
+
+
+def earrings(lock):
+    """One transparent image per earring, cut-out only."""
+    if not os.path.isdir(SRC_EAR):
+        return 0
+    n = 0
+    for slug in sorted(EARRINGS):
+        key, panel_x, why = EARRINGS[slug]
+        f = os.path.join(SRC_EAR, slug + ".png")
+        if not os.path.exists(f):
+            print("  MISS %-6s not in source/updated-earrings" % slug)
+            continue
+        im = Image.open(f)
+        im.load()
+        im = im.convert("RGBA")
+        if panel_x:
+            im = im.crop((0, 0, panel_x, im.height))
+        bb = im.getchannel("A").getbbox()
+        if bb:
+            im = im.crop(bb)
+        clear = 100.0 * (np.asarray(im.getchannel("A")) < 16).mean()
+        size = write_piece(im, key + "-a1")
+        print("%-4s -> %-12s %dx%d  %.0f%% clear" % (slug, key, size[0], size[1], clear))
+        print("      %s" % why)
+        n += 1
+
+        lock.setdefault("products", {})["SB-UP-" + key] = {
+            "productKey": key,
+            "productName": slug,
+            "status": "LOCKED" if APPLY else "PENDING",
+            "lockedOn": "2026-08-18",
+            "source": "source/updated-earrings (Google Drive, 'Updated photos/earing')",
+            "sourceFiles": [slug + ".png"],
+            "images": [key + "-a1.jpg"],
+            "recreated": True,
+            "recreatedNote": ("AI-generated product image supplied by the shop, not a "
+                              "photograph of the stock. " + why + ". Name and price "
+                              "unchanged, both confirmed against earring.pdf."),
+        }
+    for slug, why in UNMATCHED.items():
+        print("  HELD %-4s %s" % (slug, why))
+    return n
+
+
 def main():
     if not os.path.isdir(SRC):
         sys.exit("FAIL  no source folder at %s" % os.path.relpath(SRC, HERE))
@@ -265,6 +344,7 @@ def main():
         }
 
     written += jewellery(lock)
+    written += earrings(lock)
 
     stray = sorted(set(os.listdir(SRC)) - seen)
     if stray:

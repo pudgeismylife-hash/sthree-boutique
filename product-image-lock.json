@@ -589,6 +589,66 @@
       ],
       "recreated": true,
       "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. nude leopard print with silver; none of her sets match, so it goes up new"
+    },
+    "SB-UP-earring_5": {
+      "productKey": "earring_5",
+      "productName": "e2",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-earrings (Google Drive, 'Updated photos/earing')",
+      "sourceFiles": [
+        "e2.png"
+      ],
+      "images": [
+        "earring_5-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. octopus studs, matching her Octopus studs at Rs 120. Name and price unchanged, both confirmed against earring.pdf."
+    },
+    "SB-UP-earring_3": {
+      "productKey": "earring_3",
+      "productName": "e3",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-earrings (Google Drive, 'Updated photos/earing')",
+      "sourceFiles": [
+        "e3.png"
+      ],
+      "images": [
+        "earring_3-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. leaf and petal drops, matching her Petal drop earrings at Rs 120. Name and price unchanged, both confirmed against earring.pdf."
+    },
+    "SB-UP-earring_2": {
+      "productKey": "earring_2",
+      "productName": "e4",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-earrings (Google Drive, 'Updated photos/earing')",
+      "sourceFiles": [
+        "e4.png"
+      ],
+      "images": [
+        "earring_2-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. daisy studs, matching her Chrysanthemum studs at Rs 110. Name and price unchanged, both confirmed against earring.pdf."
+    },
+    "SB-UP-earring_1": {
+      "productKey": "earring_1",
+      "productName": "e5",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-18",
+      "source": "source/updated-earrings (Google Drive, 'Updated photos/earing')",
+      "sourceFiles": [
+        "e5.png"
+      ],
+      "images": [
+        "earring_1-a1.jpg"
+      ],
+      "recreated": true,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. starfish studs, matching her Starfish studs at Rs 120. Name and price unchanged, both confirmed against earring.pdf."
     }
   }
 }
