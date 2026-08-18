@@ -71,6 +71,13 @@ function productSchema(s, base) {
   let items;
   try { items = eval("[" + m[1] + "]"); }
   catch (e) { console.error("FAIL could not parse arrivals:", e.message); process.exit(1); }
+  /* A held piece is not on the site, so it gets no schema entry, no stub page
+     and no link preview either -- otherwise a search engine would keep offering
+     a URL that shows nothing, and the shot list would ask her to photograph
+     pieces that are not for sale. */
+  const heldCount = items.filter(p => p.hold).length;
+  items = items.filter(p => !p.hold);
+  if (heldCount) console.log("held   " + heldCount + " piece(s) off the site, awaiting a cut-out");
 
   const seq = {}, CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG"};
   const list = items.map((p, n) => {
@@ -448,7 +455,10 @@ function checkHeroField(s, items) {
     const recreated = new Map();
     for (const [code, v] of Object.entries(lock)) {
       if (!v.productKey) continue;
-      if (v.sourceReview) rendered.set(v.productKey, code);
+      /* A review that has been answered is not a standing objection. The state
+         is what counts, not the presence of the record -- the record stays for
+         good, so that what was wrong and how it was settled is still readable. */
+      if (v.sourceReview && v.sourceReview.state === "REVIEW_REQUIRED") rendered.set(v.productKey, code);
       else if (v.recreated) recreated.set(v.productKey, code);
     }
     const bad = keys.filter(k => rendered.has(k));
@@ -571,7 +581,29 @@ location.replace(${JSON.stringify(rel)});
 `, "utf8");
     written++;
   }
-  return { written, noCard };
+
+  /* Sweep out pages and preview cards for pieces no longer on the site. A held
+     piece keeps its data, but leaving its page up means WhatsApp still renders
+     a preview of something the shop does not show, and a search engine keeps
+     offering the address. Rebuilding after the hold is lifted puts all three
+     back under the same names. */
+  const keep = new Set(items.map(p => p.key));
+  let swept = 0;
+  const sweep = (folder, ext) => {
+    const at = DIR + folder;
+    if (!fs.existsSync(at)) return;
+    for (const f of fs.readdirSync(at)) {
+      if (!f.endsWith(ext)) continue;
+      const key = f.slice(0, -ext.length);
+      if (keep.has(key) || key.startsWith("cat-")) continue;
+      fs.unlinkSync(at + f);
+      swept++;
+    }
+  };
+  sweep("p/", ".html");
+  sweep("assets/og/", ".jpg");
+  sweep("assets/hero/", ".jpg");
+  return { written, noCard, swept };
 }
 
 /* ── strip the document wrapper for the artifact host ───────────── */
@@ -627,7 +659,8 @@ const kb = n => Math.round(n / 1024) + " KB";
 console.log("schema " + schema.count + " products");
 console.log("shots  photo-shot-list.html (" + shots + " pieces)");
 console.log("asks   owner-questions.html (" + asks.clothing + " clothing, " + asks.jewellery + " jewellery)");
-console.log("share  p/*.html (" + stubs.written + " product link previews)");
+console.log("share  p/*.html (" + stubs.written + " product link previews)" +
+            (stubs.swept ? ", swept " + stubs.swept + " file(s) for pieces no longer shown" : ""));
 console.log("hero   " + heroN.n + " pieces, " + (heroN.n - heroN.recreated) +
             " her own photograph" + (heroN.recreated ? ", " + heroN.recreated + " recreated" : ""));
 console.log("app    sw.js + manifest, installable (cache sthree-" + swVer + ")");

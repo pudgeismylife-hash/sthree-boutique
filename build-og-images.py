@@ -47,6 +47,8 @@ def catalogue():
     items = []
     for m in re.finditer(r"\{[^{}]*\}", block.group(1)):
         row = m.group(0)
+        if "hold:true" in row:
+            continue          # not on the site, so it needs no card and no crop
         key = re.search(r'key:"([^"]+)"', row)
         cat = re.search(r'cat:"([^"]+)"', row)
         imgs = re.search(r"images:\[([^\]]*)\]", row)

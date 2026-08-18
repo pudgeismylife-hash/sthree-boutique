@@ -51,13 +51,13 @@ TILES = {
         "and sat small in the middle of the tile",
     ),
     "cat-jewellery": (
-        os.path.join(OUT, "earring_3.jpg"),
-        "the petal drop earrings, straight from her own catalogue -- gold on "
-        "cream silk, which is the only jewellery picture that still reads at "
-        "tile size and the only one whose colour belongs beside the clothes. "
-        "The tile was the butterfly armcuff, one of the six jewellery pictures "
-        "flagged REVIEW_REQUIRED -- a render, not a photograph of her stock, so "
-        "it had no business being the face of the category",
+        os.path.join(OUT, "armcuff_1-a1.jpg"),
+        "the butterfly armcuff, as a cut-out. The tile was the petal drop "
+        "earrings, and those are held back now along with every other piece "
+        "that has no cut-out, so it had to come from something still on the "
+        "site. This is the same armcuff whose render was once refused here for "
+        "being flagged REVIEW_REQUIRED; the picture is a different one, matched "
+        "to her own photograph, and the flag is cleared",
     ),
     "cat-nails": (
         os.path.join(OUT, "pink-heart-3d-press-on-nails-a1.jpg"),

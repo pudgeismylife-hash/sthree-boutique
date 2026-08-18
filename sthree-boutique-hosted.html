@@ -875,10 +875,10 @@ const CONFIG = {
      build refuses to start if any entry is a generated render, and refuses if a
      key is not in the catalogue, so this cannot quietly rot. */
   heroField: [
-    "sarees_2", "cloth_section_western_wear_2", "earring_4",
-    "gowns_1", "sarees_1", "ring_2",
-    "cloth_section_western_wear_1", "necklace_2", "sarees_3",
-    "earring_3", "gowns_2", "cloth_section_western_wear_3"
+    "sarees_2", "cloth_section_western_wear_2", "armcuff_1",
+    "gowns_1", "sarees_1", "pink-heart-3d-press-on-nails",
+    "navy-blue-red-printed-kurta-set", "anklets_1", "sarees_3",
+    "nude-gold-floral-press-on-nails", "pink-printed-salwar-suit", "cloth_section_western_wear_3"
   ],
 
   defaultSizes: {
@@ -927,9 +927,9 @@ const arrivals = [
      nobody has confirmed. */
   { cat:"ethnic",    label:"Ethnic",       name:"Pink printed salwar suit",              price:null, kw:"salwar suit kurta palazzo dupatta ethnic pink", views:["Front","3/4","Back"], key:"pink-printed-salwar-suit", alpha:true, images:[P+"pink-printed-salwar-suit-a1.jpg",P+"pink-printed-salwar-suit-a2.jpg",P+"pink-printed-salwar-suit-a3.jpg"] },
   // Western
-  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", fabric:"Polyester", views:["Both pieces","Kaftan","Inner"], key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
+  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", fabric:"Polyester", views:["Both pieces","Kaftan","Inner"], hold:true, key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
   { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", fabric:"Linen cotton", views:["Front","Side","Back"], key:"gowns_1", alpha:true, images:[P+"gowns_1-a1.jpg",P+"gowns_1-a2.jpg",P+"gowns_1-a3.jpg"] },
-  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, kw:"dress gown western frock", fabric:"Linen cotton", key:"gowns_2", images:[P+"gowns_2.jpg"] },
+  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, kw:"dress gown western frock", fabric:"Linen cotton", hold:true, key:"gowns_2", images:[P+"gowns_2.jpg"] },
   // Co-ord sets
   { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", fabric:"Cotton, cutwork embroidery", views:["Front","3/4","Back"], key:"cloth_section_western_wear_2", alpha:true, images:[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"] },
   { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  kw:"cordset co-ord coord palazzo set", views:["Front","3/4","Back"], key:"cloth_section_western_wear_3", alpha:true, images:[P+"cloth_section_western_wear_3-a1.jpg",P+"cloth_section_western_wear_3-a2.jpg",P+"cloth_section_western_wear_3-a3.jpg"] },
@@ -940,20 +940,20 @@ const arrivals = [
      now, still without a price. */
   { cat:"coord",     label:"Co-ord set",   name:"Indigo asymmetric tassel tunic & wide palazzo set", price:null, kw:"tunic palazzo cordset co-ord coord set indigo navy tassel", views:["Front","3/4","Back"], key:"navy-blue-red-printed-kurta-set", alpha:true, images:[P+"navy-blue-red-printed-kurta-set-a1.jpg",P+"navy-blue-red-printed-kurta-set-a2.jpg",P+"navy-blue-red-printed-kurta-set-a3.jpg"] },
   // Jewellery — earrings
-  { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  kw:"earrings earring studs stud jhumka", key:"earring_1", images:[P+"earring_1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Chrysanthemum studs",                   price:110,  kw:"earrings earring studs stud jhumka", key:"earring_2", images:[P+"earring_2.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Petal drop earrings",                   price:120,  kw:"earrings earring studs stud jhumka", key:"earring_3", images:[P+"earring_3.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Monstera leaf studs",                   price:120,  kw:"earrings earring studs stud jhumka", key:"earring_4", images:[P+"earring_4.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Octopus studs",                         price:120,  kw:"earrings earring studs stud jhumka", key:"earring_5", images:[P+"earring_5.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart studs",                           price:120,  kw:"earrings earring studs stud jhumka", key:"earring_6", images:[P+"earring_6.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  kw:"earrings earring studs stud jhumka", hold:true, key:"earring_1", images:[P+"earring_1.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Chrysanthemum studs",                   price:110,  kw:"earrings earring studs stud jhumka", hold:true, key:"earring_2", images:[P+"earring_2.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Petal drop earrings",                   price:120,  kw:"earrings earring studs stud jhumka", hold:true, key:"earring_3", images:[P+"earring_3.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Monstera leaf studs",                   price:120,  kw:"earrings earring studs stud jhumka", hold:true, key:"earring_4", images:[P+"earring_4.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Octopus studs",                         price:120,  kw:"earrings earring studs stud jhumka", hold:true, key:"earring_5", images:[P+"earring_5.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart studs",                           price:120,  kw:"earrings earring studs stud jhumka", hold:true, key:"earring_6", images:[P+"earring_6.jpg"] },
   // Jewellery — neck
-  { cat:"jewellery", label:"Anti-tarnish", name:"Studded infinity heart necklace",       price:280,  kw:"necklace chain pendant", key:"necklace_1", images:[P+"necklace_1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace",                price:350,  kw:"necklace chain pendant", key:"necklace_2", images:[P+"necklace_2.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace, beaded",        price:350,  kw:"necklace chain pendant", key:"necklace_3", images:[P+"necklace_3.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Black clover set",                      price:499,  kw:"necklace bracelet set clover", key:"black_clover_set_1", images:[P+"black_clover_set_1-a1.jpg",P+"black_clover_set_1-a2.jpg",P+"black_clover_set_1-a3.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Studded infinity heart necklace",       price:280,  kw:"necklace chain pendant", hold:true, key:"necklace_1", images:[P+"necklace_1.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace",                price:350,  kw:"necklace chain pendant", hold:true, key:"necklace_2", images:[P+"necklace_2.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace, beaded",        price:350,  kw:"necklace chain pendant", hold:true, key:"necklace_3", images:[P+"necklace_3.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Black clover set",                      price:499,  kw:"necklace bracelet set clover", hold:true, key:"black_clover_set_1", images:[P+"black_clover_set_1-a1.jpg",P+"black_clover_set_1-a2.jpg",P+"black_clover_set_1-a3.jpg"] },
   // Jewellery — hand and arm
-  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, floral pearl",         price:130,  kw:"ring rings", key:"ring_1", images:[P+"ring_1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, peacock",              price:120,  kw:"ring rings", key:"ring_2", images:[P+"ring_2.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, floral pearl",         price:130,  kw:"ring rings", hold:true, key:"ring_1", images:[P+"ring_1.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, peacock",              price:120,  kw:"ring rings", hold:true, key:"ring_2", images:[P+"ring_2.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  kw:"bracelet bangle", key:"bracelet_1", alpha:true, images:[P+"bracelet_1-a1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Butterfly armcuff",                     price:280,  kw:"armcuff arm cuff bajuband butterfly", views:["Front","Worn","Detail"], key:"armcuff_1", alpha:true, images:[P+"armcuff_1-a1.jpg",P+"armcuff_1-a2.jpg",P+"armcuff_1-a3.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Sculpted double floral open armcuff",   price:280,  kw:"armcuff arm cuff bajuband", views:["Front","Worn","Detail"], key:"armcuff_2", alpha:true, images:[P+"armcuff_2-a1.jpg",P+"armcuff_2-a2.jpg",P+"armcuff_2-a3.jpg"] },
@@ -966,11 +966,11 @@ const arrivals = [
      inventing a figure — the ₹999 printed on the maker's instruction card is
      that maker's MRP, not hers. The names are ours, by what each set looks
      like, and need her approval exactly as the earring names do. */
-  { cat:"nails",     label:"Press-on",     name:"Blush floral press-on nails",           price:null, kw:"nails press on press-on nail manicure floral", key:"nails_1", images:[P+"nails_1-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Champagne glitter press-on nails",      price:null, kw:"nails press on press-on nail manicure glitter gold", key:"nails_2", images:[P+"nails_2-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Botanical line press-on nails",         price:null, kw:"nails press on press-on nail manicure leaf botanical", key:"nails_3", images:[P+"nails_3-a1.jpg"] },
+  { cat:"nails",     label:"Press-on",     name:"Blush floral press-on nails",           price:null, kw:"nails press on press-on nail manicure floral", hold:true, key:"nails_1", images:[P+"nails_1-a1.jpg"] },
+  { cat:"nails",     label:"Press-on",     name:"Champagne glitter press-on nails",      price:null, kw:"nails press on press-on nail manicure glitter gold", hold:true, key:"nails_2", images:[P+"nails_2-a1.jpg"] },
+  { cat:"nails",     label:"Press-on",     name:"Botanical line press-on nails",         price:null, kw:"nails press on press-on nail manicure leaf botanical", hold:true, key:"nails_3", images:[P+"nails_3-a1.jpg"] },
   { cat:"nails",     label:"Press-on",     name:"Wine gloss press-on nails",             price:null, kw:"nails press on press-on nail manicure wine burgundy red almond", key:"nails_4", alpha:true, images:[P+"nails_4-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Silver filigree press-on nails",        price:null, kw:"nails press on press-on nail manicure silver", key:"nails_5", images:[P+"nails_5-a1.jpg"] },
+  { cat:"nails",     label:"Press-on",     name:"Silver filigree press-on nails",        price:null, kw:"nails press on press-on nail manicure silver", hold:true, key:"nails_5", images:[P+"nails_5-a1.jpg"] },
 
   /* Three more sets from the renamed photo batch. The names here are her own
      filenames, not ours. Two of them sit close to sets she already has -- the
@@ -982,6 +982,12 @@ const arrivals = [
   { cat:"nails",     label:"Press-on",     name:"Nude gold floral press-on nails",       price:null, kw:"nails press on press-on nail manicure nude gold floral flower", key:"nude-gold-floral-press-on-nails", alpha:true, images:[P+"nude-gold-floral-press-on-nails-a1.jpg"] },
   { cat:"nails",     label:"Press-on",     name:"Nude leopard press-on nails",           price:null, kw:"nails press on press-on nail manicure nude leopard animal print silver", key:"nude-leopard-press-on-nails", alpha:true, images:[P+"nude-leopard-press-on-nails-a1.jpg"] }
 ];
+
+/* Pieces held back from the site. Everything here is still hers, still priced
+   and still in the file -- it simply has no cut-out yet, and the shop is meant
+   to read as one set of pictures rather than a mix of cut-outs and backdrops.
+   Drop the hold and the piece is back, with its price, code and URL unchanged. */
+const live = arrivals.filter(p => !p.hold);
 
 (function(){
   "use strict";
@@ -1057,7 +1063,7 @@ const arrivals = [
   (function hero(){
     const field = $("#heroField");
     if(!field) return;
-    const byKey = new Map(arrivals.map(p => [p.key, p]));
+    const byKey = new Map(live.map(p => [p.key, p]));
     const pieces = CONFIG.heroField.map(k => byKey.get(k)).filter(Boolean);
     const wide = matchMedia("(min-width:900px)");
 
@@ -1084,14 +1090,14 @@ const arrivals = [
     const spell = v => v < 20 ? ONES[v]
       : v < 100 ? TENS[Math.floor(v/10)] + (v % 10 ? "-" + ONES[v % 10] : "")
       : String(v);
-    const n = arrivals.length;
+    const n = live.length;
     const said = spell(n) || String(n);
     $("#heroEyebrow").textContent =
       said.charAt(0).toUpperCase() + said.slice(1) + (n === 1 ? " piece" : " pieces") +
       " · " + CONFIG.address.split(",").map(s => s.trim()).slice(0, 2).join(", ");
 
     const from = cat => {
-      const inCat = arrivals.filter(p => p.cat === cat && priced(p));
+      const inCat = live.filter(p => p.cat === cat && priced(p));
       return inCat.length ? Math.min(...inCat.map(p => p.price)) : null;
     };
     const parts = [["Sarees", from("ethnic")], ["Jewellery", from("jewellery")]]
@@ -1101,7 +1107,7 @@ const arrivals = [
 
   /* categories — tiles filter the collection below */
   $("#cats").innerHTML = categories.map(c=>{
-    const count = arrivals.filter(a=>a.cat===c.key).length;
+    const count = live.filter(a=>a.cat===c.key).length;
     const art = c.img
       ? `<div class="ph"><img src="${thumb(c.img)}" alt="${esc(c.name)}" width="360" height="480" loading="lazy" decoding="async"></div>`
       : `<div class="ph"><span>Coming soon</span></div>`;
@@ -1114,7 +1120,7 @@ const arrivals = [
 
   /* the collection */
   const grid = $("#items");
-  let view = arrivals.slice();          // what is currently on screen
+  let view = live.slice();          // what is currently on screen
 
   /* Give every piece a stable key (from its photo, so it never shifts) and a
      readable code. An enquiry then carries the name, price, code and a link
@@ -1122,7 +1128,7 @@ const arrivals = [
      the owner sees which photo the customer means. */
   const CAT_CODE = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG"};
   const seq = {};
-  arrivals.forEach(p=>{
+  live.forEach(p=>{
     seq[p.cat] = (seq[p.cat] || 0) + 1;
     p.code = "SB-" + (CAT_CODE[p.cat] || "GEN") + "-" + String(seq[p.cat]).padStart(2,"0");
   });
@@ -1146,7 +1152,7 @@ const arrivals = [
   );
 
   function render(){
-    let list = arrivals;
+    let list = live;
     if(active) list = list.filter(a=>a.cat===active);
     if(term){
       /* Match on word starts, not raw substrings — otherwise "ring"
@@ -1454,7 +1460,7 @@ const arrivals = [
   (function deepLink(){
     const want = new URLSearchParams(location.search).get("p");
     if(!want) return;
-    const p = arrivals.find(a=>a.key === want);
+    const p = live.find(a=>a.key === want);
     if(!p) return;
     active = null; term = ""; syncCats(); render();
     const n = view.findIndex(a=>a.key === want);
