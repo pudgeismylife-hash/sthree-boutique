@@ -82,6 +82,30 @@ function stampTiles(s) {
 }
 
 
+/* Held pieces never reach the browser.
+
+   The page filters them out at runtime, so leaving them in the array was
+   harmless to what renders -- but the row still shipped inside every
+   distributable, name and keywords and all. For a piece held because its
+   branding must not be published, shipping the record is the one thing that
+   defeats holding it. They are stripped here instead, so the source file keeps
+   the whole catalogue and the built copies carry only what is on sale. */
+function stripHeld(s, liveItems) {
+  const m = s.match(/const arrivals = \[([\s\S]*?)\n\];/);
+  if (!m) { console.error("FAIL could not find the arrivals list to strip"); process.exit(1); }
+  /* Images are written back as P+"name.jpg", the same shape the source uses.
+     Emitting the full path instead changes what inlineProducts can see: it
+     matches assets/products/... literals, so every photograph would suddenly be
+     inlined into the standalone copies and the WhatsApp file went from under a
+     megabyte to eight and a half. */
+  const body = liveItems.map(p => {
+    const imgs = (p.images || []).map(f => 'P+"' + f.replace(/^assets\/products\//, "") + '"');
+    const rest = JSON.stringify(p, (k, v) => k === "images" ? undefined : v);
+    return "  " + rest.replace(/}$/, ',"images":[' + imgs.join(",") + ']}');
+  }).join(",\n");
+  return s.replace(m[0], "const arrivals = [\n" + body + "\n];");
+}
+
 /* Emit Product structured data at build time, so search engines see the
    catalogue without having to run the page's JavaScript. Read from the same
    arrivals list the page renders, so the two cannot drift. */
@@ -98,7 +122,7 @@ function productSchema(s, base) {
      pieces that are not for sale. */
   const heldCount = items.filter(p => p.hold).length;
   items = items.filter(p => !p.hold);
-  if (heldCount) console.log("held   " + heldCount + " piece(s) off the site, awaiting a cut-out");
+  if (heldCount) console.log("held   " + heldCount + " piece(s) off the site (no cut-out yet, or awaiting verification)");
 
   const seq = {}, CAT = {ethnic:"ETH", western:"WES", coord:"COR", jewellery:"JWL", nails:"NLS", bags:"BAG"};
   const list = items.map((p, n) => {
@@ -659,7 +683,7 @@ let pages = setLogo(src, logoName);
 pages = setSiteUrl(pages, SITE_URL || "__SITE_URL__");
 pages = stampTiles(pages);
 const schema = productSchema(pages, SITE_URL || "");
-pages = schema.html;
+pages = stripHeld(schema.html, schema.items);
 const shots = shotList(schema.items);
 const asks = ownerQuestions(schema.items);
 const stubs = productPages(schema.items, SITE_URL || "");
@@ -669,12 +693,12 @@ check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
 
 /* ── 2. Claude artifact ─────────────────────────────────────────── */
-let artifact = unwrap(inlineProducts(setSiteUrl(setLogo(src, logoDataUri), SITE_URL)).replace("<!-- __PRODUCT_SCHEMA__ -->", ""));
+let artifact = unwrap(inlineProducts(stripHeld(setSiteUrl(setLogo(src, logoDataUri), SITE_URL), schema.items)).replace("<!-- __PRODUCT_SCHEMA__ -->", ""));
 check(artifact, "hosted", ["<title>", "<style>", 'id="items"', "917625077531", "Shop on WhatsApp"]);
 fs.writeFileSync(DIR + "sthree-boutique-hosted.html", artifact, "utf8");
 
 /* ── 3. Standalone to send as a file ────────────────────────────── */
-const share = inlineProducts(setSiteUrl(setLogo(src, logoDataUri), SITE_URL)).replace("<!-- __PRODUCT_SCHEMA__ -->", "");
+const share = inlineProducts(stripHeld(setSiteUrl(setLogo(src, logoDataUri), SITE_URL), schema.items)).replace("<!-- __PRODUCT_SCHEMA__ -->", "");
 fs.writeFileSync(DIR + "sthree-boutique-share.html", share, "utf8");
 
 const kb = n => Math.round(n / 1024) + " KB";

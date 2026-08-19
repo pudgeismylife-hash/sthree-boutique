@@ -917,70 +917,28 @@ const reviews = [];
 
 const P = "assets/products/";
 const arrivals = [
-  // Ethnic
-  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, kw:"saree sari ethnic", fabric:"Poly cotton, zari weaving", views:["Front","3/4","Back"], key:"sarees_1", alpha:true, images:[P+"sarees_1-a1.jpg",P+"sarees_1-a2.jpg",P+"sarees_1-a3.jpg"] },
-  { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, kw:"saree sari ethnic", fabric:"Silk, mirror handwork", views:["Front","Side","Back"], key:"sarees_2", alpha:true, images:[P+"sarees_2-a1.jpg",P+"sarees_2-a2.jpg",P+"sarees_2-a3.jpg"] },
-  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", fabric:"Georgette, sequin embroidery", views:["Front","3/4","Back"], key:"sarees_3", alpha:true, images:[P+"sarees_3-a1.jpg",P+"sarees_3-a2.jpg",P+"sarees_3-a3.jpg"] },
-
-  /* Came in with the renamed photo batch and matches nothing in her catalogue.
-     No price was given, so it asks on WhatsApp rather than carrying a number
-     nobody has confirmed. */
-  { cat:"ethnic",    label:"Ethnic",       name:"Pink printed salwar suit",              price:null, kw:"salwar suit kurta palazzo dupatta ethnic pink", views:["Front","3/4","Back"], key:"pink-printed-salwar-suit", alpha:true, images:[P+"pink-printed-salwar-suit-a1.jpg",P+"pink-printed-salwar-suit-a2.jpg",P+"pink-printed-salwar-suit-a3.jpg"] },
-  // Western
-  { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", fabric:"Polyester", views:["Both pieces","Kaftan","Inner"], hold:true, key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
-  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", fabric:"Linen cotton", views:["Front","Side","Back"], key:"gowns_1", alpha:true, images:[P+"gowns_1-a1.jpg",P+"gowns_1-a2.jpg",P+"gowns_1-a3.jpg"] },
-  { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, orange",  price:2093, kw:"dress gown western frock", fabric:"Linen cotton", hold:true, key:"gowns_2", images:[P+"gowns_2.jpg"] },
-  // Co-ord sets
-  { cat:"coord",     label:"Co-ord set",   name:"Cotton embroidery elastic-hand cordset",price:1352, kw:"cordset co-ord coord set", fabric:"Cotton, cutwork embroidery", views:["Front","3/4","Back"], key:"cloth_section_western_wear_2", alpha:true, images:[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"] },
-  { cat:"coord",     label:"Co-ord set",   name:"Palazzo cordset with inner lining",     price:950,  kw:"cordset co-ord coord palazzo set", views:["Front","3/4","Back"], key:"cloth_section_western_wear_3", alpha:true, images:[P+"cloth_section_western_wear_3-a1.jpg",P+"cloth_section_western_wear_3-a2.jpg",P+"cloth_section_western_wear_3-a3.jpg"] },
-
-  /* Her own piece, and her own wording for it: she sent this one in an earlier
-     batch as SB-JWL-10 and it was skipped for want of a price and a picture it
-     could be matched to. The renamed batch supplied the pictures, so it goes up
-     now, still without a price. */
-  { cat:"coord",     label:"Co-ord set",   name:"Indigo asymmetric tassel tunic & wide palazzo set", price:null, kw:"tunic palazzo cordset co-ord coord set indigo navy tassel", views:["Front","3/4","Back"], key:"navy-blue-red-printed-kurta-set", alpha:true, images:[P+"navy-blue-red-printed-kurta-set-a1.jpg",P+"navy-blue-red-printed-kurta-set-a2.jpg",P+"navy-blue-red-printed-kurta-set-a3.jpg"] },
-  // Jewellery — earrings
-  { cat:"jewellery", label:"Anti-tarnish", name:"Starfish studs",                        price:120,  kw:"earrings earring studs stud jhumka", key:"earring_1", alpha:true, images:[P+"earring_1-a1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Chrysanthemum studs",                   price:110,  kw:"earrings earring studs stud jhumka", key:"earring_2", alpha:true, images:[P+"earring_2-a1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Petal drop earrings",                   price:120,  kw:"earrings earring studs stud jhumka", key:"earring_3", alpha:true, images:[P+"earring_3-a1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Monstera leaf studs",                   price:120,  kw:"earrings earring studs stud jhumka", hold:true, key:"earring_4", images:[P+"earring_4.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Octopus studs",                         price:120,  kw:"earrings earring studs stud jhumka", key:"earring_5", alpha:true, images:[P+"earring_5-a1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart studs",                           price:120,  kw:"earrings earring studs stud jhumka", hold:true, key:"earring_6", images:[P+"earring_6.jpg"] },
-  // Jewellery — neck
-  { cat:"jewellery", label:"Anti-tarnish", name:"Studded infinity heart necklace",       price:280,  kw:"necklace chain pendant", hold:true, key:"necklace_1", images:[P+"necklace_1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace",                price:350,  kw:"necklace chain pendant", hold:true, key:"necklace_2", images:[P+"necklace_2.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace, beaded",        price:350,  kw:"necklace chain pendant", hold:true, key:"necklace_3", images:[P+"necklace_3.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Black clover set",                      price:499,  kw:"necklace bracelet set clover", hold:true, key:"black_clover_set_1", images:[P+"black_clover_set_1-a1.jpg",P+"black_clover_set_1-a2.jpg",P+"black_clover_set_1-a3.jpg"] },
-  // Jewellery — hand and arm
-  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, floral pearl",         price:130,  kw:"ring rings", hold:true, key:"ring_1", images:[P+"ring_1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, peacock",              price:120,  kw:"ring rings", hold:true, key:"ring_2", images:[P+"ring_2.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  kw:"bracelet bangle", key:"bracelet_1", alpha:true, images:[P+"bracelet_1-a1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Butterfly armcuff",                     price:280,  kw:"armcuff arm cuff bajuband butterfly", views:["Front","Worn","Detail"], key:"armcuff_1", alpha:true, images:[P+"armcuff_1-a1.jpg",P+"armcuff_1-a2.jpg",P+"armcuff_1-a3.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Sculpted double floral open armcuff",   price:280,  kw:"armcuff arm cuff bajuband", views:["Front","Worn","Detail"], key:"armcuff_2", alpha:true, images:[P+"armcuff_2-a1.jpg",P+"armcuff_2-a2.jpg",P+"armcuff_2-a3.jpg"] },
-  // Jewellery — anklets
-  { cat:"jewellery", label:"Anti-tarnish", name:"Bow anklet",                            price:280,  kw:"anklet anklets payal bow", views:["Front","Worn","Detail"], key:"anklets_1", alpha:true, images:[P+"anklets_1-a1.jpg",P+"anklets_1-a2.jpg",P+"anklets_1-a3.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Anti-tarnish anklet",                   price:280,  kw:"anklet anklets payal", views:["Front","Worn","Detail"], key:"anklets_2", alpha:true, images:[P+"anklets_2-a1.jpg",P+"anklets_2-a2.jpg",P+"anklets_2-a3.jpg"] },
-
-  /* Press-on nails. The boutique supplied photographs but no prices, so these
-     carry price:null and the site asks the customer to enquire rather than
-     inventing a figure — the ₹999 printed on the maker's instruction card is
-     that maker's MRP, not hers. The names are ours, by what each set looks
-     like, and need her approval exactly as the earring names do. */
-  { cat:"nails",     label:"Press-on",     name:"Blush floral press-on nails",           price:null, kw:"nails press on press-on nail manicure floral", hold:true, key:"nails_1", images:[P+"nails_1-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Champagne glitter press-on nails",      price:null, kw:"nails press on press-on nail manicure glitter gold", hold:true, key:"nails_2", images:[P+"nails_2-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Botanical line press-on nails",         price:null, kw:"nails press on press-on nail manicure leaf botanical", hold:true, key:"nails_3", images:[P+"nails_3-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Wine gloss press-on nails",             price:null, kw:"nails press on press-on nail manicure wine burgundy red almond", key:"nails_4", alpha:true, images:[P+"nails_4-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Silver filigree press-on nails",        price:null, kw:"nails press on press-on nail manicure silver", hold:true, key:"nails_5", images:[P+"nails_5-a1.jpg"] },
-
-  /* Three more sets from the renamed photo batch. The names here are her own
-     filenames, not ours. Two of them sit close to sets she already has -- the
-     marble one to Champagne glitter, the floral one to Blush floral and Silver
-     filigree -- and whether any are the same physical set is hers to say, so
-     nothing above was overwritten to make room for these. */
-  { cat:"nails",     label:"Press-on",     name:"Pink heart 3D press-on nails",          price:null, kw:"nails press on press-on nail manicure pink heart hearts 3d", key:"pink-heart-3d-press-on-nails", alpha:true, images:[P+"pink-heart-3d-press-on-nails-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Nude gold marble press-on nails",       price:null, kw:"nails press on press-on nail manicure nude gold marble", key:"nude-gold-marble-press-on-nails", alpha:true, images:[P+"nude-gold-marble-press-on-nails-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Nude gold floral press-on nails",       price:null, kw:"nails press on press-on nail manicure nude gold floral flower", key:"nude-gold-floral-press-on-nails", alpha:true, images:[P+"nude-gold-floral-press-on-nails-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Nude leopard press-on nails",           price:null, kw:"nails press on press-on nail manicure nude leopard animal print silver", key:"nude-leopard-press-on-nails", alpha:true, images:[P+"nude-leopard-press-on-nails-a1.jpg"] }
+  {"cat":"ethnic","label":"Ethnic","name":"Poly cotton zari weaving saree","price":1180,"kw":"saree sari ethnic","fabric":"Poly cotton, zari weaving","views":["Front","3/4","Back"],"key":"sarees_1","alpha":true,"images":[P+"sarees_1-a1.jpg",P+"sarees_1-a2.jpg",P+"sarees_1-a3.jpg"]},
+  {"cat":"ethnic","label":"Ethnic","name":"Silk designer mirror handwork saree","price":1680,"kw":"saree sari ethnic","fabric":"Silk, mirror handwork","views":["Front","Side","Back"],"key":"sarees_2","alpha":true,"images":[P+"sarees_2-a1.jpg",P+"sarees_2-a2.jpg",P+"sarees_2-a3.jpg"]},
+  {"cat":"ethnic","label":"Ethnic","name":"Georgette sequin embroidery saree","price":1820,"kw":"saree sari ethnic","fabric":"Georgette, sequin embroidery","views":["Front","3/4","Back"],"key":"sarees_3","alpha":true,"images":[P+"sarees_3-a1.jpg",P+"sarees_3-a2.jpg",P+"sarees_3-a3.jpg"]},
+  {"cat":"ethnic","label":"Ethnic","name":"Pink printed salwar suit","price":null,"kw":"salwar suit kurta palazzo dupatta ethnic pink","views":["Front","3/4","Back"],"key":"pink-printed-salwar-suit","alpha":true,"images":[P+"pink-printed-salwar-suit-a1.jpg",P+"pink-printed-salwar-suit-a2.jpg",P+"pink-printed-salwar-suit-a3.jpg"]},
+  {"cat":"western","label":"Western","name":"Linen cotton dress with belt, black","price":2093,"kw":"dress gown western frock","fabric":"Linen cotton","views":["Front","Side","Back"],"key":"gowns_1","alpha":true,"images":[P+"gowns_1-a1.jpg",P+"gowns_1-a2.jpg",P+"gowns_1-a3.jpg"]},
+  {"cat":"coord","label":"Co-ord set","name":"Cotton embroidery elastic-hand cordset","price":1352,"kw":"cordset co-ord coord set","fabric":"Cotton, cutwork embroidery","views":["Front","3/4","Back"],"key":"cloth_section_western_wear_2","alpha":true,"images":[P+"cloth_section_western_wear_2-a1.jpg",P+"cloth_section_western_wear_2-a2.jpg",P+"cloth_section_western_wear_2-a3.jpg"]},
+  {"cat":"coord","label":"Co-ord set","name":"Palazzo cordset with inner lining","price":950,"kw":"cordset co-ord coord palazzo set","views":["Front","3/4","Back"],"key":"cloth_section_western_wear_3","alpha":true,"images":[P+"cloth_section_western_wear_3-a1.jpg",P+"cloth_section_western_wear_3-a2.jpg",P+"cloth_section_western_wear_3-a3.jpg"]},
+  {"cat":"coord","label":"Co-ord set","name":"Indigo asymmetric tassel tunic & wide palazzo set","price":null,"kw":"tunic palazzo cordset co-ord coord set indigo navy tassel","views":["Front","3/4","Back"],"key":"navy-blue-red-printed-kurta-set","alpha":true,"images":[P+"navy-blue-red-printed-kurta-set-a1.jpg",P+"navy-blue-red-printed-kurta-set-a2.jpg",P+"navy-blue-red-printed-kurta-set-a3.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Starfish studs","price":120,"kw":"earrings earring studs stud jhumka","key":"earring_1","alpha":true,"images":[P+"earring_1-a1.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Chrysanthemum studs","price":110,"kw":"earrings earring studs stud jhumka","key":"earring_2","alpha":true,"images":[P+"earring_2-a1.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Petal drop earrings","price":120,"kw":"earrings earring studs stud jhumka","key":"earring_3","alpha":true,"images":[P+"earring_3-a1.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Octopus studs","price":120,"kw":"earrings earring studs stud jhumka","key":"earring_5","alpha":true,"images":[P+"earring_5-a1.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Evil eye charm bracelet","price":350,"kw":"bracelet bangle","key":"bracelet_1","alpha":true,"images":[P+"bracelet_1-a1.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Butterfly armcuff","price":280,"kw":"armcuff arm cuff bajuband butterfly","views":["Front","Worn","Detail"],"key":"armcuff_1","alpha":true,"images":[P+"armcuff_1-a1.jpg",P+"armcuff_1-a2.jpg",P+"armcuff_1-a3.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Sculpted double floral open armcuff","price":280,"kw":"armcuff arm cuff bajuband","views":["Front","Worn","Detail"],"key":"armcuff_2","alpha":true,"images":[P+"armcuff_2-a1.jpg",P+"armcuff_2-a2.jpg",P+"armcuff_2-a3.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Bow anklet","price":280,"kw":"anklet anklets payal bow","views":["Front","Worn","Detail"],"key":"anklets_1","alpha":true,"images":[P+"anklets_1-a1.jpg",P+"anklets_1-a2.jpg",P+"anklets_1-a3.jpg"]},
+  {"cat":"jewellery","label":"Anti-tarnish","name":"Anti-tarnish anklet","price":280,"kw":"anklet anklets payal","views":["Front","Worn","Detail"],"key":"anklets_2","alpha":true,"images":[P+"anklets_2-a1.jpg",P+"anklets_2-a2.jpg",P+"anklets_2-a3.jpg"]},
+  {"cat":"nails","label":"Press-on","name":"Wine gloss press-on nails","price":null,"kw":"nails press on press-on nail manicure wine burgundy red almond","key":"nails_4","alpha":true,"images":[P+"nails_4-a1.jpg"]},
+  {"cat":"nails","label":"Press-on","name":"Pink heart 3D press-on nails","price":null,"kw":"nails press on press-on nail manicure pink heart hearts 3d","key":"pink-heart-3d-press-on-nails","alpha":true,"images":[P+"pink-heart-3d-press-on-nails-a1.jpg"]},
+  {"cat":"nails","label":"Press-on","name":"Nude gold marble press-on nails","price":null,"kw":"nails press on press-on nail manicure nude gold marble","key":"nude-gold-marble-press-on-nails","alpha":true,"images":[P+"nude-gold-marble-press-on-nails-a1.jpg"]},
+  {"cat":"nails","label":"Press-on","name":"Nude gold floral press-on nails","price":null,"kw":"nails press on press-on nail manicure nude gold floral flower","key":"nude-gold-floral-press-on-nails","alpha":true,"images":[P+"nude-gold-floral-press-on-nails-a1.jpg"]},
+  {"cat":"nails","label":"Press-on","name":"Nude leopard press-on nails","price":null,"kw":"nails press on press-on nail manicure nude leopard animal print silver","key":"nude-leopard-press-on-nails","alpha":true,"images":[P+"nude-leopard-press-on-nails-a1.jpg"]}
 ];
 
 /* Pieces held back from the site. Everything here is still hers, still priced

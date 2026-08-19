@@ -649,6 +649,41 @@
       ],
       "recreated": true,
       "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. starfish studs, matching her Starfish studs at Rs 120. Name and price unchanged, both confirmed against earring.pdf."
+    },
+    "SB-BAG-01": {
+      "productKey": "mk-signature-satchel",
+      "siteCode": "SB-BAG-01",
+      "productName": "Michael Kors signature satchel",
+      "status": "PENDING_VERIFICATION",
+      "recordedOn": "2026-08-18",
+      "price": 3500,
+      "size": "10 x 8 inches",
+      "source": "supplied by the shop in chat, 18 Aug 2026; three photographs, not stored",
+      "images": [],
+      "authenticity": {
+        "state": "NOT_VERIFIED",
+        "claimed": "listed and described by the shop as Michael Kors",
+        "evidenceProvided": "none",
+        "indicators": [
+          "offered at Rs 3,500 against a retail figure many times higher",
+          "described as 12@ grade, which is replica grading rather than a brand term",
+          "sold on the inclusion of branded box, dust cover, tags and hanging charm",
+          "hangtag in the supplied photograph reads MICHAEL / MIOAHI / KORR"
+        ],
+        "note": "Not asserted either way. The shop was explicit that no authenticity claim should be invented, and none is made here."
+      },
+      "publication": {
+        "state": "HELD",
+        "reason": "The photographs carry the Michael Kors wordmark, the repeated MK monogram across the body of the bag and the circular MK charm. Offering the piece for sale on a public page under those marks is trademark use in commerce, and the exposure falls on the shop. The record is kept; the listing is not published.",
+        "notDone": [
+          "public product card",
+          "product page",
+          "link preview",
+          "schema entry",
+          "stored images"
+        ],
+        "unblockedBy": "evidence of source -- invoice, distributor or equivalent. With that, remove hold:true, add the photographs, and it lists in full with the brand name and logo intact."
+      }
     }
   }
 }
