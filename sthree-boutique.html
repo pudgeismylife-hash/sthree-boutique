@@ -910,7 +910,7 @@ const categories = [
   { key:"coord",     name:"Co-ord sets",    note:"Matched two-pieces",      img:"assets/products/cat-coord.jpg" },
   { key:"jewellery", name:"Jewellery",      note:"Anti-tarnish, everyday",  img:"assets/products/cat-jewellery.jpg" },
   { key:"nails",     name:"Press-on nails", note:"Salon look, at home",     img:"assets/products/cat-nails.jpg" },
-  { key:"bags",      name:"Bags",           note:"Imported & Indian",       soon:true }
+  { key:"bags",      name:"Bags",           note:"Imported & Indian" }
 ];
 
 /* The real catalogue, from the boutique's own product sheets.
@@ -1134,13 +1134,20 @@ const live = arrivals.filter(p => !p.hold);
   /* categories — tiles filter the collection below */
   $("#cats").innerHTML = categories.map(c=>{
     const count = live.filter(a=>a.cat===c.key).length;
+    /* A category with nothing in it yet is still a category: it stays
+       clickable and shows its real count, which is zero. It used to be
+       disabled and captioned "Coming soon", which said nothing about whether
+       the shelf was empty or the shop had never opened it -- and left the one
+       category whose only piece is held looking like an unbuilt feature.
+       With no photograph there is simply no photograph; the frame keeps its
+       shape and the name below says what it is. */
     const art = c.img
       ? `<div class="ph"><img src="${thumb(c.img)}" alt="${esc(c.name)}" width="360" height="480" loading="lazy" decoding="async"></div>`
-      : `<div class="ph"><span>Coming soon</span></div>`;
-    return `<button class="cat" data-cat="${c.key}"${c.soon?' disabled':''} aria-pressed="false">
+      : `<div class="ph"></div>`;
+    return `<button class="cat" data-cat="${c.key}" aria-pressed="false">
       ${art}
       <span class="name">${esc(c.name)}</span>
-      <small>${c.soon ? "Coming soon" : esc(c.note) + " · " + count}</small>
+      <small>${esc(c.note) + " · " + count}</small>
     </button>`;
   }).join("");
 
@@ -1177,6 +1184,21 @@ const live = arrivals.filter(p => !p.hold);
     productUrl(p)
   );
 
+  /* Two different nothings. A search that found no piece is a failed search;
+     a category with no pieces in it yet is simply empty, and telling the
+     customer "nothing matches that" when they have not searched for anything
+     reads as a broken page. */
+  function emptyNote(){
+    if(active && !term){
+      const c = categories.find(x => x.key === active);
+      const what = c ? c.name.toLowerCase() : "pieces";
+      return `<p class="empty">No ${esc(what)} available yet. ` +
+             `<button id="resetAll">Show everything</button></p>`;
+    }
+    return `<p class="empty">Nothing matches that. ` +
+           `<button id="resetAll">Show everything</button></p>`;
+  }
+
   function render(){
     let list = live;
     if(active) list = list.filter(a=>a.cat===active);
@@ -1200,7 +1222,7 @@ const live = arrivals.filter(p => !p.hold);
         <div class="price${priced(i)?"":" ask"}">${priceLabel(i)}</div>
         <a class="enquire" href="${enquiry(i)}" target="_blank" rel="noopener">Enquire</a>
       </article>`).join("") ||
-      `<p class="empty">Nothing matches that. <button id="resetAll">Show everything</button></p>`;
+      emptyNote();
     $("#count").textContent = list.length + (list.length === 1 ? " piece" : " pieces");
     const reset = $("#resetAll");
     if(reset) reset.addEventListener("click", ()=>{ active=null; term=""; $("#searchInput").value=""; syncCats(); render(); });
