@@ -13,7 +13,8 @@ no payments, no stock system.
 **Live:** https://pudgeismylife-hash.github.io/sthree-boutique/
 **Repo:** `pudgeismylife-hash/sthree-boutique`
 **Branch:** `claude/sthree-boutique-work-wqme9s`, pushed to `main`
-**At handover:** commit `afff1f9`, deployed and green, tree clean
+**At handover:** commit `0f8d6b8`, deployed and green, tree clean
+**Latest status file:** `STATUS-2026-08-20.md`
 
 ---
 
@@ -23,7 +24,7 @@ no payments, no stock system.
 ./check-sync.sh
 ```
 
-This container has come back at an older commit **three times**. A stale tree
+This container has come back at an older commit **four times**. A stale tree
 does not look stale — it looks like a broken project: folders missing, products
 never committed, counts wrong. A diagnosis went out on 19 Aug saying the
 customer's photographs had been lost. They had not; the tree was a day behind.
@@ -55,7 +56,7 @@ be saved to disk, so anything pasted into the conversation is unusable as a file
 
 ## Current catalogue
 
-**22 on sale · 15 held · 37 total**
+**24 on sale · 14 held · 38 total**
 
 | Category | On sale |
 |---|---|
@@ -64,15 +65,32 @@ be saved to disk, so anything pasted into the conversation is unusable as a file
 | Co-ord sets | 3 |
 | Jewellery | 9 |
 | Press-on nails | 5 |
-| Bags | 0 |
+| Bags | 2 |
 
 Every live product uses a **transparent cut-out**. That was deliberate: the shop
 had been a mix of cut-outs and photographs on silk, grey card and room sets, and
 read as two different shops.
 
 **Held** = still in the file with name, price, code and URL, invisible on the
-site. Delete `hold:true` from its line and it returns. Fourteen are held only
+site. Delete `hold:true` from its line and it returns. All fourteen are held only
 because they have no cut-out yet.
+
+### How a product is framed
+
+One rule, and the picture decides which half applies. A **cut-out** is fitted
+whole inside its frame, undistorted, with one consistent margin — nothing of the
+piece is ever cropped. A **photograph** (worn on the arm, shot close on fabric)
+fills the frame, because what a crop takes off it is backdrop. They are told
+apart by how opaque the picture is out to its own corners.
+
+Before framing, the piece is found by connected component, not by
+`Image.getbbox()`: these cut-outs carry a haze of alpha 1–3 to the file edges and
+sometimes a stray 1px hairline, and both hold the bounding box open. See
+`alpha_box()` in `build-og-images.py`, mirrored in `build-tiles.py`, and the
+20 Aug status file for the numbers.
+
+Do not reintroduce percentage insets into either build. They were added once,
+shrank every bag and nail set, and were removed on 20 Aug.
 
 ---
 
@@ -94,11 +112,14 @@ Bags is a **live, clickable category showing 0**. It is not "coming soon" — th
 was removed deliberately; an empty shelf and an unopened shop are different
 things. Selecting it shows "No bags available yet."
 
-One bag record exists: **`SB-BAG-01`, Michael Kors signature satchel, ₹3,500**,
-`PENDING_VERIFICATION` / `NOT_VERIFIED` / `HELD`, `images: []`.
+**Two Michael Kors satchels are live** as of 20 August — brown and vanilla,
+₹3,500 each. A third, the black one shown in its gift box, was removed at the
+owner's request. `SB-BAG-01` in `product-image-lock.json` remains
+`PENDING_VERIFICATION` / `NOT_VERIFIED`.
 
-**It is not published, and this was argued at length. Do not quietly reverse it,
-and do not re-open it unless the owner brings new provenance.**
+**Publishing them did not settle the provenance question — it went live with the
+question open.** Read the rest of this section before touching those rows or
+adding more branded stock.
 
 What was established:
 
@@ -115,9 +136,10 @@ What was established:
   printed surface of the bag, so editing it out fabricates a different product
   and misleads the buyer, while the goods still bear the mark.
 
-**What would change it:** genuine provenance — supplier, wholesaler, invoice,
-importer. With that, publish in full, brand and logo intact, three colourways.
-Nothing else does.
+**What would settle it:** genuine provenance — supplier, wholesaler, invoice,
+importer. Nothing else does. Until then the listing carries a brand name whose
+authenticity nobody in this project can vouch for, and that is a live risk to the
+shop, not a closed item.
 
 Selling it in the shop or over WhatsApp was never in question. The constraint is
 only the public indexed listing.
@@ -158,6 +180,13 @@ set. Two were cleared on 18 Aug by matching new images to her own PDF photos.
   stage and show a seam — hence transparent WebP beside every JPEG.
 - **`alpha:true` demands a `.webp` for every view**, not just the first.
 - **`Image.getbbox()` trims black, not cream.** Use the difference-mask `trim_box`.
+- **`Image.getbbox()` on an alpha channel trims nothing at all.** The cut-outs
+  carry a haze of alpha 1–3 out to the file edges, so its box is the whole file.
+  Use `alpha_box()`. Several also carry a stray 1px hairline at one edge that a
+  plain threshold keeps and the component test drops.
+- **A wait-loop whose command names the process it waits for matches itself.**
+  `until ! pgrep -f "build-og-images.py"` blocked for ten minutes on 20 Aug after
+  the build had already finished.
 - **github.io is unreachable from the container.** Confirm deploys from the
   Actions run and by rendering the built file. Cache complaints need `?v=N`.
 - **Stale checkout.** See the top of this file.
