@@ -8,17 +8,20 @@ import never refreshes them: replacing a product photograph leaves its category
 tile still showing the old picture. That has caught this project out before, so
 the choice of photograph per tile is written down here and can be rerun.
 
-Every tile is built the same way -- the piece scaled to the full height of the
-tile and centred on cream. A cut-out is 2:3 and the tile is 3:4, so that leaves
-a hand's width of cream down either side and crops nothing. Filling instead
-would take a tenth of the height off, which on a full-length figure is her head
-and the hem.
+Every tile is framed by the same rule the product cards use: the piece trimmed
+out of its own padding and then fitted whole, as large as the tile will take it,
+centred on cream. Nothing of a cut-out is ever cropped -- a cut-out is 2:3 and
+the tile is 3:4, so it carries a hand's width of cream down either side, and
+filling instead would take a tenth of the height off, which on a full-length
+figure is her head and the hem.
 
 Only the tiles named in TILES are touched. A tile left out keeps whatever it
 already has.
 """
 import json, os, sys
+import numpy as np
 from PIL import Image, ImageChops
+from scipy import ndimage
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "assets", "products")
@@ -111,37 +114,68 @@ def trim_box(im, tol=12):
     return mask.getbbox() or (0, 0, im.width, im.height)
 
 
-def build(src, fill=False):
-    """The piece at full tile height, centred on cream.
+# The framing below is the same rule the product cards use, and the reasoning
+# for it is written out once, in build-og-images.py. It is repeated here rather
+# than imported because this file's name has a hyphen in it.
+FAINT = 4        # alpha below this is invisible haze, not the piece
+SPECK = 0.005    # a part holding less of the picture than this is not the piece
+KEEP = 0.98      # ... and the trim is refused outright if it would cost this much
+SOLID = 0.85     # opaque this far out to its own edges and it is a photograph
+INSET = 8        # the one margin, in pixels of the 720x960 tile
 
-    Trimmed to the piece first. A necklace photographed small in the middle of
-    its own white page would otherwise arrive at the tile still small, and the
-    tile would be mostly cream."""
-    im = Image.open(src).convert("RGB")
-    im = im.crop(trim_box(im))
+
+def alpha_box(im):
+    """The piece inside its own file, past the haze and the stray hairlines that
+    background removal leaves out at the edges."""
+    a = im.getchannel("A")
+    whole = a.getbbox() or (0, 0, im.width, im.height)
+    arr = np.asarray(a, dtype=np.int64)
+    mask = arr >= FAINT
+    if not mask.any():
+        return whole
+    lab, n = ndimage.label(mask)
+    ink = ndimage.sum(arr, lab, range(1, n + 1))
+    total = ink.sum()
+    if not total:
+        return whole
+    keep = [i + 1 for i, v in enumerate(ink) if v / total >= SPECK]
+    if keep and sum(ink[i - 1] for i in keep) / total >= KEEP:
+        mask = np.isin(lab, keep)
+    ys, xs = np.where(mask)
+    return int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1
+
+
+def is_photograph(im):
+    """A whole photograph, as against a piece cut out of one."""
+    h = im.getchannel("A").histogram()
+    return sum(h[250:]) / max(1, sum(h)) >= SOLID
+
+
+def build(src, fill=False):
+    """The piece as large as the tile will take it, centred on cream.
+
+    Read from the cut-out beside the named .jpg, not the .jpg itself: the flat
+    copy is letterboxed, and its border is not always the same cream, so a tile
+    built from it arrives with the piece small inside its own margin.
+
+    A cut-out is fitted whole and never cropped -- a bracelet with a sixth off
+    each side is a fragment of a clasp with no way to tell what it was. A whole
+    photograph, and anything set to fill here, covers the tile instead, because
+    what the crop takes off those is backdrop or more of the same pattern."""
+    im = Image.open(src[:-4] + ".webp")
+    im.load()
+    im = im.convert("RGBA")
+    im = im.crop(alpha_box(im))
     tw, th = SIZE
     canvas = Image.new("RGB", SIZE, CREAM)
-    s = th / im.height
-    w = max(1, round(im.width * s))
-    if w <= tw:
-        canvas.paste(im.resize((w, th), Image.LANCZOS), ((tw - w) // 2, 0))
+    if fill or is_photograph(im):
+        s = max(tw / im.width, th / im.height)
+        r = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
+        canvas.paste(r, (-(r.width - tw) // 2, -(r.height - th) // 2), r)
         return canvas
-
-    # It does not fit at full height, so something has to give, and which is not
-    # something the shape can decide. A set of nails is a repeating pattern:
-    # filling it and cropping the sides costs nothing and keeps the tile full,
-    # which is why fill is set on that one. A single object -- a bracelet, a pair
-    # of earrings -- cannot be cropped, because a sixth off each side leaves a
-    # fragment of a clasp and no way to tell what the piece is. Those are fitted
-    # to the width and carry a little cream above and below.
-    if fill:
-        r = im.resize((w, th), Image.LANCZOS)
-        canvas.paste(r, (-(w - tw) // 2, 0))
-    else:
-        scale = min((tw * 0.86) / im.width, (th * 0.82) / im.height)
-        w = max(1, round(im.width * scale))
-        h = max(1, round(im.height * scale))
-        canvas.paste(im.resize((w, h), Image.LANCZOS), ((tw - w) // 2, (th - h) // 2))
+    s = min((tw - INSET * 2) / im.width, (th - INSET * 2) / im.height)
+    r = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
+    canvas.paste(r, ((tw - r.width) // 2, (th - r.height) // 2), r)
     return canvas
 
 

@@ -17,3 +17,6 @@ source/extracted/
 
 # local jewellery source folder
 SB-JWL-Products/
+
+# python build-script bytecode
+__pycache__/
