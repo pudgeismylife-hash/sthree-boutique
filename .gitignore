@@ -14,3 +14,6 @@ griha-pravesh/
 
 # extracted from source/customer-pdf by extract-source.py — regenerate, don't commit
 source/extracted/
+
+# local jewellery source folder
+SB-JWL-Products/

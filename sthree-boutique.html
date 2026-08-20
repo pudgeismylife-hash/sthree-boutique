@@ -910,7 +910,7 @@ const categories = [
   { key:"coord",     name:"Co-ord sets",    note:"Matched two-pieces",      img:"assets/products/cat-coord.jpg" },
   { key:"jewellery", name:"Jewellery",      note:"Anti-tarnish, everyday",  img:"assets/products/cat-jewellery.jpg" },
   { key:"nails",     name:"Press-on nails", note:"Salon look, at home",     img:"assets/products/cat-nails.jpg" },
-  { key:"bags",      name:"Bags",           note:"Imported & Indian" }
+  { key:"bags",      name:"Bags",           note:"Imported & Indian",       img:"assets/products/cat-bags.jpg" }
 ];
 
 /* The real catalogue, from the boutique's own product sheets.
@@ -988,25 +988,10 @@ const arrivals = [
   { cat:"nails",     label:"Press-on",     name:"Nude gold floral press-on nails",       price:null, kw:"nails press on press-on nail manicure nude gold floral flower", key:"nude-gold-floral-press-on-nails", alpha:true, images:[P+"nude-gold-floral-press-on-nails-a1.jpg"] },
   { cat:"nails",     label:"Press-on",     name:"Nude leopard press-on nails",           price:null, kw:"nails press on press-on nail manicure nude leopard animal print silver", key:"nude-leopard-press-on-nails", alpha:true, images:[P+"nude-leopard-press-on-nails-a1.jpg"] },
 
-  /* Bags — draft, not published.
-
-     Held rather than listed. The piece is a signature-monogram satchel carrying
-     the Michael Kors wordmark, the repeated MK monogram over the whole body and
-     the circular MK charm, offered at Rs 3,500 against a retail figure many
-     times that, and the hangtag in the supplied photograph reads MICHAEL /
-     MIOAHI / KORR. Offering it for sale on a public page under those marks is
-     the owner's exposure, not ours, so the record exists and the listing does
-     not.
-
-     Nothing here is disguised and nothing is claimed: the name keeps the brand,
-     the price is hers, authenticity is recorded as unverified rather than
-     asserted either way, and no images are stored because none may be published
-     under these marks. Reselling genuine stock is lawful -- if a source is ever
-     produced, drop hold:true, add the photographs, and it lists in full.
-
-     Recorded in product-image-lock.json as SB-BAG-01, PENDING_VERIFICATION. */
-  { cat:"bags",      label:"Bag",          name:"Michael Kors signature satchel",        price:3500, kw:"bag handbag satchel michael kors monogram", key:"mk-signature-satchel",
-    size:"10 x 8 inches", authenticity:"not verified", hold:true, images:[] }
+  // Bags
+  { cat:"bags",      label:"Bag",          name:"Michael Kors signature satchel, brown",  price:3500, kw:"bag handbag satchel michael kors monogram brown cognac", key:"mk-signature-satchel-brown", size:"10 x 8 inches", alpha:true, images:[P+"mk-signature-satchel-brown-a1.jpg"] },
+  { cat:"bags",      label:"Bag",          name:"Michael Kors signature satchel, vanilla",price:3500, kw:"bag handbag satchel michael kors monogram vanilla cream white", views:["Front", "With strap"], key:"mk-signature-satchel-vanilla", size:"10 x 8 inches", alpha:true, images:[P+"mk-signature-satchel-vanilla-a1.jpg", P+"mk-signature-satchel-vanilla-a2.jpg"] },
+  { cat:"bags",      label:"Bag",          name:"Michael Kors signature satchel with gift box, black", price:3500, kw:"bag handbag satchel michael kors monogram black gift box packaging", key:"mk-signature-satchel-black", size:"10 x 8 inches", alpha:true, images:[P+"mk-signature-satchel-black-a1.jpg"] }
 ];
 
 /* Pieces held back from the site. Everything here is still hers, still priced

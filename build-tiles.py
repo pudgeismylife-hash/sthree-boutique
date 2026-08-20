@@ -64,6 +64,11 @@ TILES = {
         "nails, so a crop at the sides loses nothing",
         False, True,
     ),
+    "cat-bags": (
+        os.path.join(OUT, "mk-signature-satchel-brown-a1.jpg"),
+        "the Michael Kors signature satchel in brown monogram with gold charm",
+        True, False,
+    ),
 }
 
 
