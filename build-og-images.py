@@ -163,8 +163,9 @@ def make_thumb(path, transparent=False):
     canvas = Image.new(mode, (tw, th), ground)
     ar, frame = im.width / im.height, tw / th
     if ar > 1.30:
-        r = im.resize((tw, max(1, round(im.height * tw / im.width))), Image.LANCZOS)
-        canvas.paste(r, (0, (th - r.height) // 2))
+        scale = min((tw * 0.90) / im.width, (th * 0.86) / im.height)
+        r = im.resize((max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.LANCZOS)
+        canvas.paste(r, ((tw - r.width) // 2, (th - r.height) // 2))
     elif ar < frame * 0.88:
         r = im.resize((max(1, round(im.width * th / im.height)), th), Image.LANCZOS)
         canvas.paste(r, ((tw - r.width) // 2, 0))

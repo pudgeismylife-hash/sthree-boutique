@@ -138,8 +138,10 @@ def build(src, fill=False):
         r = im.resize((w, th), Image.LANCZOS)
         canvas.paste(r, (-(w - tw) // 2, 0))
     else:
-        h = max(1, round(im.height * tw / im.width))
-        canvas.paste(im.resize((tw, h), Image.LANCZOS), (0, (th - h) // 2))
+        scale = min((tw * 0.86) / im.width, (th * 0.82) / im.height)
+        w = max(1, round(im.width * scale))
+        h = max(1, round(im.height * scale))
+        canvas.paste(im.resize((w, h), Image.LANCZOS), ((tw - w) // 2, (th - h) // 2))
     return canvas
 
 
