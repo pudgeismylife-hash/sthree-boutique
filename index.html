@@ -270,7 +270,10 @@ h2{font-size:26px;margin-bottom:22px}
 .cats{grid-template-columns:repeat(2,1fr)}
 @media (min-width:600px){ .cats{grid-template-columns:repeat(3,1fr)} }
 @media (min-width:900px){ .cats{grid-template-columns:repeat(6,1fr)} }
-.cat .ph{aspect-ratio:3/4}
+/* Square, not 3:4. A standing figure suits a tall frame and a handbag does
+   not: at 3:4 the bag reached just over half the height while the dresses
+   beside it filled theirs. See the head of build-tiles.py. */
+.cat .ph{aspect-ratio:1/1}
 .cat span.name{
   display:block;font-family:var(--display);font-size:17px;margin-top:9px;line-height:1.3;
 }
@@ -1078,12 +1081,12 @@ const CONFIG = {
 /* Content — update these lists and the page follows. */
 /* Categories. `key` links a tile to the products below it. */
 const categories = [
-  { key:"western",   name:"Western wear",   note:"Dresses, kaftans",        img:"assets/products/cat-western.jpg?v=5a1858a9" },
-  { key:"ethnic",    name:"Ethnic wear",    note:"Sarees",                  img:"assets/products/cat-ethnic.jpg?v=a37a32cf" },
-  { key:"coord",     name:"Co-ord sets",    note:"Matched two-pieces",      img:"assets/products/cat-coord.jpg?v=842cf407" },
-  { key:"jewellery", name:"Jewellery",      note:"Anti-tarnish, everyday",  img:"assets/products/cat-jewellery.jpg?v=33042d0c" },
-  { key:"nails",     name:"Press-on nails", note:"Salon look, at home",     img:"assets/products/cat-nails.jpg?v=8e7f91aa" },
-  { key:"bags",      name:"Bags",           note:"Imported & Indian",       img:"assets/products/cat-bags.jpg?v=9c357f90" }
+  { key:"western",   name:"Western wear",   note:"Dresses, kaftans",        img:"assets/products/cat-western.jpg?v=0c9fa1ea" },
+  { key:"ethnic",    name:"Ethnic wear",    note:"Sarees",                  img:"assets/products/cat-ethnic.jpg?v=58e57b47" },
+  { key:"coord",     name:"Co-ord sets",    note:"Matched two-pieces",      img:"assets/products/cat-coord.jpg?v=d7dd2a8d" },
+  { key:"jewellery", name:"Jewellery",      note:"Anti-tarnish, everyday",  img:"assets/products/cat-jewellery.jpg?v=15c644fb" },
+  { key:"nails",     name:"Press-on nails", note:"Salon look, at home",     img:"assets/products/cat-nails.jpg?v=e13124a0" },
+  { key:"bags",      name:"Bags",           note:"Imported & Indian",       img:"assets/products/cat-bags.jpg?v=111ee467" }
 ];
 
 /* The real catalogue, from the boutique's own product sheets.
@@ -1253,7 +1256,7 @@ const live = arrivals.filter(p => !p.hold);
        With no photograph there is simply no photograph; the frame keeps its
        shape and the name below says what it is. */
     const art = c.img
-      ? `<div class="ph"><img src="${thumb(c.img)}" alt="${esc(c.name)}" width="360" height="480" loading="lazy" decoding="async"></div>`
+      ? `<div class="ph"><img src="${thumb(c.img)}" alt="${esc(c.name)}" width="360" height="360" loading="lazy" decoding="async"></div>`
       : `<div class="ph"></div>`;
     return `<button class="cat" data-cat="${c.key}" aria-pressed="false">
       ${art}

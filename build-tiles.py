@@ -10,10 +10,15 @@ the choice of photograph per tile is written down here and can be rerun.
 
 Every tile is framed by the same rule the product cards use: the piece trimmed
 out of its own padding and then fitted whole, as large as the tile will take it,
-centred on cream. Nothing of a cut-out is ever cropped -- a cut-out is 2:3 and
-the tile is 3:4, so it carries a hand's width of cream down either side, and
-filling instead would take a tenth of the height off, which on a full-length
-figure is her head and the hem.
+centred on cream. Nothing of a cut-out is ever cropped.
+
+The tiles are square. They were 3:4, which suits a standing figure and defeats a
+handbag: a bag is wider than it is tall, so a tall frame left it reaching just
+over half the height while the dresses beside it filled theirs, and the row read
+as though the bags were an afterthought. Cropping the bag to fill instead sliced
+the strap clasps off at both edges, which looks like damage rather than framing.
+A square frame is the shape that suits both -- every piece here now fills about
+seven tenths of its tile, and none of them is cut.
 
 Only the tiles named in TILES are touched. A tile left out keeps whatever it
 already has.
@@ -29,9 +34,9 @@ THUMB = os.path.join(OUT, "thumb")
 LOCK = os.path.join(HERE, "product-image-lock.json")
 APPLY = "--apply" in sys.argv
 
-SIZE = (720, 960)
+SIZE = (720, 720)
 CREAM = (250, 246, 240)
-THUMB_SIZE = (360, 480)
+THUMB_SIZE = (360, 360)
 
 # category -> the photograph its tile is built from, and why that one.
 TILES = {
@@ -71,11 +76,8 @@ TILES = {
     "cat-bags": (
         os.path.join(OUT, "mk-signature-satchel-brown-a1.jpg"),
         "the signature satchel in brown monogram with tan trim -- the middle of "
-        "the three colourways, so the tile does not favour either end. The "
-        "shoulder strap is trimmed off the sides here, and only here: it takes "
-        "the picture to 1.31 against a 3:4 tile, which left the bag small and "
-        "floating beside figures that fill theirs",
-        True, False, False, True,
+        "the three colourways, so the tile does not favour either end",
+        True, False,
     ),
 }
 
@@ -206,36 +208,7 @@ def grid_window(im, target_ar):
     return (best[1], 0, best[2], h)
 
 
-def trim_wings(im, keep=0.45, cost=0.16):
-    """Drop a thin outlying part that stretches the picture but is not the bulk
-    of it -- a shoulder strap looping out to both sides of a handbag.
-
-    The bag body and its handles are nearly square, 0.96; the strap takes the
-    whole picture to 1.31, and a 1.31 shape fitted whole into a 3:4 tile is a
-    small object with cream above and below it, sitting beside full-length
-    figures that fill their tiles. Trimming the strap's outer arc is a real
-    crop and is only done where a tile asks for it: the card and the viewer
-    still show the bag entire, strap and all.
-
-    A column counts as bulk if its content is at least `keep` of the tallest
-    column's. If cutting to the bulk would cost more than `cost` of the
-    picture, it is not a strap -- it is part of the piece -- and nothing is
-    trimmed."""
-    a = np.asarray(im.getchannel("A")).astype(np.int64)
-    col_h = (a >= 32).sum(0)
-    if not col_h.max():
-        return im
-    bulk = np.where(col_h >= col_h.max() * keep)[0]
-    if not len(bulk):
-        return im
-    x0, x1 = int(bulk[0]), int(bulk[-1]) + 1
-    total = a.sum()
-    if not total or a[:, x0:x1].sum() / total < 1 - cost:
-        return im
-    return im.crop((x0, 0, x1, im.height))
-
-
-def build(src, fill=False, grid=False, wings=False):
+def build(src, fill=False, grid=False):
     """The piece as large as the tile will take it, centred on cream.
 
     Read from the cut-out beside the named .jpg, not the .jpg itself: the flat
@@ -250,8 +223,6 @@ def build(src, fill=False, grid=False, wings=False):
     im.load()
     im = im.convert("RGBA")
     im = im.crop(alpha_box(im))
-    if wings:
-        im = trim_wings(im)
     tw, th = SIZE
     if grid:
         win = grid_window(im, tw / th)
@@ -276,7 +247,6 @@ def main():
         allow_flagged = len(entry) > 2 and entry[2]
         fill = len(entry) > 3 and entry[3]
         grid = len(entry) > 4 and entry[4]
-        wings = len(entry) > 5 and entry[5]
         if not os.path.exists(src):
             print("  MISS %-14s source not found: %s" % (name, src))
             bad += 1
@@ -295,7 +265,7 @@ def main():
         if flagged:
             print("  NOTE %-14s %s is still flagged %s; allowed by instruction" % (
                 name, os.path.basename(src), flagged))
-        tile = build(src, fill, grid, wings)
+        tile = build(src, fill, grid)
         print("%-14s <- %s" % (name, os.path.relpath(src, HERE)))
         print("               %s" % why)
         if APPLY:

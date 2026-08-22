@@ -270,7 +270,10 @@ h2{font-size:26px;margin-bottom:22px}
 .cats{grid-template-columns:repeat(2,1fr)}
 @media (min-width:600px){ .cats{grid-template-columns:repeat(3,1fr)} }
 @media (min-width:900px){ .cats{grid-template-columns:repeat(6,1fr)} }
-.cat .ph{aspect-ratio:3/4}
+/* Square, not 3:4. A standing figure suits a tall frame and a handbag does
+   not: at 3:4 the bag reached just over half the height while the dresses
+   beside it filled theirs. See the head of build-tiles.py. */
+.cat .ph{aspect-ratio:1/1}
 .cat span.name{
   display:block;font-family:var(--display);font-size:17px;margin-top:9px;line-height:1.3;
 }
@@ -1297,7 +1300,7 @@ const live = arrivals.filter(p => !p.hold);
        With no photograph there is simply no photograph; the frame keeps its
        shape and the name below says what it is. */
     const art = c.img
-      ? `<div class="ph"><img src="${thumb(c.img)}" alt="${esc(c.name)}" width="360" height="480" loading="lazy" decoding="async"></div>`
+      ? `<div class="ph"><img src="${thumb(c.img)}" alt="${esc(c.name)}" width="360" height="360" loading="lazy" decoding="async"></div>`
       : `<div class="ph"></div>`;
     return `<button class="cat" data-cat="${c.key}" aria-pressed="false">
       ${art}
