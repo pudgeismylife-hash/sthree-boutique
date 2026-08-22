@@ -479,58 +479,47 @@ self.addEventListener("fetch", e => {
    and naming one whose picture is a generated render rather than the boutique's
    own photograph. The old baked hero carried a render for weeks precisely
    because nothing checked. */
-function checkHeroField(s, items) {
-  let made = [];
-  const m = s.match(/heroField:\s*\[([\s\S]*?)\]/);
-  if (!m) { console.error("FAIL could not find CONFIG.heroField"); process.exit(1); }
-  const keys = [...m[1].matchAll(/"([^"]+)"/g)].map(x => x[1]);
-  if (!keys.length) { console.error("FAIL CONFIG.heroField is empty"); process.exit(1); }
+function checkHeroPiece(s, items) {
+  const m = s.match(/heroPiece:\s*"([^"]+)"/);
+  if (!m) { console.error("FAIL could not find CONFIG.heroPiece"); process.exit(1); }
+  const key = m[1];
 
   const known = new Map(items.map(p => [p.key, p]));
-  const unknown = keys.filter(k => !known.has(k));
-  if (unknown.length) {
-    console.error("FAIL heroField names piece(s) not in the catalogue: " + unknown.join(", "));
+  if (!known.has(key)) {
+    console.error("FAIL heroPiece names a piece that is not on the site: " + key);
+    console.error("     it is either misspelt or held; the front page cannot show a held piece");
+    process.exit(1);
+  }
+  const piece = known.get(key);
+  const img = (piece.images && piece.images[0]) || "";
+  if (img && !fs.existsSync(DIR + img)) {
+    console.error("FAIL the hero piece has no photograph on disk: " + img);
     process.exit(1);
   }
 
+  let recreated = false;
   const lockPath = DIR + "product-image-lock.json";
   if (fs.existsSync(lockPath)) {
     const lock = JSON.parse(fs.readFileSync(lockPath, "utf8")).products || {};
-    const rendered = new Map();
-    const recreated = new Map();
     for (const [code, v] of Object.entries(lock)) {
-      if (!v.productKey) continue;
+      if (v.productKey !== key) continue;
       /* A review that has been answered is not a standing objection. The state
          is what counts, not the presence of the record -- the record stays for
          good, so that what was wrong and how it was settled is still readable. */
-      if (v.sourceReview && v.sourceReview.state === "REVIEW_REQUIRED") rendered.set(v.productKey, code);
-      else if (v.recreated) recreated.set(v.productKey, code);
-    }
-    const bad = keys.filter(k => rendered.has(k));
-    if (bad.length) {
-      console.error("FAIL the hero may only show the boutique's own photographs.");
-      for (const k of bad) console.error("     " + k + " (" + rendered.get(k) + ") is a generated render");
-      process.exit(1);
-    }
-    /* A recreation is a different thing from a render of the wrong item, and is
-       not fatal: these were checked against her own photograph of the same piece
-       and match it. But the hero is the one place that trades on being the real
-       shop, so it says so out loud every build rather than going quiet. */
-    made = keys.filter(k => recreated.has(k));
-    if (made.length) {
-      console.log("NOTE " + made.length + " of " + keys.length +
-                  " hero pieces show an AI recreation, not her photograph:");
-      for (const k of made) console.log("     " + k + " (" + recreated.get(k) + ")");
+      if (v.sourceReview && v.sourceReview.state === "REVIEW_REQUIRED") {
+        console.error("FAIL the hero may only show the boutique's own stock.");
+        console.error("     " + key + " (" + code + ") is still flagged REVIEW_REQUIRED");
+        process.exit(1);
+      }
+      /* A recreation is a different thing from a render of the wrong item, and
+         is not fatal: these were checked against her own photograph of the same
+         piece and match it. But the hero is the one place that trades on being
+         the real shop, so it says so out loud every build rather than going
+         quiet. */
+      if (v.recreated) { recreated = true; }
     }
   }
-  /* every hero photograph must actually have a cut crop on disk */
-  const noCrop = keys.filter(k => !fs.existsSync(DIR + "assets/hero/" + k + ".jpg"));
-  if (noCrop.length) {
-    console.error("FAIL no hero crop for: " + noCrop.join(", "));
-    console.error("     run:  python3 build-og-images.py --apply");
-    process.exit(1);
-  }
-  return { n: keys.length, recreated: made.length };
+  return { key: key, name: piece.name, recreated: recreated };
 }
 
 /* One small page per product, carrying that product's own link preview.
@@ -647,7 +636,6 @@ location.replace(${JSON.stringify(rel)});
   };
   sweep("p/", ".html");
   sweep("assets/og/", ".jpg");
-  sweep("assets/hero/", ".jpg");
   return { written, noCard, swept };
 }
 
@@ -801,7 +789,7 @@ pages = stripHeld(schema.html, schema.items);
 const shots = shotList(schema.items);
 const asks = ownerQuestions(schema.items);
 const stubs = productPages(schema.items, SITE_URL || "");
-const heroN = checkHeroField(src, schema.items);
+const heroP = checkHeroPiece(src, schema.items);
 const swVer = serviceWorker(pages);
 check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og:image", "assets/products/"]);
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
@@ -825,8 +813,7 @@ console.log("cats   c/*.html (" + cstubs.written + " category pages)" +
             (cstubs.swept ? ", swept " + cstubs.swept : ""));
 console.log("share  p/*.html (" + stubs.written + " product link previews)" +
             (stubs.swept ? ", swept " + stubs.swept + " file(s) for pieces no longer shown" : ""));
-console.log("hero   " + heroN.n + " pieces, " + (heroN.n - heroN.recreated) +
-            " her own photograph" + (heroN.recreated ? ", " + heroN.recreated + " recreated" : ""));
+console.log("hero   " + heroP.name + (heroP.recreated ? "  (an AI recreation, not her photograph)" : ""));
 console.log("app    sw.js + manifest, installable (cache sthree-" + swVer + ")");
 if (stubs.noCard.length) {
   console.log("       WARN no preview card for: " + stubs.noCard.join(", "));

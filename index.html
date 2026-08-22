@@ -168,45 +168,56 @@ header nav{display:none}
 }
 .navpanel .btn{margin-top:18px;width:100%;text-align:center}
 
-/* ── hero ─────────────────────────────────────────────────── */
-/* ── hero ─────────────────────────────────────────────────────
-   The whole collection running edge to edge behind one cream band.
-   Built from the live product photographs rather than baked into a
-   composite: a composite has to be rebuilt by hand every time a photo
-   changes, which is how a superseded picture once survived here. */
-.hero{position:relative;overflow:hidden;background:var(--ink)}
-.hero-field{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;opacity:.62}
-.hero-field img{width:100%;height:168px;object-fit:cover;object-position:50% 8%;display:block}
-/* On a phone the band sits under the photographs rather than across them: the
-   copy is nearly as tall as the field there, so overlaying it left the
-   collection as two slivers. It only floats across the field once there is
-   room for both. */
-.hero-panel{
-  background:var(--cream);border-top:1px solid var(--rule);
-  padding:18px 0 20px;
-}
-.hero-panel .wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-.hero-copy{flex:1 1 300px;min-width:0}
-.hero-act{flex:0 0 auto}
-.hero h1{font-size:26px;line-height:1.08;margin:0 0 6px}
-.hero-panel p.lede{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0;max-width:46ch}
+/* ── hero ───────────────────────────────────────────────────
+   One piece, whole, beside the name of the shop.
+
+   What was here before was a band of twelve photographs cover-cropped
+   into a 215px strip with a cream panel laid across the middle of it.
+   These photographs are cut-outs of whole figures, so that sliced every
+   one of them through the neck: the top row was chins and shoulders,
+   the bottom row hems, and the band cut each figure in two. The pieces
+   are the best thing this shop owns and the front page was the one
+   place they were being damaged.
+
+   So: nothing cropped. The copy takes the left, aligned to the same
+   gutter as everything below it; the piece takes the right and runs to
+   the edge of the screen rather than sitting in a panel with a margin
+   round it. On a phone they stack, copy first -- what the shop is and
+   how to order, before the picture. */
+.hero{background:var(--cream);display:grid}
+.hero-copy{padding:32px var(--gut) 28px}
+.hero h1{font-size:34px;line-height:1.04;margin:0 0 8px}
+.hero p.lede{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin:0;max-width:44ch}
+.hero-act{margin-top:20px}
 .hero-note{
   font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--grey);margin:9px 0 0;
+  color:var(--grey);margin:11px 0 0;
 }
+.hero-piece{
+  /* A plain block, not a centring grid: a centred grid item is sized by its
+     own content, so width and height of 100% resolve against nothing and the
+     picture falls back to its intrinsic size and overflows. */
+  background:var(--cream-alt);display:block;overflow:hidden;padding:12px;height:420px;
+}
+/* object-fit rather than max-height: the panel centres its child, so a
+   percentage max-height resolves against an auto-sized grid area and the
+   browser drops it -- which had the figure overflowing and being clipped
+   at the head and the hem, the very thing this hero exists to stop. */
+.hero-piece img{width:100%;height:100%;object-fit:contain}
 @media (min-width:600px){
-  .hero-field img{height:190px}
-  .hero h1{font-size:34px}
+  .hero h1{font-size:42px}
+  .hero-piece{height:470px}
 }
 @media (min-width:900px){
-  .hero-field{grid-template-columns:repeat(6,1fr)}
-  .hero-field img{height:215px}
-  .hero-panel{
-    position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-    border-bottom:1px solid var(--rule);padding:20px 0;
+  /* The copy lines up with the page's own gutter however wide the screen
+     is, while the piece keeps running to the edge -- which is the whole
+     point of it and is why this row is not inside .wrap. */
+  .hero{grid-template-columns:1fr .78fr;align-items:center}
+  .hero-copy{
+    padding:68px 44px 68px max(var(--gut), (100vw - var(--maxw)) / 2 + var(--gut));
   }
-  .hero h1{font-size:40px}
-  .hero-act{text-align:right}
+  .hero h1{font-size:62px;line-height:1.01}
+  .hero-piece{height:min(66vh,520px);padding:22px}
 }
 
 /* ── image placeholders ───────────────────────────────────────
@@ -712,20 +723,16 @@ footer li a:hover{color:var(--gold)}
 
 <main id="main">
 <div class="hero">
-  <div class="hero-field" id="heroField" aria-hidden="true"></div>
-  <div class="hero-panel">
-    <div class="wrap">
-      <div class="hero-copy">
-        <p class="eyebrow" id="heroEyebrow"></p>
-        <h1>The boutique where fashion meets personality.</h1>
-        <p class="lede">Western and ethnic wear, co-ord sets and anti-tarnish jewellery. Imported and Indian, delivered all over India and worldwide.</p>
-      </div>
-      <div class="hero-act">
-        <a class="btn" id="introCta">Order on WhatsApp</a>
-        <p class="hero-note" id="heroNote"></p>
-      </div>
+  <div class="hero-copy">
+    <p class="eyebrow" id="heroEyebrow"></p>
+    <h1>The boutique where fashion meets personality.</h1>
+    <p class="lede">Western and ethnic wear, co-ord sets and anti-tarnish jewellery. Imported and Indian, delivered all over India and worldwide.</p>
+    <div class="hero-act">
+      <a class="btn" id="introCta">Order on WhatsApp</a>
+      <p class="hero-note" id="heroNote"></p>
     </div>
   </div>
+  <a class="hero-piece" id="heroPiece"><img id="heroImg" alt="" decoding="async"></a>
 </div>
 
 <section id="categories">
@@ -1039,12 +1046,11 @@ const CONFIG = {
      range on their own. Only the boutique's own photographs belong here — the
      build refuses to start if any entry is a generated render, and refuses if a
      key is not in the catalogue, so this cannot quietly rot. */
-  heroField: [
-    "sarees_2", "cloth_section_western_wear_2", "armcuff_1",
-    "gowns_1", "sarees_1", "pink-heart-3d-press-on-nails",
-    "navy-blue-red-printed-kurta-set", "anklets_1", "sarees_3",
-    "nude-gold-floral-press-on-nails", "pink-printed-salwar-suit", "cloth_section_western_wear_3"
-  ],
+  /* The piece on the front page. Deliberately not one the category tiles
+     use -- the tiles sit directly beneath the hero, and showing the same
+     garment twice in a row makes the page look short of stock. The tile
+     sources are listed in build-tiles.py. */
+  heroPiece: "cloth_section_western_wear_3",
 
   defaultSizes: {
     ethnic:    [],
@@ -1188,32 +1194,28 @@ const live = arrivals.filter(p => !p.hold);
   const priceLabel = p => priced(p) ? rupee(p.price) : "Price on WhatsApp";
 
   /* ── hero ────────────────────────────────────────────────────────────
-     The collection itself is the picture. Six photographs on a phone and
-     twelve on a wide screen, chosen from CONFIG.heroField and drawn from the
-     live catalogue, so replacing a product photograph updates the hero too.
-     The count and the opening prices are read off the catalogue rather than
-     written down, so neither can end up claiming something untrue. */
-  (function hero(){
-    const field = $("#heroField");
-    if(!field) return;
-    const byKey = new Map(live.map(p => [p.key, p]));
-    const pieces = CONFIG.heroField.map(k => byKey.get(k)).filter(Boolean);
-    const wide = matchMedia("(min-width:900px)");
+     One piece, whole, at the size a piece stands in a shop window. Which
+     one is named in CONFIG.heroPiece and read out of the live catalogue,
+     so a held piece can never reach the front page and replacing its
+     photograph updates the hero with it. Tapping it opens that piece.
 
-    function paint(){
-      // Only fetch what is actually shown: a phone never downloads the six
-      // photographs that would sit off the end of its grid.
-      const n = wide.matches ? 12 : 6;
-      /* assets/hero/<key>.jpg, not the catalogue thumbnail: the thumbnails are
-         letterboxed on cream, so the band would show each piece small inside its
-         own border with the cream going grey over the dark ground. These are cut
-         from the same photographs by build-og-images.py. */
-      field.innerHTML = pieces.slice(0, n).map(p =>
-        `<img src="assets/hero/${p.key}.jpg" alt="" width="440" height="550" decoding="async">`
-      ).join("");
+     The count and the opening prices are read off the catalogue rather
+     than written down, so neither can end up claiming something untrue. */
+  (function hero(){
+    const wrap = $("#heroPiece"), img = $("#heroImg");
+    const p = live.find(x => x.key === CONFIG.heroPiece) || live[0];
+    if(wrap && img && p){
+      img.src = shot(p, primary(p));
+      img.alt = p.name;
+      img.width = 760; img.height = 950;
+      /* Through to the piece itself. The collection page is the target
+         rather than this one, because the front page shows a selection
+         and the hero piece is not always among it. */
+      wrap.href = "collection.html?p=" + encodeURIComponent(p.key);
+      wrap.setAttribute("aria-label", "See " + p.name);
+    } else if(wrap){
+      wrap.remove();
     }
-    paint();
-    wide.addEventListener("change", paint);
 
     /* "Twenty-five pieces" reads like a boutique; "25 pieces" reads like a
        warehouse. Spelled out to ninety-nine, then it falls back to digits. */
