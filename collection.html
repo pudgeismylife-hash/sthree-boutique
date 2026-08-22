@@ -1846,15 +1846,26 @@ const live = arrivals.filter(p => !p.hold);
   (function mapBlock(){
     const pin = (CONFIG.lat && CONFIG.lng) ? CONFIG.lat + "," + CONFIG.lng : "";
     const where = pin || CONFIG.mapsQuery || CONFIG.address;
+    /* A coordinate pair goes in with its comma intact. Percent-encoding it --
+       which is what encodeURIComponent does, and what put the map on the wrong
+       side of the country -- makes Google read "12.884820%2C74.871132" as words
+       to search for rather than as a position, and it then geocodes that string
+       to wherever it likes. A place name still has to be encoded; a pair of
+       numbers, a dot, a comma and a minus sign has nothing in it that needs to
+       be. */
+    const arg = v => (v === pin && pin) ? pin : encodeURIComponent(v);
     const dir = $("#mapDir"), call = $("#mapCall"),
           fallback = $("#mapFallback"), frame = $("#mapFrame"), place = $("#mapWhere");
     if(place) place.textContent = CONFIG.address;
-    if(dir) dir.href = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(where);
+    if(dir) dir.href = "https://www.google.com/maps/dir/?api=1&destination=" + arg(where);
     if(call) call.href = "tel:" + CONFIG.tel;
-    if(fallback) fallback.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(where);
+    if(fallback) fallback.href = "https://www.google.com/maps/search/?api=1&query=" + arg(where);
     if(!frame) return;
     const f = document.createElement("iframe");
-    f.src = "https://maps.google.com/maps?q=" + encodeURIComponent(where) +
+    /* ll= centres the frame on the shop as well as marking it, so the view
+       cannot drift onto whatever Google decides is nearby. */
+    f.src = "https://maps.google.com/maps?q=" + arg(where) +
+            (pin ? "&ll=" + pin : "") +
             "&z=" + (pin ? 17 : 15) + "&hl=en&output=embed";
     f.loading = "lazy";
     f.referrerPolicy = "no-referrer-when-downgrade";
