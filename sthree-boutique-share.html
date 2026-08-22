@@ -46,7 +46,7 @@
 
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ClothingStore","name":"Sthree Boutique","description":"Western and ethnic wear, co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported and Indian.","founder":{"@type":"Person","name":"Priyanka Monteiro"},"foundingDate":"2026-06-14","address":{"@type":"PostalAddress","streetAddress":"Bikarnakatte","addressLocality":"Mangalore","addressRegion":"Karnataka","addressCountry":"IN"},"openingHours":"Mo-Su 09:00-20:00","telephone":"+917625077531","email":"priyankamonteiro@gmail.com","areaServed":["IN","Worldwide"],"sameAs":["https://instagram.com/sthreeboutique2026"]}
+{"@context":"https://schema.org","@type":"ClothingStore","name":"Sthree Boutique","description":"Western and ethnic wear, co-ord sets, anti-tarnish jewellery, press-on nails and bags. Imported and Indian.","founder":{"@type":"Person","name":"Priyanka Monteiro"},"foundingDate":"2026-06-14","address":{"@type":"PostalAddress","streetAddress":"Bikarnakatte","addressLocality":"Mangalore","addressRegion":"Karnataka","addressCountry":"IN"},"geo":{"@type":"GeoCoordinates","latitude":12.884820,"longitude":74.871132},"hasMap":"https://www.google.com/maps?q=12.884820,74.871132","openingHours":"Mo-Su 09:00-20:00","telephone":"+917625077531","email":"priyankamonteiro@gmail.com","areaServed":["IN","Worldwide"],"sameAs":["https://instagram.com/sthreeboutique2026"]}
 </script>
 
 <style>
@@ -352,6 +352,16 @@ html[data-page="all"] #about{display:none}
   display:block;font-family:var(--mono);font-size:9px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--grey);margin-top:4px;
 }
+/* The handle was in the footer only, which is where links go to be missed.
+   New stock is posted there first, so it belongs beside her name. */
+.follow{
+  display:inline-flex;align-items:center;gap:7px;margin-top:12px;
+  padding:9px 14px;border:1px solid var(--rule);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  transition:border-color .15s ease,color .15s ease;
+}
+.follow:hover{border-color:var(--gold);color:var(--gold)}
+.follow svg{flex:none;display:block}
 .about p{margin:0 0 14px;max-width:52ch}
 .about p:last-child{margin-bottom:0}
 .about .lede{font-family:var(--display);font-size:21px;line-height:1.4;color:var(--ink)}
@@ -751,6 +761,15 @@ footer li a:hover{color:var(--gold)}
         <figcaption>
           <span class="who">Priyanka Monteiro</span>
           <span class="role">Owner · Sthree Boutique</span>
+          <a class="follow" id="followLink" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false">
+              <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.2"
+                    fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor"/>
+            </svg>
+            <span id="followName"></span>
+          </a>
         </figcaption>
       </figure>
       <div>
@@ -1027,6 +1046,14 @@ const CONFIG = {
 
   founded  : "2026",
   mapsQuery: "Sthree Boutique, Bikarnakatte, Mangalore, Karnataka",
+  /* The shop itself, from the owner. A place name only finds the
+     neighbourhood -- a customer following it arrives in Bikarnakatte and
+     still has to telephone. These are what the map, the pin and the
+     directions all use; mapsQuery is only the wording of the search if
+     they are ever removed. Six decimals is about a hand's width; the
+     figures came with more, which is float noise, not accuracy. */
+  lat: "12.884820",
+  lng: "74.871132",
   site     : "https://pudgeismylife-hash.github.io/sthree-boutique",              // filled by the build; used for product links
 
   // Filled in by build-hosted.js from assets/logo-web.png
@@ -1764,7 +1791,9 @@ const live = arrivals.filter(p => !p.hold);
     { label:"Hours",    value: esc(CONFIG.hours) },
     { label:"Delivery", value: esc(CONFIG.delivery) },
     { label:"WhatsApp", value: waValue },
-    { label:"Email",    value: `<a href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a>` }
+    { label:"Email",    value: `<a href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a>` },
+    { label:"Instagram", value:
+      `<a href="https://instagram.com/${encodeURIComponent(CONFIG.instagram)}" target="_blank" rel="noopener">@${esc(CONFIG.instagram)}</a>` }
   ];
   $("#store").innerHTML = store.map(r=>`
     <div class="row"><dt>${esc(r.label)}</dt><dd>${r.value}</dd></div>`).join("");
@@ -1786,6 +1815,15 @@ const live = arrivals.filter(p => !p.hold);
     <li><a href="https://instagram.com/${CONFIG.instagram}" target="_blank" rel="noopener">@${esc(CONFIG.instagram)}</a></li>
     <li><span>${esc(CONFIG.hours)}</span></li>`;
 
+  const follow = $("#followLink"), followName = $("#followName");
+  if(follow && CONFIG.instagram){
+    follow.href = "https://instagram.com/" + encodeURIComponent(CONFIG.instagram);
+    follow.setAttribute("aria-label", "Follow @" + CONFIG.instagram + " on Instagram");
+    if(followName) followName.textContent = "Follow @" + CONFIG.instagram;
+  } else if(follow){
+    follow.remove();
+  }
+
   const ownerLine = $("#ownerLine");
   if(ownerLine) ownerLine.textContent = "Owner · " + CONFIG.owner;
 
@@ -1806,7 +1844,8 @@ const live = arrivals.filter(p => !p.hold);
      and a set of Google's cookies, and on a phone on mobile data nobody
      should pay for that before they have scrolled to it. */
   (function mapBlock(){
-    const where = CONFIG.mapsQuery || CONFIG.address;
+    const pin = (CONFIG.lat && CONFIG.lng) ? CONFIG.lat + "," + CONFIG.lng : "";
+    const where = pin || CONFIG.mapsQuery || CONFIG.address;
     const dir = $("#mapDir"), call = $("#mapCall"),
           fallback = $("#mapFallback"), frame = $("#mapFrame"), place = $("#mapWhere");
     if(place) place.textContent = CONFIG.address;
@@ -1815,7 +1854,8 @@ const live = arrivals.filter(p => !p.hold);
     if(fallback) fallback.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(where);
     if(!frame) return;
     const f = document.createElement("iframe");
-    f.src = "https://maps.google.com/maps?q=" + encodeURIComponent(where) + "&z=15&output=embed";
+    f.src = "https://maps.google.com/maps?q=" + encodeURIComponent(where) +
+            "&z=" + (pin ? 17 : 15) + "&hl=en&output=embed";
     f.loading = "lazy";
     f.referrerPolicy = "no-referrer-when-downgrade";
     f.title = "Map of " + CONFIG.address;
