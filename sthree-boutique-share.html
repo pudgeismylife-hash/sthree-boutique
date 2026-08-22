@@ -97,8 +97,11 @@ button{font:inherit;color:inherit;background:none;border:0}
 h1,h2,h3{font-family:var(--display);font-weight:300;margin:0;text-wrap:balance}
 
 .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
-section{padding-block:30px}
-@media (min-width:900px){ section{padding-block:64px} }
+/* The header is sticky, so anything scrolled to by script -- a category
+   filter, an anchor in the footer -- otherwise arrives underneath it. */
+section,.edit-row{scroll-margin-top:110px}
+section{padding-block:38px}
+@media (min-width:900px){ section{padding-block:84px} }
 
 .skip{
   position:absolute;left:-9999px;top:0;z-index:100;
@@ -244,8 +247,8 @@ header nav{display:none}
 .btn:hover{background:var(--gold)}
 
 /* ── headings ─────────────────────────────────────────────── */
-h2{font-size:26px;margin-bottom:22px}
-@media (min-width:900px){ h2{font-size:34px;margin-bottom:30px} }
+h2{font-size:29px;margin-bottom:22px}
+@media (min-width:900px){ h2{font-size:42px;margin-bottom:34px} }
 
 /* ── grids ────────────────────────────────────────────────── */
 .grid{display:grid;gap:12px}
@@ -294,12 +297,12 @@ h2{font-size:26px;margin-bottom:22px}
   background:var(--cream);padding:9px;display:flex;flex-direction:column;gap:8px;
 }
 .card .ph{aspect-ratio:4/5}
-.card .name{font-size:13px;line-height:1.35}
+.card .name{font-size:14px;line-height:1.35}
 .card .origin{
   font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--grey);
 }
-.card .price{font-family:var(--display);font-size:17px;line-height:1}
+.card .price{font-family:var(--display);font-size:19px;line-height:1}
 /* An unpriced piece says so, quietly — it is an invitation to ask, not a number,
    so it should not shout in the display face. */
 .price.ask{
@@ -313,6 +316,85 @@ h2{font-size:26px;margin-bottom:22px}
 }
 .enquire:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .alt{background:var(--cream-alt)}
+
+/* ── motion ───────────────────────────────────────────────────
+   Two effects, both cheap, both optional. Pieces settle in as they
+   come into view rather than being there already, and a card grows
+   into the viewer instead of the viewer appearing on top of it.
+
+   Every rule here is inside a reduced-motion guard, and every one is
+   additive: with the guard on, with JavaScript off, or in a browser
+   without view transitions, the page is exactly what it was. Nothing
+   in the shop depends on any of it. */
+@media (prefers-reduced-motion:no-preference){
+  .reveal{
+    opacity:0;transform:translateY(15px);
+    transition:opacity .55s cubic-bezier(.22,.61,.36,1),
+               transform .55s cubic-bezier(.22,.61,.36,1);
+    transition-delay:var(--d,0ms);
+  }
+  .reveal.seen{opacity:1;transform:none}
+
+  /* The page beneath crossfades quickly; the piece itself takes its time. */
+  ::view-transition-old(root),
+  ::view-transition-new(root){animation-duration:.24s}
+  ::view-transition-group(piece){
+    animation-duration:.44s;
+    animation-timing-function:cubic-bezier(.22,.61,.36,1);
+  }
+}
+
+/* A photograph that moves a little under the cursor reads as a thing on a
+   shelf rather than a picture of one. Pointer devices only: on a phone
+   there is no hover, and a transform there only costs paint. */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .card .ph img,.cat .ph img{transition:transform .55s cubic-bezier(.22,.61,.36,1)}
+  .card:hover .ph img,.cat:hover .ph img{transform:scale(1.045)}
+}
+@media (hover:hover){
+  .card:hover .enquire{border-color:var(--gold);color:var(--gold)}
+}
+
+/* ── the edit ─────────────────────────────────────────────────
+   One piece from each part of the shop, big enough to actually see.
+   The grid above is for choosing between things; this is for looking
+   at one thing at a time, which is what a lookbook is for.
+
+   It is built from whatever is live, one per category in category
+   order, so it cannot go stale and cannot show a held piece. There is
+   no prose: the boutique has not written any, and inventing a story
+   for a saree is not this build's job. Name, origin and price only. */
+.edit{display:grid;gap:34px}
+@media (min-width:900px){ .edit{gap:64px} }
+.edit-row{display:grid;gap:16px;align-items:center}
+.edit-ph{background:var(--cream-alt);aspect-ratio:4/5;overflow:hidden}
+@media (min-width:760px){
+  .edit-row{grid-template-columns:1fr 1fr;gap:44px}
+  .edit-row:nth-child(even) .edit-ph{order:2}
+  /* Held to a height rather than a ratio once there is a column beside it.
+     A 4:5 panel half the width of a desktop page is 750px tall, which puts
+     the piece and the price on different screens -- the row stops being a
+     row and becomes two things you scroll between. */
+  .edit-ph{aspect-ratio:auto;height:min(58vh,500px)}
+}
+.edit-ph img{width:100%;height:100%;object-fit:contain;padding:10px}
+.edit-copy .origin{
+  font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--grey);display:block;margin-bottom:10px;
+}
+.edit-copy h3{
+  font-family:var(--display);font-size:28px;line-height:1.12;font-weight:300;margin:0 0 10px;
+}
+@media (min-width:900px){ .edit-copy h3{font-size:40px} }
+.edit-copy .price{font-family:var(--display);font-size:22px;line-height:1;margin:0 0 18px}
+.edit-copy .price.ask{font-family:var(--mono);font-size:11px}
+.edit-acts{display:flex;gap:10px;flex-wrap:wrap}
+.edit-look{
+  padding:16px 26px;border:1px solid var(--rule);font-size:11px;
+  letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+  transition:border-color .15s ease,color .15s ease;
+}
+.edit-look:hover{border-color:var(--gold);color:var(--gold)}
 
 /* ── visit ────────────────────────────────────────────────── */
 .visit{display:grid;gap:22px}
@@ -651,6 +733,16 @@ footer li a:hover{color:var(--gold)}
   <div class="wrap">
     <h2>Shop by category</h2>
     <div class="grid cats" id="cats"></div>
+  </div>
+</section>
+
+<section id="edit">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The edit</h2>
+      <p class="count">One piece from each part of the shop</p>
+    </div>
+    <div class="edit" id="editRows"></div>
   </div>
 </section>
 
@@ -1166,7 +1258,90 @@ const live = arrivals.filter(p => !p.hold);
     $("#count").textContent = list.length + (list.length === 1 ? " piece" : " pieces");
     const reset = $("#resetAll");
     if(reset) reset.addEventListener("click", ()=>{ active=null; term=""; $("#searchInput").value=""; syncCats(); render(); });
+    armReveals(grid, ".card");
   }
+  /* ── motion helpers ───────────────────────────────────────────
+     Both of these are decoration and both know it. Every one checks
+     that the browser can do the thing before doing it, and does
+     nothing at all when the customer has asked for less motion. */
+  const stillness = matchMedia("(prefers-reduced-motion: reduce)");
+  const calm = () => stillness.matches;
+
+  /* Reveal on scroll. The class is added from here rather than sitting in
+     the markup so that a page with no JavaScript, or a browser without
+     IntersectionObserver, simply shows everything -- which is the correct
+     failure. Called again after every render, because the grid is rebuilt
+     from scratch each time it is filtered. */
+  let watcher = null, anySeen = false;
+  /* Insurance. This is decoration, but a decoration that fails quietly takes
+     the shop with it: every product would simply be invisible, and the page
+     would look empty rather than broken. If nothing at all has revealed a few
+     seconds in, the effect gives up and shows everything. */
+  setTimeout(() => {
+    if(anySeen) return;
+    document.querySelectorAll(".reveal").forEach(el => el.classList.add("seen"));
+  }, 3000);
+  function armReveals(root, sel){
+    if(calm() || !("IntersectionObserver" in window)) return;
+    watcher = watcher || new IntersectionObserver(hits => {
+      hits.forEach(h => {
+        if(!h.isIntersecting) return;
+        anySeen = true;
+        h.target.classList.add("seen");
+        watcher.unobserve(h.target);
+      });
+    }, {rootMargin: "0px 0px -6% 0px"});
+    root.querySelectorAll(sel).forEach((el, n) => {
+      el.classList.add("reveal");
+      /* The stagger stops after eight so that a filtered grid of twenty
+         does not keep the last one waiting a second for its turn. */
+      el.style.setProperty("--d", Math.min(n, 8) * 45 + "ms");
+      watcher.observe(el);
+    });
+  }
+
+  /* Grow the card into the viewer rather than dropping the viewer on top.
+     Chrome and the Android browsers have view transitions; Safari and
+     Firefox do not, and there it opens exactly as it did before. */
+  function morph(from, to, run){
+    if(calm() || !document.startViewTransition){ run(); return; }
+    if(from) from.style.viewTransitionName = "piece";
+    let t;
+    try{
+      t = document.startViewTransition(() => {
+        /* One name at a time. Handing it over inside the callback is what
+           makes the two images the same element as far as the browser is
+           concerned; leaving it on both is an error and kills the whole
+           transition. */
+        if(from) from.style.viewTransitionName = "";
+        if(to) to.style.viewTransitionName = "piece";
+        run();
+      });
+    }catch(_){
+      if(from) from.style.viewTransitionName = "";
+      run();
+      return;
+    }
+    t.finished.catch(()=>{}).then(()=>{
+      if(from) from.style.viewTransitionName = "";
+      if(to) to.style.viewTransitionName = "";
+    });
+  }
+
+  /* Wait for a photograph, but not for long. Morphing into an image the
+     browser has not decoded yet lands on an empty box, which looks worse
+     than no transition at all; waiting more than a moment for one is worse
+     again on a slow connection. */
+  function settled(src, ms){
+    return new Promise(done => {
+      const im = new Image();
+      const fin = () => done();
+      im.onload = fin; im.onerror = fin; im.src = src;
+      if(im.complete) fin();
+      setTimeout(fin, ms);
+    });
+  }
+
   let active = null, term = "";
   function syncCats(){
     document.querySelectorAll("#cats .cat").forEach(x=>{
@@ -1176,6 +1351,63 @@ const live = arrivals.filter(p => !p.hold);
     });
   }
   render();
+  /* The standing sections get the same treatment as the cards. Headings and
+     the visit block only -- revealing the whole page a piece at a time makes
+     scrolling feel slow rather than considered. */
+  armReveals(document, "#categories .cat, #visit .visit > *");
+
+  /* ── the edit ─────────────────────────────────────────────────
+     One live piece per category, in category order. Chosen by the data
+     rather than by hand: a hand-picked list is one more thing that goes
+     stale when a piece sells or a photograph changes, and this shop has
+     been caught by exactly that before with the category tiles.
+
+     No invented copy. The boutique has written none, so the row carries
+     what the product actually says -- what it is, its name, its price --
+     and a way through to the picture. */
+  (function buildEdit(){
+    const host = $("#editRows");
+    if(!host) return;
+    const picks = categories
+      .map(c => live.find(p => p.cat === c.key))
+      .filter(Boolean);
+    if(picks.length < 2){ host.closest("section").setAttribute("hidden",""); return; }
+    host.innerHTML = picks.map(p => `
+      <article class="edit-row">
+        <div class="edit-ph">
+          <img src="${thumb(shot(p, primary(p)))}" alt="${esc(p.name)}"
+               width="360" height="450" loading="lazy" decoding="async">
+        </div>
+        <div class="edit-copy">
+          <span class="origin">${esc(p.label)}</span>
+          <h3>${esc(p.name)}</h3>
+          <div class="price${priced(p) ? "" : " ask"}">${priceLabel(p)}</div>
+          <div class="edit-acts">
+            <a class="btn" href="${enquiry(p)}" target="_blank" rel="noopener">Enquire on WhatsApp</a>
+            <button class="edit-look" type="button" data-key="${esc(p.key)}">See the piece</button>
+          </div>
+        </div>
+      </article>`).join("");
+
+    /* "See the piece" clears any filter first, so the index the viewer is
+       given is an index into the same list the customer would be looking
+       at -- the viewer walks `view`, and handing it a stale position is
+       how it would open somebody else's saree. */
+    host.addEventListener("click", async e => {
+      const b = e.target.closest("[data-key]");
+      if(!b) return;
+      active = null; term = ""; $("#searchInput").value = "";
+      syncCats(); render();
+      const n = view.findIndex(x => x.key === b.dataset.key);
+      if(n < 0) return;
+      const art = b.closest(".edit-row").querySelector(".edit-ph img");
+      await settled(shot(view[n], primary(view[n])), 320);
+      vOpen(n, b, art);
+    });
+
+    armReveals(host, ".edit-row");
+  })();
+
   function chooseCat(cat, toggle){
     active = (toggle && active === cat) ? null : cat;
     syncCats();
@@ -1426,22 +1658,33 @@ const live = arrivals.filter(p => !p.hold);
     vReset();
   }
 
-  function vOpen(n, opener){
+  /* `opener` is where focus goes back to; `art` is the photograph the
+     viewer should grow out of, which is not always inside it -- the edit
+     rows open from a button that sits beside their picture rather than
+     around it. Everything about the morph is optional: with it skipped,
+     these two functions do exactly what they always did. */
+  function vOpen(n, opener, art){
     V.opener = opener || null;
-    V.el.removeAttribute("hidden");
-    vBehindInert(true);
-    document.body.style.overflow = "hidden";
-    vShow(n);
-    $("#vHint").classList.remove("gone");
-    setTimeout(()=> $("#vHint").classList.add("gone"), 2600);
-    $("#vClose").focus({preventScroll:true});
+    V.art = art || (opener && opener.querySelector ? opener.querySelector("img") : null);
+    morph(V.art, $("#vImg"), ()=>{
+      V.el.removeAttribute("hidden");
+      vBehindInert(true);
+      document.body.style.overflow = "hidden";
+      vShow(n);
+      $("#vHint").classList.remove("gone");
+      setTimeout(()=> $("#vHint").classList.add("gone"), 2600);
+      $("#vClose").focus({preventScroll:true});
+    });
   }
   function vClose(){
-    V.el.setAttribute("hidden","");
-    vBehindInert(false);
-    document.body.style.overflow = "";
-    try { history.replaceState(null, "", location.pathname); } catch(_){}
-    if(V.opener && document.contains(V.opener)) V.opener.focus({preventScroll:true});
+    const back = V.art && document.contains(V.art) ? V.art : null;
+    morph($("#vImg"), back, ()=>{
+      V.el.setAttribute("hidden","");
+      vBehindInert(false);
+      document.body.style.overflow = "";
+      try { history.replaceState(null, "", location.pathname); } catch(_){}
+      if(V.opener && document.contains(V.opener)) V.opener.focus({preventScroll:true});
+    });
   }
 
   /* Arriving from an enquiry link: clear any filter, then open that piece. */
@@ -1455,10 +1698,15 @@ const live = arrivals.filter(p => !p.hold);
     if(n > -1) setTimeout(()=> vOpen(n, null), 60);
   })();
 
-  grid.addEventListener("click", e=>{
+  grid.addEventListener("click", async e=>{
     const b = e.target.closest(".shot");
     if(!b) return;
-    vOpen(+b.dataset.i, b);
+    const n = +b.dataset.i;
+    /* Give the full photograph a moment to arrive before the card grows
+       into it, or the morph lands on an empty frame. Capped, so a slow
+       connection costs a third of a second and then opens regardless. */
+    if(view[n]) await settled(shot(view[n], primary(view[n])), 320);
+    vOpen(n, b);
   });
   $("#vClose").addEventListener("click", vClose);
   $("#vShare").addEventListener("click", async ()=>{
