@@ -947,7 +947,16 @@ const CONFIG = {
   tel      : "+917625077531",
   email    : "priyankamonteiro@gmail.com",
   instagram: "sthreeboutique2026",
+  /* The full postal address, as it would be written on an envelope. This is
+     what the Visit block, the map card and the store's structured data print,
+     so it is the one to lengthen when the shop supplies its street and
+     building. Today it is only the locality, which is why it reads thin. */
   address  : "Bikarnakatte, Mangalore, Karnataka",
+  /* And the short form, for the places a full address would not fit -- the
+     line above the headline says where the shop is, not how to post to it.
+     Kept separate so that lengthening `address` does not push a building name
+     into the hero. */
+  locality : "Bikarnakatte, Mangalore",
   hours    : "9:00 am – 8:00 pm, all days",
   delivery : "All over India and worldwide",
 
@@ -1212,7 +1221,8 @@ const live = arrivals.filter(p => !p.hold);
     const said = spell(n) || String(n);
     $("#heroEyebrow").textContent =
       said.charAt(0).toUpperCase() + said.slice(1) + (n === 1 ? " piece" : " pieces") +
-      " · " + CONFIG.address.split(",").map(s => s.trim()).slice(0, 2).join(", ");
+      " · " + (CONFIG.locality ||
+                CONFIG.address.split(",").map(s => s.trim()).slice(0, 2).join(", "));
 
     const from = cat => {
       const inCat = live.filter(p => p.cat === cat && priced(p));
