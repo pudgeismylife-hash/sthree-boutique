@@ -63,9 +63,10 @@ TILES = {
     "cat-nails": (
         os.path.join(OUT, "pink-heart-3d-press-on-nails-a1.jpg"),
         "the pink heart set, from the renamed batch -- the newest stock, and "
-        "the clearest at tile size. Filled rather than fitted: it is a grid of "
-        "nails, so a crop at the sides loses nothing",
-        False, True,
+        "the clearest at tile size. Cropped between the nails rather than "
+        "filled: it is six across and the tile is 3:4, so filling it cut the "
+        "outer columns in half and left a sliced nail against each edge",
+        False, False, True,
     ),
     "cat-bags": (
         os.path.join(OUT, "mk-signature-satchel-brown-a1.jpg"),
@@ -151,7 +152,57 @@ def is_photograph(im):
     return sum(h[250:]) / max(1, sum(h)) >= SOLID
 
 
-def build(src, fill=False):
+def grid_window(im, target_ar):
+    """A window on a repeating grid that falls between its cells, not through them.
+
+    A set of press-on nails photographed six across is far wider than a 3:4
+    tile. Filling it slices the outer columns down their middle -- half a nail
+    against each edge, which reads as a mistake rather than as a crop, and is
+    what this tile looked like. The gaps between the nails are plainly visible
+    in the alpha, so the window can be put in one instead: fewer nails, every
+    one of them whole.
+
+    Returns None when the picture has no such gaps, and the ordinary framing
+    then applies."""
+    a = np.asarray(im.getchannel("A"))
+    h, w = a.shape
+    col = (a >= 32).sum(0)
+    empty = col < h * 0.04
+
+    bounds, i = [0], 0
+    while i < w:
+        if empty[i]:
+            j = i
+            while j < w and empty[j]:
+                j += 1
+            mid = (i + j) // 2
+            if mid not in bounds:
+                bounds.append(mid)
+            i = j
+        else:
+            i += 1
+    if bounds[-1] != w:
+        bounds.append(w)
+    if len(bounds) < 3:
+        return None
+
+    # of every window that starts and ends in a gap, the one shaped most like
+    # the tile -- so the crop is between cells and the tile still fills up
+    best = None
+    for m in range(len(bounds)):
+        for n in range(m + 1, len(bounds)):
+            x0, x1 = bounds[m], bounds[n]
+            if x1 - x0 < w * 0.25:
+                continue
+            off = abs((x1 - x0) / h - target_ar)
+            if best is None or off < best[0]:
+                best = (off, x0, x1)
+    if best is None or best[0] > 0.25:
+        return None
+    return (best[1], 0, best[2], h)
+
+
+def build(src, fill=False, grid=False):
     """The piece as large as the tile will take it, centred on cream.
 
     Read from the cut-out beside the named .jpg, not the .jpg itself: the flat
@@ -167,6 +218,10 @@ def build(src, fill=False):
     im = im.convert("RGBA")
     im = im.crop(alpha_box(im))
     tw, th = SIZE
+    if grid:
+        win = grid_window(im, tw / th)
+        if win:
+            im = im.crop(win)
     canvas = Image.new("RGB", SIZE, CREAM)
     if fill or is_photograph(im):
         s = max(tw / im.width, th / im.height)
@@ -185,6 +240,7 @@ def main():
         src, why = entry[0], entry[1]
         allow_flagged = len(entry) > 2 and entry[2]
         fill = len(entry) > 3 and entry[3]
+        grid = len(entry) > 4 and entry[4]
         if not os.path.exists(src):
             print("  MISS %-14s source not found: %s" % (name, src))
             bad += 1
@@ -203,7 +259,7 @@ def main():
         if flagged:
             print("  NOTE %-14s %s is still flagged %s; allowed by instruction" % (
                 name, os.path.basename(src), flagged))
-        tile = build(src, fill)
+        tile = build(src, fill, grid)
         print("%-14s <- %s" % (name, os.path.relpath(src, HERE)))
         print("               %s" % why)
         if APPLY:
