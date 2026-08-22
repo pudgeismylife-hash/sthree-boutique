@@ -314,6 +314,16 @@ h2{font-size:26px;margin-bottom:22px}
 .enquire:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .alt{background:var(--cream-alt)}
 
+/* the way through from the front page's selection to the whole collection */
+.door{margin:26px 0 0;text-align:center}
+.door[hidden]{display:none}
+
+/* The collection page is the grid and nothing else: the hero band and the
+   About block belong to the front door, and repeating them here would put two
+   screens between a customer and the pieces she came to look at. */
+html[data-page="all"] .hero,
+html[data-page="all"] #about{display:none}
+
 /* ── about ────────────────────────────────────────────────────
    Everything on this block came from the owner. There is no portrait
    because the picture supplied has not been confirmed as a photograph
@@ -691,6 +701,7 @@ footer li a:hover{color:var(--gold)}
       <p class="count"><span id="count"></span> · <button id="clearFilter">Show all</button></p>
     </div>
     <div class="grid items" id="items"></div>
+    <p class="door" id="door" hidden><a class="btn" id="doorLink" href="collection.html"></a></p>
   </div>
 </section>
 
@@ -861,6 +872,14 @@ footer li a:hover{color:var(--gold)}
 /* ═══════════════════════════════════════════════════════════════
    SETTINGS — the only block that normally needs editing.
    ═══════════════════════════════════════════════════════════════ */
+/* Which copy of the page this is. The source file is the home page; the build
+   writes "all" into collection.html. Home shows a short, fixed-size selection
+   and a door through to everything, so that the front page keeps its shape as
+   the catalogue grows -- six pieces whether the shop holds twenty-four or three
+   hundred. The collection page shows the lot, with the tiles as its filter. */
+const PAGE = "home";
+const HOME_PICKS = 6;
+
 const CONFIG = {
   owner    : "Priyanka Monteiro",
   whatsapp : "917625077531",              // primary
@@ -1218,6 +1237,11 @@ const live = arrivals.filter(p => !p.hold);
         return qs.every(q => words.some(w => w.startsWith(q)));
       });
     }
+    /* A search always shows everything it found, wherever it was typed:
+       hiding matches behind "see all" when somebody has told you exactly what
+       they are looking for is the one place a short list is no help. */
+    const whole = full || !!term;
+    if(!whole) list = list.slice(0, HOME_PICKS);
     view = list;
     grid.innerHTML = list.map((i,n)=>`
       <article class="card">
@@ -1230,11 +1254,39 @@ const live = arrivals.filter(p => !p.hold);
         <a class="enquire" href="${enquiry(i)}" target="_blank" rel="noopener">Enquire</a>
       </article>`).join("") ||
       emptyNote();
-    $("#count").textContent = list.length + (list.length === 1 ? " piece" : " pieces");
+    const total = live.length;
+    $("#count").textContent = whole
+      ? list.length + (list.length === 1 ? " piece" : " pieces")
+      : list.length + " of " + total + " pieces";
+    const head = document.querySelector("#arrivals h2");
+    if(head) head.textContent = whole ? "The collection" : "New in";
+    const clear = $("#clearFilter");
+    if(clear) clear.hidden = !whole;
+
+    /* The door only exists on the front page, and only while there is
+       something behind it left to see. */
+    const door = $("#door"), link = $("#doorLink");
+    if(door && link){
+      const more = !whole && total > list.length;
+      door.hidden = !more;
+      if(more) link.textContent = "See all " + total + " pieces";
+    }
+
     const reset = $("#resetAll");
     if(reset) reset.addEventListener("click", ()=>{ active=null; term=""; $("#searchInput").value=""; syncCats(); render(); });
   }
   let active = null, term = "";
+  const HOME = PAGE === "home";
+  /* Home normally shows the selection. The exception is a ?p= link shared
+     before the collection page existed: those point at the front page, and the
+     piece they name may not be among the six, so that one case opens the whole
+     list here rather than failing to find it. */
+  const full = !HOME || new URLSearchParams(location.search).has("p");
+  document.documentElement.dataset.page = PAGE;
+  if(!HOME){
+    const want = new URLSearchParams(location.search).get("cat");
+    if(want && categories.some(c => c.key === want)) active = want;
+  }
   function syncCats(){
     document.querySelectorAll("#cats .cat").forEach(x=>{
       const on = x.dataset.cat === active;
@@ -1242,8 +1294,20 @@ const live = arrivals.filter(p => !p.hold);
       x.setAttribute("aria-pressed", String(on));
     });
   }
+  if(!HOME){
+    /* About lives on the front page only, so its menu entry has to leave this
+       one rather than jump to a section that is not here. */
+    document.querySelectorAll('a[href="#about"]').forEach(a => a.href = "index.html#about");
+    const home = $("#homeLink");
+    if(home) home.href = "index.html";
+  }
+  syncCats();
   render();
   function chooseCat(cat, toggle){
+    /* On the front page there is no grid to filter -- the six pieces are a
+       selection, not the collection -- so a category goes to its own page.
+       That page carries the same tiles and filters in place, as before. */
+    if(HOME){ location.href = "collection.html?cat=" + encodeURIComponent(cat); return; }
     active = (toggle && active === cat) ? null : cat;
     syncCats();
     render();
@@ -1279,6 +1343,10 @@ const live = arrivals.filter(p => !p.hold);
      same page; and because "home" from a filtered grid should also drop the
      filter, which a reload would not do on the hosted copy either. */
   $("#homeLink").addEventListener("click", e=>{
+    /* On the collection page the mark means the front page, which is what a
+       shop's mark means everywhere. Only on the front page itself does it mean
+       "back to the top, and drop the filter". */
+    if(!HOME) return;                 /* follow the href to index.html */
     e.preventDefault();
     active = null; term = "";
     const box = $("#searchInput");
