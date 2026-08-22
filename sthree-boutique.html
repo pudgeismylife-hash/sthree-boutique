@@ -97,6 +97,9 @@ button{font:inherit;color:inherit;background:none;border:0}
 h1,h2,h3{font-family:var(--display);font-weight:300;margin:0;text-wrap:balance}
 
 .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
+/* The header is sticky, so a section jumped to from the menu otherwise
+   arrives with its heading hidden underneath it. */
+section{scroll-margin-top:104px}
 section{padding-block:30px}
 @media (min-width:900px){ section{padding-block:64px} }
 
@@ -313,6 +316,21 @@ h2{font-size:26px;margin-bottom:22px}
 }
 .enquire:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .alt{background:var(--cream-alt)}
+
+/* ── about ────────────────────────────────────────────────────
+   Everything on this block came from the owner. There is no portrait
+   because the picture supplied has not been confirmed as a photograph
+   of her, and a face under a real name, a real number and a real shop
+   address is the one thing on this site that cannot be approximately
+   true. The layout is written so a portrait drops into .about-ph
+   without anything else moving. */
+.about{display:grid;gap:22px}
+@media (min-width:900px){ .about{grid-template-columns:1fr 1fr;gap:44px;align-items:center} }
+.about p{margin:0 0 14px;max-width:52ch}
+.about p:last-child{margin-bottom:0}
+.about .lede{font-family:var(--display);font-size:21px;line-height:1.4;color:var(--ink)}
+@media (min-width:900px){ .about .lede{font-size:26px} }
+.about-facts{margin:22px 0 0}
 
 /* ── visit ────────────────────────────────────────────────── */
 .visit{display:grid;gap:22px}
@@ -603,6 +621,7 @@ footer li a:hover{color:var(--gold)}
     <a href="#categories" data-cat="ethnic">Ethnic</a>
     <a href="#categories" data-cat="coord">Co-ord sets</a>
     <a href="#categories" data-cat="jewellery">Jewellery</a>
+    <a href="#about">About</a>
     <a href="#visit">Visit</a>
   </nav>
   <span class="spacer"></span>
@@ -624,6 +643,7 @@ footer li a:hover{color:var(--gold)}
     <a href="#categories" data-cat="ethnic">Ethnic</a>
     <a href="#categories" data-cat="coord">Co-ord sets</a>
     <a href="#categories" data-cat="jewellery">Jewellery</a>
+    <a href="#about">About</a>
     <a href="#visit">Visit</a>
   </nav>
   <a class="btn" id="navCta">Shop on WhatsApp</a>
@@ -664,7 +684,33 @@ footer li a:hover{color:var(--gold)}
   </div>
 </section>
 
-<section id="visit">
+<section id="about">
+  <div class="wrap">
+    <h2>About the boutique</h2>
+    <div class="about">
+      <div>
+        <p class="lede">Sthree Boutique is Priyanka Monteiro's shop in Bikarnakatte, Mangalore.</p>
+        <p>
+          Western wear, ethnic wear, co-ord sets, anti-tarnish jewellery, press-on
+          nails and bags — imported and Indian, chosen for quality, for how they
+          look, and for the personality they carry.
+        </p>
+        <p>
+          The shop is open every day, nine in the morning until eight at night, and
+          you are welcome to come in and try things on. If you cannot, message on
+          WhatsApp and Priyanka will send you more photographs of anything here
+          before you decide.
+        </p>
+        <p>Delivered all over India, and worldwide.</p>
+      </div>
+      <div>
+        <dl class="rows about-facts" id="aboutFacts"></dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="visit">
   <div class="wrap visit">
     <div>
       <h2>Visit the boutique</h2>
@@ -1632,6 +1678,16 @@ const live = arrivals.filter(p => !p.hold);
   ];
   $("#store").innerHTML = store.map(r=>`
     <div class="row"><dt>${esc(r.label)}</dt><dd>${r.value}</dd></div>`).join("");
+
+  /* About — the same facts the shop supplied, read out of CONFIG rather than
+     written into the markup so there is one place to change them. */
+  const aboutFacts = $("#aboutFacts");
+  if(aboutFacts) aboutFacts.innerHTML = [
+    ["Owner",    esc(CONFIG.owner)],
+    ["Opened",   "14 June 2026"],
+    ["Sourcing", "Imported and Indian"],
+    ["Delivery", esc(CONFIG.delivery)]
+  ].map(([k,v])=>`<div class="row"><dt>${k}</dt><dd>${v}</dd></div>`).join("");
 
   /* footer contact */
   $("#footContact").innerHTML = `
