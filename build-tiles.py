@@ -71,8 +71,11 @@ TILES = {
     "cat-bags": (
         os.path.join(OUT, "mk-signature-satchel-brown-a1.jpg"),
         "the signature satchel in brown monogram with tan trim -- the middle of "
-        "the three colourways, so the tile does not favour either end",
-        True, False,
+        "the three colourways, so the tile does not favour either end. The "
+        "shoulder strap is trimmed off the sides here, and only here: it takes "
+        "the picture to 1.31 against a 3:4 tile, which left the bag small and "
+        "floating beside figures that fill theirs",
+        True, False, False, True,
     ),
 }
 
@@ -203,7 +206,36 @@ def grid_window(im, target_ar):
     return (best[1], 0, best[2], h)
 
 
-def build(src, fill=False, grid=False):
+def trim_wings(im, keep=0.45, cost=0.16):
+    """Drop a thin outlying part that stretches the picture but is not the bulk
+    of it -- a shoulder strap looping out to both sides of a handbag.
+
+    The bag body and its handles are nearly square, 0.96; the strap takes the
+    whole picture to 1.31, and a 1.31 shape fitted whole into a 3:4 tile is a
+    small object with cream above and below it, sitting beside full-length
+    figures that fill their tiles. Trimming the strap's outer arc is a real
+    crop and is only done where a tile asks for it: the card and the viewer
+    still show the bag entire, strap and all.
+
+    A column counts as bulk if its content is at least `keep` of the tallest
+    column's. If cutting to the bulk would cost more than `cost` of the
+    picture, it is not a strap -- it is part of the piece -- and nothing is
+    trimmed."""
+    a = np.asarray(im.getchannel("A")).astype(np.int64)
+    col_h = (a >= 32).sum(0)
+    if not col_h.max():
+        return im
+    bulk = np.where(col_h >= col_h.max() * keep)[0]
+    if not len(bulk):
+        return im
+    x0, x1 = int(bulk[0]), int(bulk[-1]) + 1
+    total = a.sum()
+    if not total or a[:, x0:x1].sum() / total < 1 - cost:
+        return im
+    return im.crop((x0, 0, x1, im.height))
+
+
+def build(src, fill=False, grid=False, wings=False):
     """The piece as large as the tile will take it, centred on cream.
 
     Read from the cut-out beside the named .jpg, not the .jpg itself: the flat
@@ -218,6 +250,8 @@ def build(src, fill=False, grid=False):
     im.load()
     im = im.convert("RGBA")
     im = im.crop(alpha_box(im))
+    if wings:
+        im = trim_wings(im)
     tw, th = SIZE
     if grid:
         win = grid_window(im, tw / th)
@@ -242,6 +276,7 @@ def main():
         allow_flagged = len(entry) > 2 and entry[2]
         fill = len(entry) > 3 and entry[3]
         grid = len(entry) > 4 and entry[4]
+        wings = len(entry) > 5 and entry[5]
         if not os.path.exists(src):
             print("  MISS %-14s source not found: %s" % (name, src))
             bad += 1
@@ -260,7 +295,7 @@ def main():
         if flagged:
             print("  NOTE %-14s %s is still flagged %s; allowed by instruction" % (
                 name, os.path.basename(src), flagged))
-        tile = build(src, fill, grid)
+        tile = build(src, fill, grid, wings)
         print("%-14s <- %s" % (name, os.path.relpath(src, HERE)))
         print("               %s" % why)
         if APPLY:
