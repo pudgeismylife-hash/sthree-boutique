@@ -373,8 +373,33 @@ html[data-page="all"] #about{display:none}
 }
 .row dd{margin:0;font-size:14px;line-height:1.5}
 .row dd a:hover{color:var(--gold)}
-.map{height:150px}
-@media (min-width:900px){ .map{height:100%;min-height:340px} }
+/* ── the map ──────────────────────────────────────────────────
+   A real map with the address and two things a customer actually wants
+   from it: the way here, and the phone. The frame is loaded lazily --
+   an embedded map is a few hundred kilobytes and a set of Google's
+   cookies, and nobody should pay for that until they scroll to it. */
+.map{display:flex;flex-direction:column;border:1px solid var(--hairline);background:var(--cream)}
+.map-frame{position:relative;height:200px;background:var(--cream-alt);overflow:hidden}
+@media (min-width:900px){ .map-frame{height:300px} }
+.map-frame iframe{width:100%;height:100%;border:0;display:block;filter:saturate(.86)}
+.map-fallback{
+  position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--grey);line-height:2;
+}
+.map-fallback:hover{color:var(--gold)}
+.map-card{padding:16px 18px}
+.map-name{font-family:var(--display);font-size:21px;line-height:1.2;margin:0}
+.map-where{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 14px}
+.map-acts{display:flex;gap:9px;flex-wrap:wrap}
+.map-btn{
+  flex:1 1 auto;text-align:center;padding:12px 16px;border:1px solid var(--rule);
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.map-btn:hover{border-color:var(--gold);color:var(--gold)}
+.map-btn.solid{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.map-btn.solid:hover{background:var(--gold);border-color:var(--gold);color:var(--cream)}
 
 /* ── review band ──────────────────────────────────────────── */
 .quote{background:var(--ink);color:var(--warm-light);padding-block:30px}
@@ -754,7 +779,21 @@ footer li a:hover{color:var(--gold)}
       <h2>Visit the boutique</h2>
       <dl class="rows" id="store"></dl>
     </div>
-    <div class="map ph tone3"><span>map embed</span></div>
+    <div class="map" id="mapBlock">
+      <div class="map-frame" id="mapFrame">
+        <a class="map-fallback" id="mapFallback" target="_blank" rel="noopener">
+          <span>Bikarnakatte, Mangalore<br>open in maps</span>
+        </a>
+      </div>
+      <div class="map-card">
+        <p class="map-name">Sthree Boutique</p>
+        <p class="map-where" id="mapWhere"></p>
+        <div class="map-acts">
+          <a class="map-btn" id="mapDir" target="_blank" rel="noopener">Directions</a>
+          <a class="map-btn solid" id="mapCall">Call the boutique</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1795,15 +1834,45 @@ const live = arrivals.filter(p => !p.hold);
   if(ownerLine) ownerLine.textContent = "Owner · " + CONFIG.owner;
 
   /* map — a plain link out, so no API key is needed to ship */
-  const map = document.querySelector(".map");
-  if(map){
-    const a = document.createElement("a");
-    a.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.mapsQuery);
-    a.target = "_blank"; a.rel = "noopener";
-    a.className = "map ph tone3";
-    a.innerHTML = "<span>Bikarnakatte, Mangalore<br>open in maps</span>";
-    map.replaceWith(a);
-  }
+  /* ── the map ──────────────────────────────────────────────────
+     Built here rather than written into the markup so the address lives
+     in CONFIG only, as the rest of the contact details do.
+
+     The embed carries no API key. Google's documented Embed API needs
+     one, and a key means a billing account and a key sitting in public
+     source for anyone to spend; `output=embed` is the long-standing
+     keyless form and needs neither. It is not a documented endpoint, so
+     if it ever stops working the anchor underneath is what shows -- the
+     same link out to Maps this section had before -- and the address,
+     directions and phone below are plain HTML that cannot break with it.
+
+     The frame loads lazily. An embedded map is a few hundred kilobytes
+     and a set of Google's cookies, and on a phone on mobile data nobody
+     should pay for that before they have scrolled to it. */
+  (function mapBlock(){
+    const where = CONFIG.mapsQuery || CONFIG.address;
+    const dir = $("#mapDir"), call = $("#mapCall"),
+          fallback = $("#mapFallback"), frame = $("#mapFrame"), place = $("#mapWhere");
+    if(place) place.textContent = CONFIG.address;
+    if(dir) dir.href = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(where);
+    if(call) call.href = "tel:" + CONFIG.tel;
+    if(fallback) fallback.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(where);
+    if(!frame) return;
+    const f = document.createElement("iframe");
+    f.src = "https://maps.google.com/maps?q=" + encodeURIComponent(where) + "&z=15&output=embed";
+    f.loading = "lazy";
+    f.referrerPolicy = "no-referrer-when-downgrade";
+    f.title = "Map of " + CONFIG.address;
+    f.setAttribute("aria-label", "Map showing " + CONFIG.address);
+    /* If the frame never reports back -- blocked network, a corporate filter,
+       the endpoint gone -- take it away again and leave the link that was
+       underneath it. A dead grey rectangle where the shop's location should be
+       is worse than a line of text saying where the shop is. */
+    let arrived = false;
+    f.addEventListener("load", ()=>{ arrived = true; });
+    setTimeout(()=>{ if(!arrived && f.parentNode) f.remove(); }, 6000);
+    frame.appendChild(f);
+  })();
 
   /* review band — only ever shows a real one */
   if(reviews.length){
