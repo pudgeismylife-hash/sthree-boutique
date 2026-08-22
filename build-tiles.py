@@ -70,7 +70,8 @@ TILES = {
     ),
     "cat-bags": (
         os.path.join(OUT, "mk-signature-satchel-brown-a1.jpg"),
-        "the Michael Kors signature satchel in brown monogram with gold charm",
+        "the signature satchel in brown monogram with tan trim -- the middle of "
+        "the three colourways, so the tile does not favour either end",
         True, False,
     ),
 }

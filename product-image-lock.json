@@ -651,54 +651,55 @@
       "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. starfish studs, matching her Starfish studs at Rs 120. Name and price unchanged, both confirmed against earring.pdf."
     },
     "SB-BAG-01": {
-      "productKey": "mk-signature-satchel-brown",
+      "productKey": "mk-signature-satchel-brown-black",
       "siteCode": "SB-BAG-01",
-      "productName": "Michael Kors signature satchel, brown",
+      "productName": "Michael Kors signature satchel, brown with black trim",
       "status": "LOCKED",
-      "lockedOn": "2026-08-20",
+      "lockedOn": "2026-08-22",
       "price": 3500,
       "size": "10 x 8 inches",
-      "source": "source/updated-bags",
+      "source": "source/updated-bags-2026-08",
       "sourceFiles": [
-        "mk-satchel-brown.png"
+        "New-1.png"
+      ],
+      "images": [
+        "mk-signature-satchel-brown-black-a1.jpg"
+      ],
+      "note": "Supplied by the shop 22 Aug as a transparent cut-out, replacing the earlier bag photographs. Price and size carried over from the figures the shop gave for this model; if the colourways differ, they change here. Provenance is unchanged and unresolved -- see `bags` below."
+    },
+    "SB-BAG-02": {
+      "productKey": "mk-signature-satchel-brown",
+      "siteCode": "SB-BAG-02",
+      "productName": "Michael Kors signature satchel, brown",
+      "status": "LOCKED",
+      "lockedOn": "2026-08-22",
+      "price": 3500,
+      "size": "10 x 8 inches",
+      "source": "source/updated-bags-2026-08",
+      "sourceFiles": [
+        "New-2.png"
       ],
       "images": [
         "mk-signature-satchel-brown-a1.jpg"
-      ]
-    },
-    "SB-BAG-02": {
-      "productKey": "mk-signature-satchel-vanilla",
-      "siteCode": "SB-BAG-02",
-      "productName": "Michael Kors signature satchel, vanilla",
-      "status": "LOCKED",
-      "lockedOn": "2026-08-20",
-      "price": 3500,
-      "size": "10 x 8 inches",
-      "source": "source/updated-bags",
-      "sourceFiles": [
-        "mk-satchel-vanilla.png",
-        "mk-satchel-vanilla-strap.png"
       ],
-      "images": [
-        "mk-signature-satchel-vanilla-a1.jpg",
-        "mk-signature-satchel-vanilla-a2.jpg"
-      ]
+      "note": "Supplied by the shop 22 Aug as a transparent cut-out, replacing the earlier bag photographs. Price and size carried over from the figures the shop gave for this model; if the colourways differ, they change here. Provenance is unchanged and unresolved -- see `bags` below."
     },
     "SB-BAG-03": {
-      "productKey": "mk-signature-satchel-black",
+      "productKey": "mk-signature-satchel-vanilla",
       "siteCode": "SB-BAG-03",
-      "productName": "Michael Kors signature satchel with gift box, black",
+      "productName": "Michael Kors signature satchel, vanilla",
       "status": "LOCKED",
-      "lockedOn": "2026-08-20",
+      "lockedOn": "2026-08-22",
       "price": 3500,
       "size": "10 x 8 inches",
-      "source": "source/updated-bags",
+      "source": "source/updated-bags-2026-08",
       "sourceFiles": [
-        "mk-satchel-black-box.jpg"
+        "New-3.png"
       ],
       "images": [
-        "mk-signature-satchel-black-a1.jpg"
-      ]
+        "mk-signature-satchel-vanilla-a1.jpg"
+      ],
+      "note": "Supplied by the shop 22 Aug as a transparent cut-out, replacing the earlier bag photographs. Price and size carried over from the figures the shop gave for this model; if the colourways differ, they change here. Provenance is unchanged and unresolved -- see `bags` below."
     }
   },
   "owner": {
@@ -713,5 +714,10 @@
     "buildScript": "build-portrait.py",
     "photographVerified": false,
     "note": "Published on the shop's instruction. Asked three times whether this is a photograph of Priyanka herself and not answered directly; the shop then referred to it twice as her photo and asked for it to go on the page, which is taken as the answer. The file carries no EXIF at all -- no camera, no date, no GPS -- and is exactly 1024x1024, which is equally the signature of a retouching app and of a generated image, so it could not be settled by inspection. Recorded rather than resolved. If it turns out not to be her, the fix is to delete assets/about/ and the <figure class=\"portrait\"> block; nothing else depends on it."
+  },
+  "bags": {
+    "published": true,
+    "provenanceVerified": false,
+    "note": "Three Michael Kors colourways, published on the shop's instruction. The provenance question from 19-20 Aug was never settled: there is no invoice, no supplier document and no retailer receipt, and the owner confirmed that directly. The photographs supplied on 22 Aug replaced the earlier ones and changed nothing about that. Anyone picking this up should read the Bags section of HANDOVER.md before adding more branded stock."
   }
 }
