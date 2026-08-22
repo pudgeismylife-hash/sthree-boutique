@@ -700,5 +700,18 @@
         "mk-signature-satchel-black-a1.jpg"
       ]
     }
+  },
+  "owner": {
+    "subject": "Priyanka Monteiro",
+    "use": "About section portrait, published under her name beside the shop's real address and number",
+    "source": "source/owner/priyanka.png",
+    "suppliedVia": "Google Drive, file Priya.png, supplied by the shop 2026-08-22",
+    "built": [
+      "assets/about/priyanka.webp",
+      "assets/about/priyanka.jpg"
+    ],
+    "buildScript": "build-portrait.py",
+    "photographVerified": false,
+    "note": "Published on the shop's instruction. Asked three times whether this is a photograph of Priyanka herself and not answered directly; the shop then referred to it twice as her photo and asked for it to go on the page, which is taken as the answer. The file carries no EXIF at all -- no camera, no date, no GPS -- and is exactly 1024x1024, which is equally the signature of a retouching app and of a generated image, so it could not be settled by inspection. Recorded rather than resolved. If it turns out not to be her, the fix is to delete assets/about/ and the <figure class=\"portrait\"> block; nothing else depends on it."
   }
 }
