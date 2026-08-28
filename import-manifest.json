@@ -1,0 +1,5 @@
+{
+  "_comment": "What the importer has already read out of Drive INPUT. Keyed by Drive file id, which survives a rename. A file is reprocessed only when its size or modified time moves, or when it is named in --reprocess.",
+  "files": {},
+  "runs": []
+}
