@@ -61,3 +61,76 @@ worn, nothing pinned to a card, shot close enough to fill the frame — the way
 IMG_8325 and IMG_8349 were already taken. Those two needed no help at all.
 
 Every original stays in Drive untouched.
+
+---
+
+# Second pass — the twelve nobody had looked at
+
+The seven pieces with a price and no name, the three rings sharing one name,
+the arm cuff with no price, and the clover set's stray file. The shop asked
+for her names where she gave them and ours where she did not, at her prices
+throughout. Naming needs seeing, so all twelve were downloaded and looked at.
+
+Looking changed the answer. Four of the twelve are not new products at all.
+
+## Photographs for pieces already in the catalogue (3)
+
+Each of these was already listed and already held, for want of a usable
+picture. Her batch supplies exactly that, and her price matches the one
+already recorded — which is a good sign the pairing is right, not a guess.
+
+| Her photo | Piece it belongs to | Price, hers and ours |
+|---|---|---|
+| IMG_8335 | `earring_4` Monstera leaf studs | Rs 120 = Rs 120 |
+| IMG_8336 | `earring_6` Heart studs | Rs 120 = Rs 120 |
+| IMG_8346 | `ring_1` Adjustable ring, floral pearl | Rs 130 = Rs 130 |
+
+All three are now cut out and live. No new listing was created for any of
+them, because a second listing would have split one product in two.
+
+## Already listed, nothing to do (2)
+
+| Her photo | Already on the site as |
+|---|---|
+| IMG_8334 | `earring_1` Starfish studs, Rs 120, live with a better cut-out |
+| IMG_8350 | `armcuff_2` Sculpted double floral open armcuff, Rs 280, live |
+
+IMG_8350 is the piece she left without a price. It did not need one — it has
+been listed at Rs 280 all along.
+
+## New products, named by us (5)
+
+Her price, our name. Each name describes only what is in the photograph.
+
+| Photo | Name given | Price |
+|---|---|---|
+| IMG_8333 | Jellyfish drop earrings | Rs 120 |
+| IMG_8337 | Scallop shell studs | Rs 150 |
+| IMG_8342 | Feathered wing studs | Rs 200 |
+| IMG_8345 | Adjustable ring, hammered flower | Rs 120 |
+| IMG_8347 | Adjustable ring, feathered wing | Rs 120 |
+
+IMG_8333 was checked against the octopus studs already listed and IMG_8347
+against the peacock ring: different pieces in both cases, so both are new.
+
+## The name clash, resolved (2)
+
+Naming was extended to the two pieces held last pass for colliding with an
+existing listing. Both are now live under a name that says what the picture
+shows, beside the piece they were confused with:
+
+- Evileye charm **bangle**, Rs 340 — beside the evil eye charm *bracelet* on
+  its snake chain, Rs 350
+- **Openwork** butterfly armcuff, Rs 280 — beside the *filigree* butterfly
+  armcuff, Rs 280
+
+## Still held (2)
+
+| Photo | Why |
+|---|---|
+| IMG_8338 | fluted heart studs, still pinned to the "Stainless steel" card; the cut keeps the card |
+| CloversetPrice499 | the cut kept the pink silk it was lying on, not the clover set |
+
+CloversetPrice499 does settle the open question from the first pass: the
+black clover set is Rs 499, and the file is the one she meant. It still needs
+a photograph of the set on a plain surface before it can be listed.
