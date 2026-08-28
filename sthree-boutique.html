@@ -1139,6 +1139,34 @@ const arrivals = [
   { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  kw:"bracelet bangle", key:"bracelet_1", alpha:true, images:[P+"bracelet_1-a1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Butterfly armcuff",                     price:280,  kw:"armcuff arm cuff bajuband butterfly", views:["Front","Worn","Detail"], key:"armcuff_1", alpha:true, images:[P+"armcuff_1-a1.jpg",P+"armcuff_1-a2.jpg",P+"armcuff_1-a3.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Sculpted double floral open armcuff",   price:280,  kw:"armcuff arm cuff bajuband", views:["Front","Worn","Detail"], key:"armcuff_2", alpha:true, images:[P+"armcuff_2-a1.jpg",P+"armcuff_2-a2.jpg",P+"armcuff_2-a3.jpg"] },
+
+  /* From the client's WhatsApp batch of 28 August. Her filename sits directly
+     above each name and price in the message, so the picture is matched by
+     what she wrote, not by guesswork. Names and prices are hers verbatim.
+
+     "Bracelet" and "Antitarnish earring" are the whole names she gave. They
+     are thin for a shop where every piece is antitarnish, but a better name
+     would be one nobody has approved, so hers stand until she says otherwise. */
+  { cat:"jewellery", label:"Anti-tarnish", name:"Evileye bamboo bracelet",              price:345,  kw:"bracelet bangle evileye evil eye bamboo", key:"evileye-bamboo-bracelet", alpha:true, images:[P+"evileye-bamboo-bracelet-a1.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Infinity bracelet",                    price:300,  kw:"bracelet bangle infinity chain", key:"infinity-bracelet", alpha:true, images:[P+"infinity-bracelet-a1.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Bracelet",                             price:240,  kw:"bracelet bangle chain stone", key:"stone-station-bracelet", alpha:true, images:[P+"stone-station-bracelet-a1.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Antitarnish earring",                  price:120,  kw:"earrings earring studs stud leaf", key:"ginkgo-leaf-earrings", alpha:true, images:[P+"ginkgo-leaf-earrings-a1.jpg"] },
+
+  /* Held, not because the picture failed but because each one collides with a
+     piece already listed above, and a shop should not carry two entries a
+     customer cannot tell apart.
+
+     "Evileye charm bracelet" at 340 sits beside bracelet_1, "Evil eye charm
+     bracelet" at 350 - a different piece in the photographs, one a charm
+     bangle and one a snake chain, but the names are a letter apart and the
+     prices ten rupees. "Nature inspired butterfly armcuff" at 280 sits beside
+     armcuff_1, "Butterfly armcuff", also 280; the wings are filigree on one
+     and open cut on the other.
+
+     Both are real products with good cut-outs. They go live the moment she
+     says which is which - renaming them here would be inventing her words. */
+  { cat:"jewellery", label:"Anti-tarnish", name:"Evileye charm bracelet",               price:340,  kw:"bracelet bangle evileye evil eye charm", hold:true, key:"evileye-charm-bracelet", alpha:true, images:[P+"evileye-charm-bracelet-a1.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Nature inspired butterfly armcuff",    price:280,  kw:"armcuff arm cuff bajuband butterfly", hold:true, key:"butterfly-armcuff", alpha:true, images:[P+"butterfly-armcuff-a1.jpg"] },
   // Jewellery — anklets
   { cat:"jewellery", label:"Anti-tarnish", name:"Bow anklet",                            price:280,  kw:"anklet anklets payal bow", views:["Front","Worn","Detail"], key:"anklets_1", alpha:true, images:[P+"anklets_1-a1.jpg",P+"anklets_1-a2.jpg",P+"anklets_1-a3.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Anti-tarnish anklet",                   price:280,  kw:"anklet anklets payal", views:["Front","Worn","Detail"], key:"anklets_2", alpha:true, images:[P+"anklets_2-a1.jpg",P+"anklets_2-a2.jpg",P+"anklets_2-a3.jpg"] },

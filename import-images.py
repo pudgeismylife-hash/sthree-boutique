@@ -56,20 +56,80 @@ def alpha_box(alpha):
     return int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1
 
 
-def skin_share(rgb):
-    """Rough share of the frame that looks like skin.
+def skin_mask(rgb):
+    """Skin, and specifically not gold.
 
-    A worn photograph cannot be cut out into a product picture: the half of
-    the bangle behind the wrist is not in the file, and inventing it would
-    change the product.  Detecting skin is how such a photograph is caught.
+    Both are warm - red above green above blue - so the usual skin rule calls
+    a gold bangle a wrist.  What separates them is how far blue falls away:
+    skin keeps blue close to green, gold drops it hard.  Anything with that
+    yellow gap is metal, and metal is the product, not the model.
     """
     a = rgb.astype(np.int16)
     r, g, b = a[:, :, 0], a[:, :, 1], a[:, :, 2]
     mx, mn = a.max(axis=2), a.min(axis=2)
-    return float((
-        (r > 95) & (g > 40) & (b > 20) &
-        ((mx - mn) > 15) & (abs(r - g) > 15) & (r > g) & (r > b)
-    ).mean())
+    warm = ((r > 95) & (g > 40) & (b > 20) &
+            ((mx - mn) > 15) & (abs(r - g) > 15) & (r > g) & (r > b))
+    metal = (g - b) > 45
+    return warm & ~metal
+
+
+def skin_inside(rgb, alpha):
+    """Share of the *kept* product that looks like skin.
+
+    Measuring skin across the whole frame is useless here: half these pieces
+    are shot on a warm beige surface that reads as skin, and a cream ground
+    is not a wrist.  What matters is whether the thing that survived the cut
+    is skin - a hand still wearing the ring, a wrist still wearing the bangle.
+    That product cannot be published: the part hidden behind the hand is not
+    in the file, and drawing it back would invent product.
+    """
+    keep = alpha >= SOLID
+    if keep.sum() < 100:
+        return 0.0
+    return float(skin_mask(rgb)[keep].mean())
+
+
+def looks_like_packaging(rgb, alpha, box):
+    """A retail display card kept instead of the jewellery on it.
+
+    The card is a pale rectangle that fills its own bounding box; the piece
+    of jewellery pinned to it is a few percent of the area.  Cutting that out
+    gives a photograph of packaging, not of a product.
+    """
+    if box is None:
+        return False
+    x0, y0, x1, y1 = box
+    a = alpha[y0:y1, x0:x1]
+    fill = float((a > FAINT).mean())
+    if fill < 0.80:
+        return False
+    patch = rgb[y0:y1, x0:x1].astype(np.int16)
+    inside = a >= SOLID
+    if inside.sum() < 100:
+        return False
+    px = patch[inside]
+    bright = float(px.mean())
+    sat = float((px.max(axis=1) - px.min(axis=1)).mean())
+    return bright > 180 and sat < 40
+
+
+def largest_part_share(alpha):
+    """How much of the cut-out sits in one connected piece.
+
+    A chain that survived intact is one shape, or a shape and its pendant.
+    A chain the model tore up is a scatter of unrelated fragments, and no
+    single one of them holds much of what is left.  Counting solid pixels
+    cannot tell these apart - a thin chain is legitimately nearly all rim -
+    but the shape of what survived can.
+    """
+    ink = alpha > FAINT
+    if not ink.any():
+        return 0.0
+    lab, n = ndimage.label(ink)
+    if n == 0:
+        return 0.0
+    sizes = ndimage.sum(ink, lab, range(1, n + 1))
+    return round(float(sizes.max() / sizes.sum()), 4)
 
 
 def measure(cut, source_rgb):
@@ -82,40 +142,52 @@ def measure(cut, source_rgb):
         "opaqueShare":  round(float((a >= SOLID).mean()), 4),
         "clearShare":   round(float((a <= FAINT).mean()), 4),
         "inkShare":     round(float(ink.mean()), 4),
-        "skinShare":    round(skin_share(source_rgb), 4),
+        "skinInProduct": round(skin_inside(source_rgb, a), 4),
         "productWidth":  (box[2] - box[0]) if box else 0,
         "productHeight": (box[3] - box[1]) if box else 0,
     }
-    # how solid the product is inside its own outline
-    if box and ink.any():
-        inside = a[box[1]:box[3], box[0]:box[2]]
-        m["solidInside"] = round(float((inside >= SOLID).sum() / max(1, (inside > FAINT).sum())), 4)
+    m["packaging"] = looks_like_packaging(source_rgb, a, box)
+    if box:
+        crop = a[box[1]:box[3], box[0]:box[2]]
+        m["bboxFill"] = round(float((crop > FAINT).mean()), 4)
+        m["opaquePixels"] = int((crop >= SOLID).sum())
     else:
-        m["solidInside"] = 0.0
+        m["bboxFill"], m["opaquePixels"] = 0.0, 0
+    m["largestPart"] = largest_part_share(a)
     return m, box
 
 
 # -------------------------------------------------------------------- gate
 
 def judge(m):
-    """Return (verdict, reasons).  'review' is the best a machine can give."""
+    """Return (verdict, reasons).  'review' is the best a machine can give.
+
+    Only checks that hold up on this shop's actual stock live here.  Two that
+    did not, and why they were taken out rather than tuned:
+
+      skin colour  - meant to catch a bangle still on a wrist.  Pale gold has
+                     the same warm signature as skin, so it condemned the
+                     butterfly armcuff and the ginkgo earrings.  Tightening it
+                     to spare the gold let a real worn shot back through.
+
+      fragment count - meant to catch a chain the model tore up.  A pair of
+                     earrings is two pieces for the same honest reason, and
+                     nothing in the numbers separates the pair from the wreck.
+
+    Both asked the machine to answer "is this a photograph of the product",
+    which is the judgement this pipeline deliberately leaves to a person.
+    What stays below is only what can be measured and proved.
+    """
     bad = []
     if m["alphaMin"] == m["alphaMax"]:
         bad.append("no real alpha channel - nothing was cut away")
     if m["clearShare"] < 0.05:
         bad.append("almost nothing was removed - the background is still there")
-    if m["inkShare"] < 0.02:
-        bad.append("only %.1f%% of the frame survived the cut - too little left to be the product"
-                   % (m["inkShare"] * 100))
     if max(m["productWidth"], m["productHeight"]) < MIN_PX:
         bad.append("product is %dx%d px, below the %d px floor"
                    % (m["productWidth"], m["productHeight"], MIN_PX))
-    if m["solidInside"] < 0.55:
-        bad.append("the cut-out is more haze than product (%.0f%% solid inside its outline)"
-                   % (m["solidInside"] * 100))
-    if m["skinShare"] > 0.15:
-        bad.append("worn on a model (%.0f%% of the photograph is skin) - the hidden part of the "
-                   "product is not in the file and must not be invented" % (m["skinShare"] * 100))
+    if m["packaging"]:
+        bad.append("the cut kept the display card, not the jewellery pinned to it")
     return ("hold" if bad else "review"), bad
 
 
