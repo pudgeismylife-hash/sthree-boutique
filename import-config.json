@@ -1,29 +1,115 @@
 {
   "_comment": "Where the catalogue importer reads and writes. Folder ids are stable; titles are here only so a human can tell which is which in Drive. Nothing in INPUT is ever moved, renamed or deleted -- the client's originals are the one thing this pipeline must not lose.",
   "drive": {
-    "root":      { "id": "1-Qz6FYgV6-yH6OznV-vt1YjV8bo6fN6K", "title": "PRODUCT IMPORT" },
-    "input":     { "id": "1qbVJ37gAhD4vBQisKj47fVFu_2qsDGG3", "title": "INPUT",
-                   "role": "the client's photographs, exactly as they arrived. Read only." },
-    "output":    { "id": "1OB0OC9zEnFXdMGG4Ad7wwznen3Cs0Ecg", "title": "OUTPUT",
-                   "role": "finished transparent PNGs, named for the product." },
-    "processed": { "id": "1_uOaT0SureIPF25X72NeAt3CnYcgpb9E", "title": "PROCESSED",
-                   "role": "a record of which input files have been dealt with." },
-    "errors":    { "id": "1h4UmrOUlFlMbXw55uSQkULiDQ8O2-eAz", "title": "ERRORS",
-                   "role": "anything that could not be processed, with the reason beside it." }
+    "root": {
+      "id": "1-Qz6FYgV6-yH6OznV-vt1YjV8bo6fN6K",
+      "title": "PRODUCT IMPORT"
+    },
+    "input": {
+      "id": "1qbVJ37gAhD4vBQisKj47fVFu_2qsDGG3",
+      "title": "INPUT",
+      "role": "the client's photographs, exactly as they arrived. Read only."
+    },
+    "output": {
+      "id": "1OB0OC9zEnFXdMGG4Ad7wwznen3Cs0Ecg",
+      "title": "OUTPUT",
+      "role": "finished transparent PNGs, named for the product."
+    },
+    "processed": {
+      "id": "1_uOaT0SureIPF25X72NeAt3CnYcgpb9E",
+      "title": "PROCESSED",
+      "role": "a record of which input files have been dealt with."
+    },
+    "errors": {
+      "id": "1h4UmrOUlFlMbXw55uSQkULiDQ8O2-eAz",
+      "title": "ERRORS",
+      "role": "anything that could not be processed, with the reason beside it."
+    }
   },
   "categories": {
     "_comment": "Words that suggest one of the six categories the site actually has. A suggestion only -- every match is shown for confirmation and can be changed. Nothing is invented: a word that matches nothing leaves the category empty and the product goes to review.",
-    "western":   ["gown", "dress", "bodycon", "kaftan", "top", "skirt", "jumpsuit", "shirt"],
-    "ethnic":    ["saree", "sari", "kurta", "salwar", "lehenga", "anarkali", "dupatta", "suit"],
-    "coord":     ["cordset", "cord set", "co-ord", "coord", "two piece", "palazzo set"],
-    "jewellery": ["chain", "necklace", "earring", "stud", "bracelet", "anklet", "armcuff",
-                  "ring", "pendant", "clover", "charm", "bangle"],
-    "nails":     ["nail", "press on", "press-on"],
-    "bags":      ["bag", "handbag", "satchel", "tote", "clutch", "sling", "purse"]
+    "western": [
+      "gown",
+      "dress",
+      "bodycon",
+      "kaftan",
+      "top",
+      "skirt",
+      "jumpsuit",
+      "shirt"
+    ],
+    "ethnic": [
+      "saree",
+      "sari",
+      "kurta",
+      "salwar",
+      "lehenga",
+      "anarkali",
+      "dupatta",
+      "suit"
+    ],
+    "coord": [
+      "cordset",
+      "cord set",
+      "co-ord",
+      "coord",
+      "two piece",
+      "palazzo set"
+    ],
+    "jewellery": [
+      "chain",
+      "necklace",
+      "earring",
+      "stud",
+      "bracelet",
+      "anklet",
+      "armcuff",
+      "ring",
+      "pendant",
+      "clover",
+      "charm",
+      "bangle"
+    ],
+    "nails": [
+      "nail",
+      "press on",
+      "press-on"
+    ],
+    "bags": [
+      "bag",
+      "handbag",
+      "satchel",
+      "tote",
+      "clutch",
+      "sling",
+      "purse"
+    ]
   },
   "limits": {
     "_comment": "Below these, a product is held for review rather than published.",
-    "matchConfidence": 0.80,
+    "matchConfidence": 0.8,
     "minSourcePixels": 400
+  },
+  "publishGate": {
+    "_comment": "The owner's rule: a picture reaches the website only if it is a genuine cut-out AND it reads as a dimensional product photograph. Anything else is held. This is not advice the pipeline may weigh against other things -- it is the condition for publishing, and a product that fails it keeps its name, price and code and simply does not appear, which is what hold:true already does for the fourteen pieces held today.",
+    "transparent": {
+      "required": true,
+      "checkedBy": "machine",
+      "means": "a real alpha channel, with the product fully opaque and the surround fully clear. Not white, not cream, not a flattened approximation. The alpha is read back off the saved file, because a PNG can carry an alpha channel that is opaque everywhere and still look right until it sits on cream."
+    },
+    "dimensional": {
+      "required": true,
+      "checkedBy": "machine rejects the obvious failures, a person confirms the rest",
+      "means": "the picture is a photograph of the object with light on it -- shading, edge, form. Not a flat scan, not a screenshot, not a photograph of a printed catalogue page, not a picture of a phone screen.",
+      "machineRejects": [
+        "no alpha, or alpha opaque everywhere",
+        "below the resolution floor",
+        "interface furniture: status bars, solid colour bands, dense small text",
+        "flat field: almost no tonal range across the product, which is what a scan or a screenshot of a flat image looks like",
+        "a cut edge that failed -- a halo of the old background left round the piece"
+      ],
+      "machineCannotJudge": "whether a technically clean picture actually looks premium. That is the human step, and it is why nothing publishes without the review page."
+    },
+    "onFailure": "The product is written with hold:true and the reason recorded. The source file is copied to ERRORS/ with the reason beside it. Nothing is deleted and no product information is thrown away."
   }
 }

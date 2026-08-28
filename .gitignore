@@ -20,3 +20,4 @@ SB-JWL-Products/
 
 # python build-script bytecode
 __pycache__/
+parsed-products.json
