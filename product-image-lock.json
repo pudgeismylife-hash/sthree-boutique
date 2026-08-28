@@ -706,14 +706,15 @@
     "subject": "Priyanka Monteiro",
     "use": "About section portrait, published under her name beside the shop's real address and number",
     "source": "source/owner/priyanka.png",
-    "suppliedVia": "Google Drive, file Priya.png, supplied by the shop 2026-08-22",
+    "suppliedVia": "Google Drive, folder \"Final output\", file Priya.jpeg, supplied by the shop 2026-08-28",
     "built": [
       "assets/about/priyanka.webp",
       "assets/about/priyanka.jpg"
     ],
     "buildScript": "build-portrait.py",
     "photographVerified": false,
-    "note": "Published on the shop's instruction. Asked three times whether this is a photograph of Priyanka herself and not answered directly; the shop then referred to it twice as her photo and asked for it to go on the page, which is taken as the answer. The file carries no EXIF at all -- no camera, no date, no GPS -- and is exactly 1024x1024, which is equally the signature of a retouching app and of a generated image, so it could not be settled by inspection. Recorded rather than resolved. If it turns out not to be her, the fix is to delete assets/about/ and the <figure class=\"portrait\"> block; nothing else depends on it."
+    "note": "Replaced 28 Aug with a second, larger picture of the same person in the same outfit, supplied by the shop and asked to be published as her portrait. It came on a flat white field at 1254x1254 and was cut out here with clean-backgrounds.py's flood fill; the hair edge was checked at 2x against the cream stage before it went up. Provenance is no better settled than it was. The file carries no EXIF -- no camera, no date, no GPS -- which an export strips as readily as a generator never writes it, so it cannot be told apart by inspection any more than the first one could. It is published on the shop's instruction, having been asked three times whether the picture is of Priyanka herself and never answered directly. Recorded rather than resolved. If it turns out not to be her, delete assets/about/ and the <figure class=\"portrait\"> block; nothing else depends on it.",
+    "sourceOriginal": "source/owner/priyanka-original.jpeg"
   },
   "bags": {
     "published": true,
