@@ -55,12 +55,22 @@ SIZE_PATTERNS = [
     (re.compile(r"\b(free\s*size|freesize|one\s*size)\b", re.I), lambda m: "Free size"),
     (re.compile(r"\b([SMLX]{1,4}L?)\s*(?:to|-|–)\s*([SMLX]{1,4}L?)\b"),
      lambda m: "%s to %s" % (m.group(1).upper(), m.group(2).upper())),
+    (re.compile(r"\b(regular|standard|one|plus|small|medium|large)\s*size\b", re.I),
+     lambda m: m.group(1).capitalize() + " size"),
     (re.compile(r"\bsize\s*[-:]?\s*([\w\s,/]+)", re.I), lambda m: m.group(1).strip(" .,-")),
     (re.compile(r"\b(\d{2})\s*(?:to|-|–)\s*(\d{2})\b"),
      lambda m: "%s to %s" % (m.group(1), m.group(2))),
 ]
 
 NOISE = re.compile(r"^\s*(?:\d{1,2}[:.]\d{2}\s*(?:am|pm)?|[-–—*•]+|\W)\s*$", re.I)
+
+# The client's own messages name the file above the product. That line is the
+# single most valuable thing in the whole message: it says which photograph
+# belongs to which product, which is otherwise the hardest part of the import
+# and the one most likely to be got wrong. Read as a name it would produce
+# "IMG_7979.PNG Multi colour heart hanging chain"; read for what it is, it
+# removes the guesswork entirely.
+FILENAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 _.\-]*\.(png|jpe?g|webp|heic|heif)$", re.I)
 
 
 def load_config():
@@ -105,7 +115,10 @@ def read_category(name, rules):
 
     Longest keyword first, so "press on nails" beats "on" and "cord set" is not
     mistaken for something else."""
+    # She writes "armcuff" and "arm cuff", "press on" and "press-on". Match
+    # against both the words as written and the same with spaces closed up.
     low = " " + name.lower() + " "
+    tight = " " + re.sub(r"[\s\-]+", "", name.lower()) + " "
     best = None
     for key, words in rules.items():
         if key.startswith("_"):
@@ -114,7 +127,17 @@ def read_category(name, rules):
             # Plurals: she writes "earrings", "nails", "sarees". Matching the
             # singular only meant "Pearl drop earrings" found no category at all
             # and went to review for nothing.
-            if re.search(r"\b" + re.escape(w) + r"(?:e?s)?\b", low):
+            pat = r"\b" + re.escape(w) + r"(?:e?s)?\b"
+            hit = re.search(pat, low) is not None
+            if not hit:
+                # Spaces closed up on both sides, so "arm cuff" finds "armcuff".
+                # No word boundary is possible once the spaces are gone, so this
+                # is a plain substring test -- kept to keywords of five letters
+                # or more, because "ring" inside a longer word would be luck
+                # rather than a match.
+                wt = re.sub(r"[\s\-]+", "", w)
+                hit = len(wt) >= 5 and wt in tight
+            if hit:
                 if best is None or len(w) > len(best[1]):
                     best = (key, w)
     return best or (None, None)
@@ -146,9 +169,15 @@ def blocks(text):
 def parse(text, cfg):
     products = []
     for chunk in blocks(text):
-        price, price_line = None, None
+        price, price_line, source_file = None, None, None
         name_lines = []
         for line in chunk:
+            if FILENAME.match(line):
+                # First one wins: the client sometimes repeats the last file
+                # at the foot of a screenshot.
+                if source_file is None:
+                    source_file = line
+                continue
             p = read_price(line)
             if p is not None and price is None:
                 price, price_line = p, line
@@ -161,11 +190,26 @@ def parse(text, cfg):
             else:
                 name_lines.append(line)
 
+        # A line that is only a size is an attribute, not part of the name --
+        # "Floral thin gold bracelet / Regular size" is one product with a size,
+        # not a product called "Floral thin gold bracelet Regular size".
+        size, size_text = None, None
+        kept = []
+        for line in name_lines:
+            s_val, s_txt = read_size(line)
+            if s_val and s_txt and s_txt.strip().lower() == line.strip().lower():
+                if size is None:
+                    size, size_text = s_val, s_txt
+                continue
+            kept.append(line)
+        name_lines = kept
+
         name = " ".join(name_lines).strip(" .,-–:")
         if not name and price is None:
             continue
 
-        size, size_text = read_size(name)
+        if size is None:
+            size, size_text = read_size(name)
         # The size is part of how she writes the name, so it stays in the name
         # as well; the field is for filtering, not for rewriting her words.
         cat, cat_word = read_category(name, cfg["categories"])
@@ -189,6 +233,7 @@ def parse(text, cfg):
             "colour": None,
             "description": None,
             "sku": None,
+            "sourceFile": source_file,
             "source": {"lines": chunk, "priceLine": price_line, "sizeText": size_text},
             "needsReview": review,
         })
@@ -234,10 +279,13 @@ def main():
     if not products:
         sys.exit("Nothing in that message read as a product.")
 
-    wide = max(len(p["name"] or "(no name)") for p in products)
-    print("%-*s  %9s  %-11s  %-10s  %s" % (wide, "PRODUCT", "PRICE", "SIZE", "CATEGORY", "REVIEW"))
+    wide = max([len(p["name"] or "(no name)") for p in products] + [7])
+    fwide = max([len(p["sourceFile"] or "-") for p in products] + [5])
+    print("%-*s  %-*s  %9s  %-11s  %-10s  %s" % (
+        fwide, "IMAGE", wide, "PRODUCT", "PRICE", "SIZE", "CATEGORY", "REVIEW"))
     for p in products:
-        print("%-*s  %9s  %-11s  %-10s  %s" % (
+        print("%-*s  %-*s  %9s  %-11s  %-10s  %s" % (
+            fwide, p["sourceFile"] or "-",
             wide, p["name"] or "(no name)",
             ("₹" + format(p["price"], ",")) if p["price"] is not None else "—",
             p["size"] or "—",
