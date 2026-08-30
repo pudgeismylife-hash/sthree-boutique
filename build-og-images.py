@@ -200,7 +200,17 @@ def make_thumb(path, transparent=False):
         return canvas
 
     im = Image.open(path).convert("RGB")
-    im = im.crop(trim_box(im))
+    # Trim the cream this pipeline letterboxed on, and nothing else. trim_box
+    # reads whatever colour sits in the corner, which is right for that padding
+    # and wrong for a photograph shot against a white studio wall: there the
+    # backdrop IS the picture, and trimming it leaves a sliver of model that
+    # then gets letterboxed again, tiny, in the middle of the card. If the trim
+    # would eat more than half of either side, the border was never padding.
+    box = trim_box(im)
+    kept_w = (box[2] - box[0]) / im.width
+    kept_h = (box[3] - box[1]) / im.height
+    if kept_w > 0.5 and kept_h > 0.5:
+        im = im.crop(box)
     canvas = Image.new("RGB", (tw, th), CREAM)
     ar, frame = im.width / im.height, tw / th
     if ar > 1.30:
