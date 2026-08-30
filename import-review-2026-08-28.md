@@ -134,3 +134,49 @@ shows, beside the piece they were confused with:
 CloversetPrice499 does settle the open question from the first pass: the
 black clover set is Rs 499, and the file is the one she meant. It still needs
 a photograph of the set on a plain surface before it can be listed.
+
+---
+
+# Third pass — the rest of the Final output folder
+
+The shop asked for everything in the folder to go up as it stands. Forty-three
+files sit there. Twenty-six were her message's products and are dealt with
+above. Of the seventeen left, four are duplicate uploads under a price-shaped
+name, six are the WhatsApp screenshots, one is her portrait, and six are
+photographs that appear in no message she ever sent.
+
+## Deliberately not published (7)
+
+`Paint 1.png` through `Paint 6.png` are screenshots of her own WhatsApp
+conversations. They are the source this whole import was read from, and they
+are already kept in the repository as the record of what she said. They are
+not products, and putting her private messages on a public shop page would
+publish her conversations to anyone who visits. `Priya.jpeg` is her portrait,
+already on the About section where it belongs.
+
+## Four photographs of one gown (4)
+
+IMG_7972, IMG_7973, IMG_7974 and IMG_7975 are the same V-neck ruched gown with
+the same jewelled waist ornament, in bronze, aubergine, mauve and black. They
+are western wear, not jewellery, and they are listed as four colourways rather
+than four unrelated dresses. She has never named or priced any of them, so the
+names are ours and each asks on WhatsApp.
+
+## One new necklace (1)
+
+IMG_7977 is a plain open heart pendant. It was checked against the studded
+infinity heart already listed and they are different pieces. Its price is the
+one certain thing about it: `Price200.PNG` in the same folder is byte-for-byte
+the identical photograph, sha1 7b3450d4b039 both, so Rs 200 is her own figure
+written into a filename.
+
+## One that is already selling, with a price that disagrees (1)
+
+IMG_7978 is `necklace_2`, the heart hanging necklace published earlier today at
+Rs 350. Same green hearts, same necklace and bracelet pair, same photograph
+give or take a crop. No second listing was created.
+
+Its twin file is named `Price 340.PNG`, byte-identical at sha1 762a917b0b5d.
+So her filename says 340 and the listing says 350, and both figures came from
+her. The listing was left at 350 rather than quietly moving a live price on
+evidence that only disagrees with itself. She should settle it.
