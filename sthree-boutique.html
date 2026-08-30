@@ -329,6 +329,73 @@ h2{font-size:26px;margin-bottom:22px}
   transition:background .15s ease,color .15s ease,border-color .15s ease;
 }
 .enquire:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+/* The bag. A boutique that takes its orders on WhatsApp still needs somewhere
+   to put three things before asking about them: without this, three pieces
+   meant three separate chats for her to piece back together at the other end.
+   Nothing is bought here. The bag only gathers what the customer chose so the
+   message that opens WhatsApp lists all of it at once, with a total. */
+.card .acts{display:flex;gap:6px;margin-top:auto}
+.card .acts .enquire{margin-top:0;flex:1}
+.add{
+  display:block;text-align:center;padding:12px;border:1px solid var(--rule);
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  background:none;color:inherit;font-family:inherit;flex:1;
+  transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.add:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.add.in{background:var(--gold);border-color:var(--gold);color:#fff}
+
+.bagbtn{position:relative}
+.bagcount{
+  position:absolute;top:-2px;right:-4px;min-width:16px;height:16px;padding:0 4px;
+  border-radius:9px;background:var(--gold);color:#fff;
+  font-family:var(--mono);font-size:9px;line-height:16px;text-align:center;
+}
+.bagcount[hidden]{display:none}
+
+/* A drawer off the right edge on a wide screen, the whole screen on a phone.
+   Full-bleed on a desktop left one saree stranded against a metre of cream. */
+.bagpanel{
+  position:fixed;inset:0;z-index:70;background:var(--cream);
+  display:flex;flex-direction:column;padding:18px;
+  transform:translateY(100%);visibility:hidden;
+  transition:transform .25s ease, visibility 0s linear .25s;
+  overflow-y:auto;overscroll-behavior:contain;
+}
+.bagpanel.open{transform:none;visibility:visible;transition:transform .25s ease}
+@media (min-width:700px){
+  .bagpanel{
+    inset:0 0 0 auto;width:min(440px,100vw);
+    border-left:1px solid var(--hairline);
+    box-shadow:-18px 0 48px rgba(20,17,15,.10);
+    transform:translateX(100%);
+  }
+}
+.bagpanel .top{display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--hairline);padding-bottom:12px}
+.bagpanel .top h2{font-family:var(--display);font-size:26px;margin:0;font-weight:400}
+.bagpanel .items{flex:1;margin:0;padding:0;list-style:none;overflow-y:auto}
+.bagrow{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--hairline)}
+.bagrow img{width:56px;height:70px;object-fit:cover;background:var(--cream-alt);flex:none}
+.bagrow .bi{flex:1;min-width:0}
+.bagrow .bi > span{display:block}
+.bagrow .bn{font-size:13px;line-height:1.35}
+.bagrow .bc{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--grey);margin-top:3px}
+.bagrow .bp{font-size:12px;color:var(--ink-soft);margin-top:3px}
+.qty{display:flex;align-items:center;gap:8px;flex:none}
+.qty button{
+  width:26px;height:26px;border:1px solid var(--rule);background:none;
+  cursor:pointer;font-size:14px;line-height:1;color:inherit;
+}
+.qty button:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.qty span{font-family:var(--mono);font-size:12px;min-width:14px;text-align:center}
+.bagfoot{border-top:1px solid var(--hairline);padding-top:14px;margin-top:auto}
+.bagfoot .tot{display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px}
+.bagfoot .tot strong{font-weight:600}
+.bagfoot .ask{font-size:11px;color:var(--grey);margin:0 0 12px}
+.bagfoot .btn{display:block;width:100%;text-align:center;box-sizing:border-box}
+.bagempty{text-align:center;color:var(--grey);font-size:13px;padding:40px 0}
 .alt{background:var(--cream-alt)}
 
 /* the way through from the front page's selection to the whole collection */
@@ -701,8 +768,22 @@ footer li a:hover{color:var(--gold)}
   </nav>
   <span class="spacer"></span>
   <button class="icon" id="searchBtn" aria-label="Search the collection" aria-expanded="false" aria-controls="searchBar">⌕</button>
+  <button class="icon bagbtn" id="bagBtn" aria-label="Open your bag" aria-expanded="false" aria-controls="bagPanel"><svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M3.4 6.5h13.2l-1 10.2a1.3 1.3 0 0 1-1.3 1.2H5.7a1.3 1.3 0 0 1-1.3-1.2z"/><path d="M7.2 8.4V5.3a2.8 2.8 0 0 1 5.6 0v3.1"/></svg><span class="bagcount" id="bagCount" hidden>0</span></button>
   <a class="btn header-cta" id="headerCta">WhatsApp</a>
 </header>
+
+<div class="bagpanel" id="bagPanel" aria-hidden="true" inert>
+  <div class="top">
+    <h2>Your bag</h2>
+    <button class="icon" id="bagClose" aria-label="Close your bag">✕</button>
+  </div>
+  <ul class="items" id="bagItems"></ul>
+  <div class="bagfoot" id="bagFoot" hidden>
+    <div class="tot"><span>Total</span><strong id="bagTotal"></strong></div>
+    <p class="ask" id="bagAsk" hidden></p>
+    <a class="btn" id="bagSend" target="_blank" rel="noopener">Send this order on WhatsApp</a>
+  </div>
+</div>
 
 <div class="searchbar" id="searchBar" hidden>
   <div class="wrap">
@@ -920,6 +1001,9 @@ footer li a:hover{color:var(--gold)}
       <div class="vactions">
         <a class="btn" id="vWa" target="_blank" rel="noopener">Order on WhatsApp</a>
         <p class="vwhat" id="vWhat"></p>
+        <!-- Adding from here keeps the size the customer just picked; sending
+             straight to WhatsApp above is still the shorter road for one piece. -->
+        <button class="vghost" id="vAdd" type="button">Add to bag</button>
         <button class="vghost vshare" id="vShare" type="button">Share this piece</button>
       </div>
 
@@ -1425,6 +1509,132 @@ const live = arrivals.filter(p => !p.hold);
     productUrl(p)
   );
 
+  /* ---- the bag -------------------------------------------------------------
+     Nothing is sold on this page and no money moves through it. The bag is a
+     list of what somebody chose, kept in their own browser, so that the one
+     message they send names all of it instead of arriving as three separate
+     chats she has to reassemble.
+
+     Keys, not copies: a bag saved last week must survive a piece being renamed
+     or repriced, and it must not resurrect one that has since come off the
+     site. So only the key and a count are stored, and everything shown is read
+     back out of the live catalogue. A key that no longer matches anything is
+     dropped silently on load. */
+  const BAG_KEY = "sthree-bag-v1";
+  let bag = [];
+
+  /* A size is part of what was chosen, so two sizes of one saree are two rows
+     rather than a count of two. The id carries it; a piece with no sizes has an
+     empty one and behaves exactly as before. */
+  const bagId = (key, size) => key + " " + (size || "");
+
+  function bagLoad(){
+    try{
+      const raw = JSON.parse(localStorage.getItem(BAG_KEY) || "[]");
+      bag = (Array.isArray(raw) ? raw : [])
+        .filter(r => r && typeof r.key === "string" && live.some(p => p.key === r.key))
+        .map(r => ({ key:r.key,
+                     size: typeof r.size === "string" ? r.size : "",
+                     n: Math.min(99, Math.max(1, parseInt(r.n,10) || 1)) }));
+    }catch(e){ bag = []; }          // private mode, cleared storage, bad JSON
+  }
+  function bagSave(){
+    try{ localStorage.setItem(BAG_KEY, JSON.stringify(bag)); }catch(e){}
+  }
+  const inBag  = key => bag.some(r => r.key === key);
+  const bagQty = ()  => bag.reduce((t,r) => t + r.n, 0);
+  const bagRow = key => live.find(p => p.key === key);
+
+  /* Repaint the Add buttons in place rather than re-rendering the grid. A
+     rebuild would throw away every card to change one word on one of them,
+     and the customer would watch the whole collection flicker each time they
+     added something. */
+  function bagSyncButtons(){
+    document.querySelectorAll("[data-add]").forEach(el => {
+      const on = inBag(el.getAttribute("data-add"));
+      el.classList.toggle("in", on);
+      el.textContent = on ? "In bag" : "Add";
+    });
+  }
+  function bagAdd(key, size){
+    const id = bagId(key, size);
+    const r = bag.find(x => bagId(x.key, x.size) === id);
+    if(r) r.n++; else bag.push({ key, size: size || "", n:1 });
+    bagSave(); bagPaint(); bagSyncButtons();
+  }
+  function bagSet(id, n){
+    const i = bag.findIndex(x => bagId(x.key, x.size) === id);
+    if(i < 0) return;
+    if(n <= 0) bag.splice(i,1); else bag[i].n = Math.min(99, n);
+    bagSave(); bagPaint(); bagSyncButtons();
+  }
+
+  /* One message, whatever is in the bag. Pieces she has not priced still go in
+     -- they are the ones a customer most needs to ask about -- but they are
+     listed apart from the total so no number is implied for them. */
+  function bagMessage(){
+    const rows = bag.map(r => ({ p: bagRow(r.key), n: r.n, size: r.size })).filter(x => x.p);
+    const has  = rows.filter(x => priced(x.p));
+    const ask  = rows.filter(x => !priced(x.p));
+    const total = has.reduce((t,x) => t + x.p.price * x.n, 0);
+    let m = "Hi Sthree Boutique, I'd like to order:\n\n";
+    rows.forEach((x,i) => {
+      m += (i+1) + ". *" + x.p.name + "*\n   " + x.p.code
+         + (priced(x.p) ? "  ·  " + rupee(x.p.price) : "  ·  price?")
+         + (x.n > 1 ? "  ·  qty " + x.n : "")
+         + (x.size ? "  ·  size " + x.size : "") + "\n";
+    });
+    if(has.length) m += "\nTotal  " + rupee(total);
+    if(ask.length) m += "\n(" + ask.length + (ask.length === 1 ? " piece" : " pieces")
+                     + " above still to be priced)";
+    return wa(m + "\n\n" + siteBase + "/collection.html");
+  }
+
+  function bagPaint(){
+    const n = bagQty();
+    const badge = document.getElementById("bagCount");
+    if(badge){ badge.textContent = n; badge.hidden = n === 0; }
+
+    const list = document.getElementById("bagItems");
+    const foot = document.getElementById("bagFoot");
+    if(!list || !foot) return;
+
+    const rows = bag.map(r => ({ p: bagRow(r.key), n: r.n, size: r.size })).filter(x => x.p);
+    if(!rows.length){
+      list.innerHTML = '<li class="bagempty">Your bag is empty.<br>Add a piece and send the whole lot in one message.</li>';
+      foot.hidden = true;
+      return;
+    }
+    list.innerHTML = rows.map(x => {
+      const id = esc(bagId(x.p.key, x.size));
+      return `
+      <li class="bagrow">
+        <img src="${thumb(shot(x.p, primary(x.p)))}" alt="" width="56" height="70" loading="lazy">
+        <span class="bi">
+          <span class="bn">${esc(x.p.name)}</span>
+          <span class="bc">${esc(x.p.code)}${x.size ? " · size " + esc(x.size) : ""}</span>
+          <span class="bp">${priceLabel(x.p)}</span>
+        </span>
+        <span class="qty">
+          <button data-less="${id}" aria-label="One fewer ${esc(x.p.name)}">−</button>
+          <span>${x.n}</span>
+          <button data-more="${id}" aria-label="One more ${esc(x.p.name)}">+</button>
+        </span>
+      </li>`; }).join("");
+
+    const has = rows.filter(x => priced(x.p));
+    const ask = rows.filter(x => !priced(x.p));
+    const total = has.reduce((t,x) => t + x.p.price * x.n, 0);
+    document.getElementById("bagTotal").textContent = has.length ? rupee(total) : "—";
+    const askEl = document.getElementById("bagAsk");
+    askEl.hidden = !ask.length;
+    askEl.textContent = ask.length
+      ? ask.length + (ask.length === 1 ? " piece is" : " pieces are") + " not priced yet — she'll confirm on WhatsApp."
+      : "";
+    document.getElementById("bagSend").href = bagMessage();
+    foot.hidden = false;
+  }
+
   /* Two different nothings. A search that found no piece is a failed search;
      a category with no pieces in it yet is simply empty, and telling the
      customer "nothing matches that" when they have not searched for anything
@@ -1466,7 +1676,10 @@ const live = arrivals.filter(p => !p.hold);
         <span class="origin">${esc(i.label)}</span>
         <div class="name">${esc(i.name)}</div>
         <div class="price${priced(i)?"":" ask"}">${priceLabel(i)}</div>
-        <a class="enquire" href="${enquiry(i)}" target="_blank" rel="noopener">Enquire</a>
+        <div class="acts">
+          <button class="add${inBag(i.key)?" in":""}" data-add="${esc(i.key)}">${inBag(i.key)?"In bag":"Add"}</button>
+          <a class="enquire" href="${enquiry(i)}" target="_blank" rel="noopener">Ask</a>
+        </div>
       </article>`).join("") ||
       emptyNote();
     const total = live.length;
@@ -1674,11 +1887,23 @@ const live = arrivals.filter(p => !p.hold);
         row.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
         b.classList.add("on"); chosen = b.textContent;
         $("#vWa").href = enquiry(p, chosen);
+        if(sizes.length > 1) $("#vAdd").dataset.size = chosen;
       }));
     } else {
       sizeBox.setAttribute("hidden","");
       row.innerHTML = "";
     }
+
+    /* The bag button reads the piece and the size off itself when clicked, so
+       it always adds whatever the panel is showing rather than whatever it was
+       showing when the viewer first opened. */
+    const vAdd = $("#vAdd");
+    vAdd.dataset.key = p.key;
+    /* One option is not a choice. Jewellery offers "Free size" and nothing
+       else, and carrying that into the order would put "size Free size" beside
+       every earring she reads. */
+    vAdd.dataset.size = (sizes && sizes.length > 1) ? chosen : "";
+    vAdd.textContent = inBag(p.key) ? "In your bag — add another" : "Add to bag";
 
     /* Spec rows — each appears only when the boutique has supplied it. */
     const spec = [
@@ -2054,6 +2279,48 @@ const live = arrivals.filter(p => !p.hold);
   $("#menuClose").addEventListener("click", ()=> close(true));
   panel.querySelectorAll("nav a").forEach(a=> a.addEventListener("click", ()=> close(false)));
   addEventListener("keydown", e=>{ if(e.key === "Escape" && panel.classList.contains("open")) close(true); });
+
+  /* the bag panel, opened and closed like the mobile nav above it */
+  const bagP = $("#bagPanel"), bagB = $("#bagBtn");
+  const bagOpen = () => {
+    bagPaint();
+    bagP.classList.add("open"); bagP.removeAttribute("inert");
+    bagP.setAttribute("aria-hidden","false"); bagB.setAttribute("aria-expanded","true");
+    document.body.style.overflow="hidden";
+    $("#bagClose").focus({preventScroll:true});
+  };
+  const bagClose = (restore) => {
+    bagP.classList.remove("open"); bagP.setAttribute("inert","");
+    bagP.setAttribute("aria-hidden","true"); bagB.setAttribute("aria-expanded","false");
+    document.body.style.overflow="";
+    if(restore) bagB.focus({preventScroll:true});
+  };
+  bagB.addEventListener("click", bagOpen);
+  $("#bagClose").addEventListener("click", ()=> bagClose(true));
+  /* Sending the order is the end of the errand, so the panel closes behind it
+     rather than sitting open over the chat the customer just opened. */
+  $("#bagSend").addEventListener("click", ()=> setTimeout(()=> bagClose(false), 80));
+  addEventListener("keydown", e=>{ if(e.key === "Escape" && bagP.classList.contains("open")) bagClose(true); });
+
+  /* Delegated, because the grid is rewritten on every search and filter. */
+  document.addEventListener("click", e => {
+    const add = e.target.closest("[data-add]");
+    if(add){ bagAdd(add.getAttribute("data-add")); return; }
+    const vadd = e.target.closest("#vAdd");
+    if(vadd){
+      bagAdd(vadd.dataset.key, vadd.dataset.size);
+      vadd.textContent = "In your bag — add another";
+      return;
+    }
+    const at = id => (bag.find(r => bagId(r.key, r.size) === id) || {n:0}).n;
+    const more = e.target.closest("[data-more]");
+    if(more){ const id = more.getAttribute("data-more"); bagSet(id, at(id) + 1); return; }
+    const less = e.target.closest("[data-less]");
+    if(less){ const id = less.getAttribute("data-less"); bagSet(id, at(id) - 1); return; }
+  });
+
+  bagLoad();
+  bagPaint();
 
   /* Registering makes the site installable. Guarded because a service worker
      cannot exist on file://, which is how the standalone copy is opened. */
