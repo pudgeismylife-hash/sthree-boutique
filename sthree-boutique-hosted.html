@@ -1561,10 +1561,19 @@ const live = arrivals.filter(p => !p.hold);
     if(active) list = list.filter(a=>a.cat===active);
     if(term){
       /* Match on word starts, not raw substrings — otherwise "ring"
-         also returns every pair of earrings. */
-      const qs = term.toLowerCase().split(/\s+/).filter(Boolean);
+         also returns every pair of earrings.
+
+         The code is in the haystack because every order that reaches her
+         WhatsApp is a list of them: SB-JWL-01 and nothing else identifies the
+         piece, and until this was here, pasting one into the search returned
+         nothing at all. The query is cut on the same punctuation as the words
+         it is matched against, so "SB-JWL-01" becomes sb, jwl, 01 and finds
+         the piece — and "co-ord" now finds co-ord sets, which it did not
+         when only whitespace split the query. */
+      const cut = s => s.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+      const qs = cut(term);
       list = list.filter(a=>{
-        const words = (a.name+" "+a.label+" "+(a.kw||"")).toLowerCase().split(/[^a-z0-9]+/);
+        const words = cut(a.name+" "+a.label+" "+(a.kw||"")+" "+(a.code||""));
         return qs.every(q => words.some(w => w.startsWith(q)));
       });
     }
