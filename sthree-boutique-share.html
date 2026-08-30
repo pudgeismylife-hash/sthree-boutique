@@ -295,6 +295,32 @@ h2{font-size:26px;margin-bottom:22px}
   margin:0 0 14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--grey);
 }
+.tools{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;
+  margin:0 0 20px;padding-bottom:16px;border-bottom:1px solid var(--hairline);
+}
+.bands{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:0}
+.bands button{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 12px;border:1px solid var(--rule);background:none;color:var(--ink-soft);
+  cursor:pointer;transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.bands button:hover{border-color:var(--ink);color:var(--ink)}
+.bands button.on{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.bands button b{font-weight:400;opacity:.55;margin-left:5px}
+.sort{
+  display:flex;align-items:center;gap:8px;font-family:var(--mono);
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);
+}
+.sort select{
+  font-family:inherit;font-size:11px;color:var(--ink);background:none;
+  border:1px solid var(--rule);padding:6px 8px;cursor:pointer;
+}
+@media (max-width:600px){
+  .tools{gap:10px}
+  .sort{width:100%;justify-content:space-between}
+  .sort select{flex:1;margin-left:10px}
+}
 .count button{
   font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--gold);
   cursor:pointer;padding:0;border-bottom:1px solid currentColor;
@@ -832,6 +858,27 @@ footer li a:hover{color:var(--gold)}
       <h2>The collection</h2>
       <p class="count"><span id="count"></span> · <button id="clearFilter">Show all</button></p>
     </div>
+
+    <!-- Sixty-four pieces is past the point where scrolling is a way of
+         looking for something. The bands are the shop's own shape rather than
+         round numbers: half the jewellery sits under 200 and almost all of the
+         rest under 500, so bands at 500 and 1500 would have left one enormous
+         pile and three empty ones. A band hides the pieces she has not priced,
+         because a customer asking for earrings under 200 is not asking to be
+         shown things with no price at all. -->
+    <div class="tools">
+      <div class="bands" id="bands" role="group" aria-label="Filter by price"></div>
+      <label class="sort">
+        <span>Sort</span>
+        <select id="sortBy">
+          <option value="featured">Featured</option>
+          <option value="low">Price, low to high</option>
+          <option value="high">Price, high to low</option>
+          <option value="az">Name, A to Z</option>
+        </select>
+      </label>
+    </div>
+
     <div class="grid items" id="items"></div>
     <p class="door" id="door" hidden><a class="btn" id="doorLink" href="collection.html"></a></p>
   </div>
@@ -1562,31 +1609,89 @@ const live = arrivals.filter(p => !p.hold);
            `<button id="resetAll">Show everything</button></p>`;
   }
 
+  /* Price bands, and the order pieces come back in.
+
+     A band is [floor, ceiling), so nothing can fall between two of them and
+     nothing can sit in both. Pieces with no price match no band at all: the
+     customer who picked "under 200" is asking to be shown things that cost
+     less than 200, not things whose cost is unknown. */
+  /* Match on word starts, not raw substrings — otherwise "ring" also returns
+     every pair of earrings.
+
+     The code is in the haystack because every order that reaches her WhatsApp
+     is a list of them: SB-JWL-01 and nothing else identifies the piece, and
+     until this was here, pasting one into the search returned nothing at all.
+     The query is cut on the same punctuation as the words it is matched
+     against, so "SB-JWL-01" becomes sb, jwl, 01 and finds the piece — and
+     "co-ord" now finds co-ord sets, which it did not when only whitespace
+     split the query. */
+  const cutWords = s => s.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  function searchFilter(list){
+    const qs = cutWords(term);
+    return list.filter(a=>{
+      const words = cutWords(a.name+" "+a.label+" "+(a.kw||"")+" "+(a.code||""));
+      return qs.every(q => words.some(w => w.startsWith(q)));
+    });
+  }
+
+  const BANDS = [
+    { id:"u200",   label:"Under ₹200",  lo:0,    hi:200   },
+    { id:"200500", label:"₹200–500",    lo:200,  hi:500   },
+    { id:"500x",   label:"₹500–1,500",  lo:500,  hi:1500  },
+    { id:"o1500",  label:"₹1,500+",     lo:1500, hi:Infinity }
+  ];
+  let band = null, sortBy = "featured";
+
+  const inBand = (p, b) => priced(p) && p.price >= b.lo && p.price < b.hi;
+
+  /* Sorting by price has to put the unpriced somewhere, and last is the only
+     honest place: they are neither cheap nor dear until she says so. */
+  function order(list){
+    const arr = list.slice();
+    if(sortBy === "az")   return arr.sort((a,b)=> a.name.localeCompare(b.name));
+    if(sortBy === "low" || sortBy === "high"){
+      const dir = sortBy === "low" ? 1 : -1;
+      return arr.sort((a,b)=>{
+        if(!priced(a) && !priced(b)) return 0;
+        if(!priced(a)) return 1;
+        if(!priced(b)) return -1;
+        return (a.price - b.price) * dir;
+      });
+    }
+    return arr;                       // featured: the order she keeps them in
+  }
+
+  function paintBands(){
+    const box = document.getElementById("bands");
+    if(!box) return;
+    /* Counted against the category and search already in force, so a band that
+       would return nothing here says so before it is pressed. */
+    let base = live;
+    if(active) base = base.filter(a => a.cat === active);
+    if(term)   base = searchFilter(base);
+    box.innerHTML = BANDS.map(b => {
+      const n = base.filter(p => inBand(p, b)).length;
+      return `<button type="button" data-band="${b.id}"${band===b.id?' class="on"':''}`
+           + `${n?"":" disabled"} aria-pressed="${band===b.id}">${b.label}<b>${n}</b></button>`;
+    }).join("");
+  }
+
   function render(){
     let list = live;
     if(active) list = list.filter(a=>a.cat===active);
-    if(term){
-      /* Match on word starts, not raw substrings — otherwise "ring"
-         also returns every pair of earrings.
-
-         The code is in the haystack because every order that reaches her
-         WhatsApp is a list of them: SB-JWL-01 and nothing else identifies the
-         piece, and until this was here, pasting one into the search returned
-         nothing at all. The query is cut on the same punctuation as the words
-         it is matched against, so "SB-JWL-01" becomes sb, jwl, 01 and finds
-         the piece — and "co-ord" now finds co-ord sets, which it did not
-         when only whitespace split the query. */
-      const cut = s => s.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
-      const qs = cut(term);
-      list = list.filter(a=>{
-        const words = cut(a.name+" "+a.label+" "+(a.kw||"")+" "+(a.code||""));
-        return qs.every(q => words.some(w => w.startsWith(q)));
-      });
+    if(term) list = searchFilter(list);
+    if(band){
+      const b = BANDS.find(x => x.id === band);
+      if(b) list = list.filter(p => inBand(p, b));
     }
+    list = order(list);
     /* A search always shows everything it found, wherever it was typed:
        hiding matches behind "see all" when somebody has told you exactly what
-       they are looking for is the one place a short list is no help. */
-    const whole = full || !!term;
+       they are looking for is the one place a short list is no help. A price
+       band and a sort are the same kind of instruction, so they open the list
+       out too — a shortened one would answer "cheapest first" with six of the
+       sixty-four. */
+    const whole = full || !!term || !!band || sortBy !== "featured";
     if(!whole) list = list.slice(0, HOME_PICKS);
     view = list;
     grid.innerHTML = list.map((i,n)=>`
@@ -1611,6 +1716,7 @@ const live = arrivals.filter(p => !p.hold);
     if(head) head.textContent = whole ? "The collection" : "New in";
     const clear = $("#clearFilter");
     if(clear) clear.hidden = !whole;
+    paintBands();
 
     /* The door only exists on the front page, and only while there is
        something behind it left to see. */
@@ -1683,8 +1789,24 @@ const live = arrivals.filter(p => !p.hold);
   });
   $("#clearFilter").addEventListener("click", ()=>{
     active = null; term = ""; $("#searchInput").value = "";
+    band = null; sortBy = "featured";
+    const sel = $("#sortBy"); if(sel) sel.value = "featured";
     syncCats(); render();
   });
+
+  /* Pressing the band that is already on turns it off, so a customer can undo
+     a narrowing with the control that caused it rather than hunting for
+     "Show all". */
+  const bandsBox = $("#bands");
+  if(bandsBox) bandsBox.addEventListener("click", e => {
+    const b = e.target.closest("[data-band]");
+    if(!b || b.disabled) return;
+    const id = b.getAttribute("data-band");
+    band = (band === id) ? null : id;
+    render();
+  });
+  const sortSel = $("#sortBy");
+  if(sortSel) sortSel.addEventListener("change", () => { sortBy = sortSel.value; render(); });
 
   /* The mark goes home, which every shop's does and this one did not -- it was
      a bare image. Handled here rather than by following the href, because the
