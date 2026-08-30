@@ -129,6 +129,8 @@ SPECK = 0.005    # a part holding less of the picture than this is not the piece
 KEEP = 0.98      # ... and the trim is refused outright if it would cost this much
 SOLID = 0.85     # opaque this far out to its own edges and it is a photograph
 INSET = 8        # the one margin, in pixels of the 720x960 tile
+MARGIN = 0.10    # ... and, for the category tiles, the share of the tile left
+                 # clear on every side, so all six are framed alike
 
 
 def alpha_box(im):
@@ -209,32 +211,41 @@ def grid_window(im, target_ar):
 
 
 def build(src, fill=False, grid=False):
-    """The piece as large as the tile will take it, centred on cream.
+    """The piece inside the same box as every other tile, centred on cream.
 
     Read from the cut-out beside the named .jpg, not the .jpg itself: the flat
     copy is letterboxed, and its border is not always the same cream, so a tile
     built from it arrives with the piece small inside its own margin.
 
-    A cut-out is fitted whole and never cropped -- a bracelet with a sixth off
-    each side is a fragment of a clasp with no way to tell what it was. A whole
-    photograph, and anything set to fill here, covers the tile instead, because
-    what the crop takes off those is backdrop or more of the same pattern."""
+    Six tiles sit in one row, so they are read as a set and any difference in
+    treatment between them reads as a mistake. Each was framed by whichever
+    edge happened to bind -- a slim dress ran to 97% of the height while the
+    satchel, being wide and short, reached 75% -- and one was set to cover the
+    tile outright. The dress towered and the bag sat in a hole.
+
+    So every piece is now fitted inside one box, the same fraction of the tile
+    in both directions, and centred in it. A tall piece is bounded by the box's
+    height and a wide one by its width, but neither can outgrow the other, and
+    none of them touches an edge. Nothing is cropped: a bracelet with a sixth
+    off each side is a fragment of a clasp with no way to tell what it was.
+
+    fill= is kept in the signature because the tile table still passes it, but
+    covering the tile is what made the satchel the odd one out, so it no longer
+    changes anything."""
     im = Image.open(src[:-4] + ".webp")
     im.load()
     im = im.convert("RGBA")
     im = im.crop(alpha_box(im))
     tw, th = SIZE
     if grid:
+        # The nails are six across; this picks a window between them rather
+        # than letting a later fit slice the outer columns in half.
         win = grid_window(im, tw / th)
         if win:
             im = im.crop(win)
     canvas = Image.new("RGB", SIZE, CREAM)
-    if fill or is_photograph(im):
-        s = max(tw / im.width, th / im.height)
-        r = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
-        canvas.paste(r, (-(r.width - tw) // 2, -(r.height - th) // 2), r)
-        return canvas
-    s = min((tw - INSET * 2) / im.width, (th - INSET * 2) / im.height)
+    box_w, box_h = tw * (1 - MARGIN * 2), th * (1 - MARGIN * 2)
+    s = min(box_w / im.width, box_h / im.height)
     r = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
     canvas.paste(r, ((tw - r.width) // 2, (th - r.height) // 2), r)
     return canvas
