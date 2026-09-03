@@ -1656,16 +1656,31 @@ const live = arrivals.filter(p => !p.hold);
   function paintBands(){
     const box = document.getElementById("bands");
     if(!box) return;
-    /* Counted against the category and search already in force, so a band that
-       would return nothing here says so before it is pressed. */
+    /* Counted against the category and search already in force, so a band only
+       ever offers a narrowing that leads somewhere.
+
+       An empty band is not shown at all. Disabling it and leaving it in place
+       was worse than useless on the thin categories: press-on nails carry no
+       prices, so all four bands read "0" and the row was four dead buttons
+       above the pieces, and ethnic has one saree, so three read "0" beside a
+       single card. And one band on its own is not a choice either -- narrowing
+       a list to the whole of itself does nothing -- so the row only appears
+       when there are at least two real ones to pick between. */
     let base = live;
     if(active) base = base.filter(a => a.cat === active);
     if(term)   base = searchFilter(base);
-    box.innerHTML = BANDS.map(b => {
-      const n = base.filter(p => inBand(p, b)).length;
-      return `<button type="button" data-band="${b.id}"${band===b.id?' class="on"':''}`
-           + `${n?"":" disabled"} aria-pressed="${band===b.id}">${b.label}<b>${n}</b></button>`;
-    }).join("");
+    const usable = BANDS.map(b => ({ b, n: base.filter(p => inBand(p, b)).length }))
+                        .filter(x => x.n > 0 || band === x.b.id);
+    const tools = box.closest(".tools");
+    if(usable.length < 2){
+      box.innerHTML = "";
+      if(tools) tools.classList.add("no-bands");
+      return;
+    }
+    if(tools) tools.classList.remove("no-bands");
+    box.innerHTML = usable.map(({b,n}) =>
+      `<button type="button" data-band="${b.id}"${band===b.id?' class="on"':''}`
+      + ` aria-pressed="${band===b.id}">${b.label}<b>${n}</b></button>`).join("");
   }
 
   function render(){
