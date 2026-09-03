@@ -47,10 +47,11 @@ TILES = {
         "picture among five tiles and read as a different shop",
     ),
     "cat-ethnic": (
-        os.path.join(OUT, "sarees_3-a1.jpg"),
-        "the black sequin saree with the copper pallu, from the renamed batch "
-        "-- the strongest of the five sarees at tile size, being high contrast "
-        "rather than fine print that turns to mush when small",
+        os.path.join(OUT, "sarees_2-a1.jpg"),
+        "the silk mirror handwork saree. It was the black sequin saree, which "
+        "came off the site with the other computer-made pictures -- a tile "
+        "advertising a piece the shop no longer lists is worse than a plainer "
+        "tile. This is now the only saree left, and it is her photograph",
     ),
     "cat-coord": (
         os.path.join(OUT, "cloth_section_western_wear_2-a1.jpg"),
@@ -66,12 +67,13 @@ TILES = {
         "here, this one needs no exception",
     ),
     "cat-nails": (
-        os.path.join(OUT, "pink-heart-3d-press-on-nails-a1.jpg"),
-        "the pink heart set, from the renamed batch -- the newest stock, and "
-        "the clearest at tile size. Cropped between the nails rather than "
-        "filled: it is six across and the tile is 3:4, so filling it cut the "
-        "outer columns in half and left a sliced nail against each edge",
-        False, False, True,
+        os.path.join(OUT, "nails_1-a1.jpg"),
+        "the blush floral set. It was the pink heart set, which came off the "
+        "site as a computer-made picture. Every set left is a photograph of a "
+        "card on a grey surface, so this tile is the one place in the row "
+        "built from a flat photograph rather than a cut-out -- the backdrop is "
+        "trimmed off and the card fitted like everything else. A tile showing "
+        "a piece the shop no longer lists would be worse",
     ),
     "cat-bags": (
         os.path.join(OUT, "mk-signature-satchel-brown-a1.jpg"),
@@ -231,11 +233,23 @@ def build(src, fill=False, grid=False):
 
     fill= is kept in the signature because the tile table still passes it, but
     covering the tile is what made the satchel the odd one out, so it no longer
-    changes anything."""
-    im = Image.open(src[:-4] + ".webp")
-    im.load()
-    im = im.convert("RGBA")
-    im = im.crop(alpha_box(im))
+    changes anything.
+
+    A cut-out is preferred and is what five of the six tiles use. Where none
+    exists the flat photograph is read instead and trimmed out of its backdrop,
+    which is the nails tile's case: every press-on set the shop still lists is
+    a photograph of a card, and the alternative was a tile advertising a piece
+    that has been taken down."""
+    cut = src[:-4] + ".webp"
+    if os.path.exists(cut):
+        im = Image.open(cut)
+        im.load()
+        im = im.convert("RGBA")
+        im = im.crop(alpha_box(im))
+    else:
+        im = Image.open(src).convert("RGB")
+        im = im.crop(trim_box(im))
+        im = im.convert("RGBA")
     tw, th = SIZE
     if grid:
         # The nails are six across; this picks a window between them rather
@@ -263,10 +277,12 @@ def main():
             bad += 1
             continue
         if not_transparent(src):
-            print("  FAIL %-14s %s has no transparent original" % (
+            # Not fatal any more. build() falls back to the flat photograph and
+            # trims its backdrop, which the nails tile now needs: every set the
+            # shop still lists is a card shot on grey, and refusing it here left
+            # the tile showing a piece that has been taken down.
+            print("  NOTE %-14s %s has no cut-out; built from the photograph" % (
                 name, os.path.basename(src)))
-            bad += 1
-            continue
         flagged = refuses_render(src)
         if flagged and not allow_flagged:
             print("  FAIL %-14s %s is flagged %s -- not her stock" % (

@@ -1231,9 +1231,22 @@ const reviews = [];
 const P = "assets/products/";
 const arrivals = [
   // Ethnic
-  { cat:"ethnic",    label:"Ethnic",       name:"Poly cotton zari weaving saree",        price:1180, kw:"saree sari ethnic", fabric:"Poly cotton, zari weaving", views:["Front","3/4","Back"], key:"sarees_1", alpha:true, images:[P+"sarees_1-a1.jpg",P+"sarees_1-a2.jpg",P+"sarees_1-a3.jpg"] },
+  /* Seven products stood here and are off the site. Every one of them was a
+     computer-made picture rather than a photograph of stock, and unlike the
+     fourteen replaced above, no photograph of hers exists for any of them --
+     nothing in her PDFs or her Drive folder shows these pieces. Rather than
+     keep selling from pictures of things that may not be what arrives, they
+     come down until she photographs the real stock:
+
+       sarees_1  Poly cotton zari weaving saree      1180
+       sarees_3  Georgette sequin embroidery saree    1820
+       nails_4   Wine gloss press-on nails
+       pink-heart-3d / nude-gold-marble / nude-gold-floral / nude-leopard
+                 four press-on sets, none priced
+
+     Files and lock entries are kept, so any of them returns as one line the
+     moment a real photograph arrives. */
   { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, kw:"saree sari ethnic", fabric:"Silk, mirror handwork", views:["Front","Side","Back"], key:"sarees_2", alpha:true, images:[P+"sarees_2-a1.jpg",P+"sarees_2-a2.jpg",P+"sarees_2-a3.jpg"] },
-  { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", fabric:"Georgette, sequin embroidery", views:["Front","3/4","Back"], key:"sarees_3", alpha:true, images:[P+"sarees_3-a1.jpg",P+"sarees_3-a2.jpg",P+"sarees_3-a3.jpg"] },
 
   /* The pink printed salwar suit stood here and is off the site: "Remove", her
      word, 1 Sep. It came in with the renamed batch, matched nothing in her
@@ -1407,7 +1420,6 @@ const arrivals = [
   { cat:"nails",     label:"Press-on",     name:"Blush floral press-on nails",           price:null, kw:"nails press on press-on nail manicure floral", key:"nails_1", images:[P+"nails_1-a1.jpg"] },
   { cat:"nails",     label:"Press-on",     name:"Champagne glitter press-on nails",      price:null, kw:"nails press on press-on nail manicure glitter gold", key:"nails_2", images:[P+"nails_2-a1.jpg"] },
   { cat:"nails",     label:"Press-on",     name:"Botanical line press-on nails",         price:null, kw:"nails press on press-on nail manicure leaf botanical", key:"nails_3", images:[P+"nails_3-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Wine gloss press-on nails",             price:null, kw:"nails press on press-on nail manicure wine burgundy red almond", key:"nails_4", alpha:true, images:[P+"nails_4-a1.jpg"] },
   { cat:"nails",     label:"Press-on",     name:"Silver filigree press-on nails",        price:null, kw:"nails press on press-on nail manicure silver", key:"nails_5", images:[P+"nails_5-a1.jpg"] },
 
   /* Three more sets from the renamed photo batch. The names here are her own
@@ -1415,10 +1427,6 @@ const arrivals = [
      marble one to Champagne glitter, the floral one to Blush floral and Silver
      filigree -- and whether any are the same physical set is hers to say, so
      nothing above was overwritten to make room for these. */
-  { cat:"nails",     label:"Press-on",     name:"Pink heart 3D press-on nails",          price:null, kw:"nails press on press-on nail manicure pink heart hearts 3d", key:"pink-heart-3d-press-on-nails", alpha:true, images:[P+"pink-heart-3d-press-on-nails-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Nude gold marble press-on nails",       price:null, kw:"nails press on press-on nail manicure nude gold marble", key:"nude-gold-marble-press-on-nails", alpha:true, images:[P+"nude-gold-marble-press-on-nails-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Nude gold floral press-on nails",       price:null, kw:"nails press on press-on nail manicure nude gold floral flower", key:"nude-gold-floral-press-on-nails", alpha:true, images:[P+"nude-gold-floral-press-on-nails-a1.jpg"] },
-  { cat:"nails",     label:"Press-on",     name:"Nude leopard press-on nails",           price:null, kw:"nails press on press-on nail manicure nude leopard animal print silver", key:"nude-leopard-press-on-nails", alpha:true, images:[P+"nude-leopard-press-on-nails-a1.jpg"] },
 
   // Bags
   { cat:"bags",      label:"Bag",          name:"Michael Kors signature satchel, brown with black trim", price:3500, kw:"bag handbag satchel michael kors monogram brown black", key:"mk-signature-satchel-brown-black", size:"10 x 8 inches", alpha:true, images:[P+"mk-signature-satchel-brown-black-a1.jpg"] },
