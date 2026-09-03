@@ -73,7 +73,9 @@
         "sourceImage": "Anklets_p2",
         "sourceSha1": "d9c0e302de18a16bb4507ab08905f5eada9bac9a",
         "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
-        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-02"
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-02",
+        "ownerReview2026-09-01": "1 Sep 2026 -- the owner reviewed the live site and said \"Not as i send\" against this listing. The August decision to leave the jewellery renders in place is withdrawn.",
+        "resolution": "held off the site: her Anklets.pdf shows the bow anklet, which is already a separate listing, and this listing's plain heart chain appears in no photograph she has sent"
       }
     },
     "SB-JWL-03": {
@@ -129,7 +131,9 @@
         "sourceImage": "armcuff_p2",
         "sourceSha1": "634604934d52d2f00daaee763fc7b4c2409457ba",
         "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
-        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-04"
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-04",
+        "ownerReview2026-09-01": "1 Sep 2026 -- the owner reviewed the live site and said \"Not as i send\" against this listing. The August decision to leave the jewellery renders in place is withdrawn.",
+        "resolution": "held off the site: her armcuff.pdf is a butterfly armcuff captioned \"Nature inspired butterfly armcuff, Price 280/-\", and this listing is a pair of daisies -- a different piece, not a different picture of this one"
       }
     },
     "SB-JWL-05": {
@@ -150,13 +154,15 @@
         "bracelet_1-a3.jpg"
       ],
       "sourceReview": {
-        "state": "REVIEW_REQUIRED",
+        "state": "RESOLVED",
         "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
         "customerSource": "source/customer-pdf/bracelet.pdf",
         "sourceImage": "bracelet_p1",
         "sourceSha1": "dcd42d7881fa512281b2bbd3f9cfcca1479f4e8f",
         "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
-        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-05"
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-05",
+        "ownerReview2026-09-01": "1 Sep 2026 -- the owner reviewed the live site and said \"Not as i send\" against this listing. The August decision to leave the jewellery renders in place is withdrawn.",
+        "resolution": "her photograph from source/customer-pdf/bracelet.pdf now the only image; the two render views were dropped"
       }
     },
     "SB-JWL-06": {
@@ -177,13 +183,15 @@
         "black_clover_set_1-a3.jpg"
       ],
       "sourceReview": {
-        "state": "REVIEW_REQUIRED",
+        "state": "RESOLVED",
         "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
         "customerSource": "source/customer-pdf/Black_clover_set.pdf",
         "sourceImage": "Black_clover_set_p1",
         "sourceSha1": "16b58cf4f21d5901ae497f24e50a93df7eeeec3c",
         "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
-        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-06"
+        "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-06",
+        "ownerReview2026-09-01": "1 Sep 2026 -- the owner reviewed the live site and said \"Not as i send\" against this listing. The August decision to leave the jewellery renders in place is withdrawn.",
+        "resolution": "her photograph from source/customer-pdf/Black_clover_set.pdf now the only image; the two render views were dropped"
       }
     },
     "SB-JWL-07": {
@@ -505,7 +513,8 @@
         "pink-printed-salwar-suit-a3.jpg"
       ],
       "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. pink kurta and palazzo with a printed dupatta. Close to her Round-neck polyester kaftan with inner in colour and print, but not the same garment -- the kaftan's wing sleeves and gold embroidered neckline are not here, the print is a narrow dupatta instead. Kept separate rather than replacing the kaftan's photographs, which would show a customer something she does not sell"
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. pink kurta and palazzo with a printed dupatta. Close to her Round-neck polyester kaftan with inner in colour and print, but not the same garment -- the kaftan's wing sleeves and gold embroidered neckline are not here, the print is a narrow dupatta instead. Kept separate rather than replacing the kaftan's photographs, which would show a customer something she does not sell",
+      "removedFromSite": "1 Sep 2026 -- owner said \"Remove\". Files and this record kept so it can be restored."
     },
     "SB-UP-sarees_1": {
       "productKey": "sarees_1",

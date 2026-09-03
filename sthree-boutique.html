@@ -1235,10 +1235,12 @@ const arrivals = [
   { cat:"ethnic",    label:"Ethnic",       name:"Silk designer mirror handwork saree",   price:1680, kw:"saree sari ethnic", fabric:"Silk, mirror handwork", views:["Front","Side","Back"], key:"sarees_2", alpha:true, images:[P+"sarees_2-a1.jpg",P+"sarees_2-a2.jpg",P+"sarees_2-a3.jpg"] },
   { cat:"ethnic",    label:"Ethnic",       name:"Georgette sequin embroidery saree",     price:1820, kw:"saree sari ethnic", fabric:"Georgette, sequin embroidery", views:["Front","3/4","Back"], key:"sarees_3", alpha:true, images:[P+"sarees_3-a1.jpg",P+"sarees_3-a2.jpg",P+"sarees_3-a3.jpg"] },
 
-  /* Came in with the renamed photo batch and matches nothing in her catalogue.
-     No price was given, so it asks on WhatsApp rather than carrying a number
-     nobody has confirmed. */
-  { cat:"ethnic",    label:"Ethnic",       name:"Pink printed salwar suit",              price:null, kw:"salwar suit kurta palazzo dupatta ethnic pink", views:["Front","3/4","Back"], key:"pink-printed-salwar-suit", alpha:true, images:[P+"pink-printed-salwar-suit-a1.jpg",P+"pink-printed-salwar-suit-a2.jpg",P+"pink-printed-salwar-suit-a3.jpg"] },
+  /* The pink printed salwar suit stood here and is off the site: "Remove", her
+     word, 1 Sep. It came in with the renamed batch, matched nothing in her
+     catalogue, was never priced, and the lock file records it as an
+     AI-generated image supplied to the shop rather than a photograph of stock.
+     The files stay in assets/ and the lock entry stays with it, so putting it
+     back is one line if she changes her mind. */
   // Western
   { cat:"western",   label:"Western",      name:"Round-neck polyester kaftan with inner",price:1280, kw:"kaftan kaftaan dress western", fabric:"Polyester", views:["Both pieces","Kaftan","Inner"], key:"cloth_section_western_wear_1", images:[P+"cloth_section_western_wear_1-a1.jpg",P+"cloth_section_western_wear_1-a2.jpg",P+"cloth_section_western_wear_1-a3.jpg"] },
   { cat:"western",   label:"Western",      name:"Linen cotton dress with belt, black",   price:2093, kw:"dress gown western frock", fabric:"Linen cotton", views:["Front","Side","Back"], key:"gowns_1", alpha:true, images:[P+"gowns_1-a1.jpg",P+"gowns_1-a2.jpg",P+"gowns_1-a3.jpg"] },
@@ -1282,13 +1284,33 @@ const arrivals = [
   { cat:"jewellery", label:"Anti-tarnish", name:"Open heart pendant necklace",           price:200,  kw:"necklace chain pendant heart", key:"open-heart-pendant-necklace", images:[P+"open-heart-pendant-necklace-a1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace",                price:350,  kw:"necklace chain pendant", key:"necklace_2", images:[P+"necklace_2.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Heart hanging necklace, beaded",        price:350,  kw:"necklace chain pendant", key:"necklace_3", images:[P+"necklace_3.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Black clover set",                      price:499,  kw:"necklace bracelet set clover", key:"black_clover_set_1", images:[P+"black_clover_set_1-a1.jpg",P+"black_clover_set_1-a2.jpg",P+"black_clover_set_1-a3.jpg"] },
+  /* "Not as i send" — her words, 1 Sep, looking at this listing and the evil
+     eye bracelet below it. She was right, and the lock file had already said
+     so: SB-JWL-05 and SB-JWL-06 were recorded REVIEW_REQUIRED in August with
+     the note that the site was showing generated renders while her own
+     photograph of each piece existed and had not been used. The decision then
+     was to replace the three clothing items and leave the jewellery renders
+     "for now". This is the end of for now.
+
+     Both now carry her photograph, taken out of the PDF she sent. The second
+     and third views are gone rather than kept: they were more of the same
+     renders, and one real photograph beats three pictures of the wrong piece. */
+  { cat:"jewellery", label:"Anti-tarnish", name:"Black clover set",                      price:499,  kw:"necklace bracelet set clover", key:"black_clover_set_1", images:[P+"black_clover_set_1-a1.jpg"] },
   // Jewellery — hand and arm
   { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, floral pearl",         price:130,  kw:"ring rings", key:"ring_1", alpha:true, images:[P+"ring_1-a1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, peacock",              price:120,  kw:"ring rings", key:"ring_2", images:[P+"ring_2.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  kw:"bracelet bangle", key:"bracelet_1", alpha:true, images:[P+"bracelet_1-a1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Butterfly armcuff",                     price:280,  kw:"armcuff arm cuff bajuband butterfly", views:["Front","Worn","Detail"], key:"armcuff_1", alpha:true, images:[P+"armcuff_1-a1.jpg",P+"armcuff_1-a2.jpg",P+"armcuff_1-a3.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Sculpted double floral open armcuff",   price:280,  kw:"armcuff arm cuff bajuband", views:["Front","Worn","Detail"], key:"armcuff_2", alpha:true, images:[P+"armcuff_2-a1.jpg",P+"armcuff_2-a2.jpg",P+"armcuff_2-a3.jpg"] },
+  /* Held, and not because the picture is poor. This carries the same August
+     note as the clover set — a render standing in for a photograph she had
+     already sent — but here the two do not even show the same piece. Her
+     armcuff.pdf is a butterfly armcuff, captioned in her own hand "Nature
+     inspired butterfly armcuff, Price 280/-", and this listing is a pair of
+     daisies. Swapping the picture would put her butterfly under a name that
+     describes flowers, beside the openwork butterfly armcuff already listed at
+     the same 280. Whether this is a second piece or a duplicate of that one is
+     hers to say, so it waits rather than guessing. */
+  { cat:"jewellery", label:"Anti-tarnish", name:"Sculpted double floral open armcuff",   price:280,  kw:"armcuff arm cuff bajuband", views:["Front","Worn","Detail"], hold:true, key:"armcuff_2", alpha:true, images:[P+"armcuff_2-a1.jpg",P+"armcuff_2-a2.jpg",P+"armcuff_2-a3.jpg"] },
 
   /* From the client's WhatsApp batch of 28 August. Her filename sits directly
      above each name and price in the message, so the picture is matched by
@@ -1355,7 +1377,12 @@ const arrivals = [
   { cat:"jewellery", label:"Anti-tarnish", name:"Fluted heart studs",                   price:120,  kw:"earrings earring studs stud heart", key:"fluted-heart-studs", images:[P+"fluted-heart-studs-a1.jpg"] },
   // Jewellery — anklets
   { cat:"jewellery", label:"Anti-tarnish", name:"Bow anklet",                            price:280,  kw:"anklet anklets payal bow", views:["Front","Worn","Detail"], key:"anklets_1", alpha:true, images:[P+"anklets_1-a1.jpg",P+"anklets_1-a2.jpg",P+"anklets_1-a3.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Anti-tarnish anklet",                   price:280,  kw:"anklet anklets payal", views:["Front","Worn","Detail"], key:"anklets_2", alpha:true, images:[P+"anklets_2-a1.jpg",P+"anklets_2-a2.jpg",P+"anklets_2-a3.jpg"] },
+  /* Held for the same reason as the armcuff above. Her Anklets.pdf shows a bow
+     anklet, and the bow anklet is already the listing directly above this one;
+     this listing is a plain chain with hearts that appears in no photograph she
+     has sent. Either it is a second anklet whose picture never arrived, or it
+     is a render of something she does not stock. She has not said which. */
+  { cat:"jewellery", label:"Anti-tarnish", name:"Anti-tarnish anklet",                   price:280,  kw:"anklet anklets payal", views:["Front","Worn","Detail"], hold:true, key:"anklets_2", alpha:true, images:[P+"anklets_2-a1.jpg",P+"anklets_2-a2.jpg",P+"anklets_2-a3.jpg"] },
 
   /* Press-on nails. The boutique supplied photographs but no prices, so these
      carry price:null and the site asks the customer to enquire rather than
