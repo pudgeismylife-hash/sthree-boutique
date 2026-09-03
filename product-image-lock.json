@@ -47,6 +47,11 @@
         "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-01",
         "resolvedOn": "2026-08-18",
         "resolution": "replaced on 18 Aug 2026 by SB-UP-anklets_1, which matches her own photograph of this piece. Still a recreation, not a photograph of the stock."
+      },
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Anklets.pdf p1",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
       }
     },
     "SB-JWL-02": {
@@ -67,7 +72,7 @@
         "anklets_2-a3.jpg"
       ],
       "sourceReview": {
-        "state": "REVIEW_REQUIRED",
+        "state": "RESOLVED",
         "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
         "customerSource": "source/customer-pdf/Anklets.pdf",
         "sourceImage": "Anklets_p2",
@@ -75,7 +80,12 @@
         "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
         "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-02",
         "ownerReview2026-09-01": "1 Sep 2026 -- the owner reviewed the live site and said \"Not as i send\" against this listing. The August decision to leave the jewellery renders in place is withdrawn.",
-        "resolution": "held off the site: her Anklets.pdf shows the bow anklet, which is already a separate listing, and this listing's plain heart chain appears in no photograph she has sent"
+        "resolution": "her photograph from Anklets.pdf p2 is now the image"
+      },
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Anklets.pdf p2",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
       }
     },
     "SB-JWL-03": {
@@ -105,6 +115,11 @@
         "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-03",
         "resolvedOn": "2026-08-18",
         "resolution": "replaced on 18 Aug 2026 by SB-UP-armcuff_1, which matches her own photograph of this piece. Still a recreation, not a photograph of the stock."
+      },
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/armcuff.pdf p1",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
       }
     },
     "SB-JWL-04": {
@@ -125,7 +140,7 @@
         "armcuff_2-a3.jpg"
       ],
       "sourceReview": {
-        "state": "REVIEW_REQUIRED",
+        "state": "RESOLVED",
         "issue": "the images on the site are generated renders, while the boutique's own photograph of this piece exists and was not used",
         "customerSource": "source/customer-pdf/armcuff.pdf",
         "sourceImage": "armcuff_p2",
@@ -133,7 +148,12 @@
         "decision": "17 Aug 2026 -- owner chose to replace the three clothing items only and leave the jewellery renders in place for now",
         "toReplace": "node import-photos.js <folder> --apply --unlock SB-JWL-04",
         "ownerReview2026-09-01": "1 Sep 2026 -- the owner reviewed the live site and said \"Not as i send\" against this listing. The August decision to leave the jewellery renders in place is withdrawn.",
-        "resolution": "held off the site: her armcuff.pdf is a butterfly armcuff captioned \"Nature inspired butterfly armcuff, Price 280/-\", and this listing is a pair of daisies -- a different piece, not a different picture of this one"
+        "resolution": "her photograph from armcuff.pdf p2 is now the image"
+      },
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/armcuff.pdf p2",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
       }
     },
     "SB-JWL-05": {
@@ -219,7 +239,12 @@
         "the kaftan",
         "the inner"
       ],
-      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product"
+      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Cloth_section_western_wear.pdf p1",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      }
     },
     "SB-JWL-08": {
       "productKey": "cloth_section_western_wear_2",
@@ -246,7 +271,12 @@
         "worn",
         "top and trousers on hangers"
       ],
-      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product"
+      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Cloth_section_western_wear.pdf p2",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      }
     },
     "SB-JWL-09": {
       "productKey": "cloth_section_western_wear_3",
@@ -270,7 +300,12 @@
         "worn, full length",
         "closer on the top and its zari work"
       ],
-      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product"
+      "replaced": "the earlier generated render, which showed a flat vector garment rather than this product",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Cloth_section_western_wear.pdf p3",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      }
     },
     "SB-JWL-10": {
       "productKey": "navy-blue-red-printed-kurta-set",
@@ -285,7 +320,12 @@
       ],
       "images": [],
       "resolvedOn": "2026-08-18",
-      "resolvedBy": "SB-UP-navy-blue-red-printed-kurta-set"
+      "resolvedBy": "SB-UP-navy-blue-red-printed-kurta-set",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Cloth_section_western_wear.pdf p4",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      }
     },
     "SB-NLS-01": {
       "productKey": "nails_1",
@@ -410,8 +450,14 @@
         "cloth_section_western_wear_3-a2.jpg",
         "cloth_section_western_wear_3-a3.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. charcoal kurta, gold outline florals down the front, matching palazzo -- her Palazzo cordset with inner lining"
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. charcoal kurta, gold outline florals down the front, matching palazzo -- her Palazzo cordset with inner lining",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Cloth_section_western_wear.pdf p3",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, Cloth_section_western_wear.pdf p3"
     },
     "SB-UP-cloth_section_western_wear_2": {
       "productKey": "cloth_section_western_wear_2",
@@ -429,8 +475,14 @@
         "cloth_section_western_wear_2-a2.jpg",
         "cloth_section_western_wear_2-a3.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. brown cutwork set, scalloped floral hem on both top and palazzo -- her Cotton embroidery elastic-hand cordset"
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. brown cutwork set, scalloped floral hem on both top and palazzo -- her Cotton embroidery elastic-hand cordset",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Cloth_section_western_wear.pdf p2",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, Cloth_section_western_wear.pdf p2"
     },
     "SB-UP-navy-blue-red-printed-kurta-set": {
       "productKey": "navy-blue-red-printed-kurta-set",
@@ -448,8 +500,14 @@
         "navy-blue-red-printed-kurta-set-a2.jpg",
         "navy-blue-red-printed-kurta-set-a3.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. navy kurta with a red and white printed panel and tassels; no piece in the catalogue looks like it"
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. navy kurta with a red and white printed panel and tassels; no piece in the catalogue looks like it",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Cloth_section_western_wear.pdf p4",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, Cloth_section_western_wear.pdf p4"
     },
     "SB-UP-nude-gold-floral-press-on-nails": {
       "productKey": "nude-gold-floral-press-on-nails",
@@ -549,8 +607,14 @@
         "armcuff_1-a2.jpg",
         "armcuff_1-a3.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. the butterfly armcuff. Matches her own photograph in armcuff.pdf -- coiled band, two filigree butterflies, and the worn view mirrors hers. Replaces a render flagged REVIEW_REQUIRED that showed a heavier cuff with a wider band and stones"
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. the butterfly armcuff. Matches her own photograph in armcuff.pdf -- coiled band, two filigree butterflies, and the worn view mirrors hers. Replaces a render flagged REVIEW_REQUIRED that showed a heavier cuff with a wider band and stones",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/armcuff.pdf p1",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, armcuff.pdf p1"
     },
     "SB-UP-anklets_1": {
       "productKey": "anklets_1",
@@ -566,8 +630,14 @@
         "anklets_1-a2.jpg",
         "anklets_1-a3.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. the bow anklet. Matches her own photograph in Anklets.pdf -- half pave chain, half rolo, gold bow, worn on the ankle. Replaces a render flagged REVIEW_REQUIRED that laid it flat and read as a bracelet"
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. the bow anklet. Matches her own photograph in Anklets.pdf -- half pave chain, half rolo, gold bow, worn on the ankle. Replaces a render flagged REVIEW_REQUIRED that laid it flat and read as a bracelet",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/Anklets.pdf p1",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, Anklets.pdf p1"
     },
     "SB-UP-nails_4": {
       "productKey": "nails_4",
@@ -611,8 +681,14 @@
       "images": [
         "earring_5-a1.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. octopus studs, matching her Octopus studs at Rs 120. Name and price unchanged, both confirmed against earring.pdf."
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. octopus studs, matching her Octopus studs at Rs 120. Name and price unchanged, both confirmed against earring.pdf.",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/earring.pdf p5",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, earring.pdf p5"
     },
     "SB-UP-earring_3": {
       "productKey": "earring_3",
@@ -626,8 +702,14 @@
       "images": [
         "earring_3-a1.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. leaf and petal drops, matching her Petal drop earrings at Rs 120. Name and price unchanged, both confirmed against earring.pdf."
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. leaf and petal drops, matching her Petal drop earrings at Rs 120. Name and price unchanged, both confirmed against earring.pdf.",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/earring.pdf p3",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, earring.pdf p3"
     },
     "SB-UP-earring_2": {
       "productKey": "earring_2",
@@ -641,8 +723,14 @@
       "images": [
         "earring_2-a1.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. daisy studs, matching her Chrysanthemum studs at Rs 110. Name and price unchanged, both confirmed against earring.pdf."
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. daisy studs, matching her Chrysanthemum studs at Rs 110. Name and price unchanged, both confirmed against earring.pdf.",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/earring.pdf p2",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, earring.pdf p2"
     },
     "SB-UP-earring_1": {
       "productKey": "earring_1",
@@ -656,8 +744,14 @@
       "images": [
         "earring_1-a1.jpg"
       ],
-      "recreated": true,
-      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. starfish studs, matching her Starfish studs at Rs 120. Name and price unchanged, both confirmed against earring.pdf."
+      "recreated": false,
+      "recreatedNote": "AI-generated product image supplied by the shop, not a photograph of the stock. starfish studs, matching her Starfish studs at Rs 120. Name and price unchanged, both confirmed against earring.pdf.",
+      "ownerPhotograph": {
+        "replacedOn": "2026-09-01",
+        "from": "source/customer-pdf/earring.pdf p1",
+        "note": "1 Sep 2026 -- the owner gave a blanket instruction to replace the computer-made pictures with her own photographs wherever they exist. This one now carries the photograph she sent in source/customer-pdf/, cropped to the picture and not the caption she typed under it."
+      },
+      "recreatedResolved": "replaced by her own photograph, earring.pdf p1"
     },
     "SB-BAG-01": {
       "productKey": "mk-signature-satchel-brown-black",
