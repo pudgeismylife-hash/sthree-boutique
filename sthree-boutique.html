@@ -1299,7 +1299,12 @@ const arrivals = [
   // Jewellery — hand and arm
   { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, floral pearl",         price:130,  kw:"ring rings", key:"ring_1", alpha:true, images:[P+"ring_1-a1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Adjustable ring, peacock",              price:120,  kw:"ring rings", key:"ring_2", images:[P+"ring_2.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  kw:"bracelet bangle", key:"bracelet_1", alpha:true, images:[P+"bracelet_1-a1.jpg"] },
+  /* alpha:true removed with its .webp. Putting her photograph in the .jpg was
+     not enough on its own: alpha:true tells the page to serve the transparent
+     copy wherever the browser takes webp, which is nearly everywhere, so the
+     render she complained about was still what almost everyone saw while the
+     fallback quietly showed the right piece to the rest. */
+  { cat:"jewellery", label:"Anti-tarnish", name:"Evil eye charm bracelet",               price:350,  kw:"bracelet bangle", key:"bracelet_1", images:[P+"bracelet_1-a1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Butterfly armcuff",                     price:280,  kw:"armcuff arm cuff bajuband butterfly", views:["Front","Worn","Detail"], key:"armcuff_1", alpha:true, images:[P+"armcuff_1-a1.jpg",P+"armcuff_1-a2.jpg",P+"armcuff_1-a3.jpg"] },
   /* Held, and not because the picture is poor. This carries the same August
      note as the clover set — a render standing in for a photograph she had
@@ -1320,8 +1325,18 @@ const arrivals = [
      are thin for a shop where every piece is antitarnish, but a better name
      would be one nobody has approved, so hers stand until she says otherwise. */
   { cat:"jewellery", label:"Anti-tarnish", name:"Evileye bamboo bracelet",              price:345,  kw:"bracelet bangle evileye evil eye bamboo", key:"evileye-bamboo-bracelet", alpha:true, images:[P+"evileye-bamboo-bracelet-a1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Infinity bracelet",                    price:300,  kw:"bracelet bangle infinity chain", key:"infinity-bracelet", alpha:true, images:[P+"infinity-bracelet-a1.jpg"] },
-  { cat:"jewellery", label:"Anti-tarnish", name:"Bracelet",                             price:240,  kw:"bracelet bangle chain stone", key:"stone-station-bracelet", alpha:true, images:[P+"stone-station-bracelet-a1.jpg"] },
+  /* Her photographs, not cut-outs of them. Both are thin chains, and cutting
+     the background away took most of what made them read: on cream they came
+     out as pale wisps, and the 240 lost nearly all of its clasp chain to the
+     removal. Her own shots put them on a warm surface with silk and
+     gypsophila, where the gold has something to sit against.
+
+     alpha:true is gone with the .webp files it pointed at. It is what tells
+     the page to serve the transparent copy to a browser that takes webp, so
+     leaving it would have kept showing the cut-out to most phones while the
+     .jpg fallback quietly showed the right thing to everyone else. */
+  { cat:"jewellery", label:"Anti-tarnish", name:"Infinity bracelet",                    price:300,  kw:"bracelet bangle infinity chain", key:"infinity-bracelet", images:[P+"infinity-bracelet-a1.jpg"] },
+  { cat:"jewellery", label:"Anti-tarnish", name:"Bracelet",                             price:240,  kw:"bracelet bangle chain stone", key:"stone-station-bracelet", images:[P+"stone-station-bracelet-a1.jpg"] },
   { cat:"jewellery", label:"Anti-tarnish", name:"Antitarnish earring",                  price:120,  kw:"earrings earring studs stud leaf", key:"ginkgo-leaf-earrings", alpha:true, images:[P+"ginkgo-leaf-earrings-a1.jpg"] },
 
   /* Held, not because the picture failed but because each one collides with a
