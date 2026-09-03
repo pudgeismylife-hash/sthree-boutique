@@ -49,9 +49,10 @@ TILES = {
     "cat-ethnic": (
         os.path.join(OUT, "sarees_2-a1.jpg"),
         "the silk mirror handwork saree. It was the black sequin saree, which "
-        "came off the site with the other computer-made pictures -- a tile "
-        "advertising a piece the shop no longer lists is worse than a plainer "
-        "tile. This is now the only saree left, and it is her photograph",
+        "came off the site as a computer-made picture; that saree is now back "
+        "by instruction, but the tile stays here. Of the three sarees this is "
+        "the one that is actually her photograph, and the front of the shop is "
+        "the wrong place to lead with a picture nobody has stood in front of",
     ),
     "cat-coord": (
         os.path.join(OUT, "cloth_section_western_wear_2-a1.jpg"),
