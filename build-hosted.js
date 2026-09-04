@@ -645,7 +645,25 @@ location.replace(${JSON.stringify(rel)});
    second page to keep in step -- a copy of the markup would be the category
    tiles all over again, going stale the first time anything changed. */
 function collectionPage(html, base) {
-  const out = html
+  /* This page hides the hero band with CSS, and a hidden <img> still
+     downloads: the collection page was fetching a quarter of a megabyte of
+     hero picture, and probing for the film, to show neither. Script cannot
+     prevent it -- the browser starts both from the markup, before any script
+     runs -- so the two media elements are cut out of this copy. The band's
+     wrapper and copy stay, since they cost nothing and the CSS already knows
+     what to do with them. */
+  const HERO_MEDIA = [
+    /\s*<picture class="hero-pic">[\s\S]*?<\/picture>/,
+    /\s*<video class="hero-film"[\s\S]*?<\/video>/
+  ];
+  let stripped = html;
+  for (const re of HERO_MEDIA) {
+    if (!re.test(stripped))
+      throw new Error("collection.html: hero media not found -- " + re +
+                      " no longer matches the source, so the page would ship it");
+    stripped = stripped.replace(re, "");
+  }
+  const out = stripped
     .replace('const PAGE = "home";', 'const PAGE = "all";')
     .replace(/<title>[\s\S]*?<\/title>/,
       "<title>The collection — Sthree Boutique, Bikarnakatte, Mangalore</title>")

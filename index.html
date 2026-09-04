@@ -204,6 +204,10 @@ header nav{display:none}
    autoplay or a missing file all end at the same picture rather than at a
    black rectangle -- and nothing has to be inlined as a poster to achieve it. */
 .hero-still{display:block}
+/* The <picture> is only a wrapper for choosing between the wide and the tall
+   file; it must not become a box of its own, or it would sit in the hero's
+   flex row beside the copy instead of behind it. */
+.hero-pic{display:contents}
 .hero-film{opacity:0;transition:opacity .5s ease}
 .hero.film-on .hero-film{opacity:1}
 .hero.no-film .hero-film{display:none}
@@ -238,6 +242,29 @@ header nav{display:none}
     padding:0 44px 64px max(var(--gut), (100vw - var(--maxw)) / 2 + var(--gut));
   }
   .hero h1{font-size:64px;line-height:1.01;max-width:16ch}
+}
+/* Below 900px the WhatsApp bar is fixed over the foot of the screen, and the
+   hero is about a screen tall, so the two ended up in the same place: on a
+   short phone the bar covered the "sarees from" line and the bottom of the
+   button. The hero's foot clears it rather than the bar moving, since the bar
+   is the one thing on the page that must never move.
+
+   The scrim is deepened here too. It was written for the wide picture, where
+   the copy falls over bare ground; the tall one has a figure behind the words
+   all the way up, and the eyebrow line went grey against her saree. */
+@media (max-width:899px){
+  .hero-scrim{
+    background:linear-gradient(to top,
+      rgba(14,11,9,.88) 0%, rgba(14,11,9,.74) 30%, rgba(14,11,9,.40) 60%, rgba(14,11,9,.08) 100%);
+  }
+}
+/* The clearance is height's business, not width's. The hero runs to 78vh under
+   a header of about 100px, and the bar takes the last 68px of the screen, so
+   they meet when 0.78vh + 100 > vh - 68 -- that is, on anything shorter than
+   about 760px. Taller than that the bar sits well below the hero and the
+   clearance would only be a band of dead ground. */
+@media (max-width:899px) and (max-height:800px){
+  .hero-copy{padding-bottom:calc(40px + 62px + env(safe-area-inset-bottom))}
 }
 /* Motion is a preference, not a given. Somebody who has asked their machine to
    stop things moving gets the poster frame and no playback at all. */
@@ -869,7 +896,15 @@ footer li a:hover{color:var(--gold)}
          aria-hidden="true" tabindex="-1">
     <source src="assets/hero/hero.mp4" type="video/mp4">
   </video>
-  <img class="hero-still" id="heroStill" alt="" decoding="async">
+  <picture class="hero-pic">
+    <!-- A phone's hero box is taller than it is wide and a laptop's is more
+         than twice as wide as it is tall, so there are two pictures rather
+         than one scaled. The wide file covered from the middle out left a
+         phone seeing about a third of it: one figure, and the rest paid for
+         in bandwidth and never shown. Both are built by build-hero.py. -->
+    <source media="(max-width:640px)" srcset="assets/hero/hero-still-tall.jpg">
+    <img class="hero-still" id="heroStill" alt="" decoding="async">
+  </picture>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-copy">
     <p class="eyebrow" id="heroEyebrow"></p>
@@ -1410,6 +1445,16 @@ const live = arrivals.filter(p => !p.hold);
     const film = $("#heroFilm"), still = $("#heroStill"), box = $("#hero");
     const p = live.find(x => x.key === CONFIG.heroPiece) || live[0];
 
+    /* The collection page hides the hero band entirely, and a hidden <img>
+       still downloads -- that page was fetching a quarter of a megabyte of
+       picture, and probing for the film twice, to show none of it. Nothing is
+       loaded unless the band is actually on screen. */
+    const shown = box && getComputedStyle(box).display !== "none";
+    if(!shown){
+      still && still.remove();
+      film && film.remove();
+    }
+
     /* The still is what the hero opens on and what it falls back to, so it is
        set either way and never removed.
 
@@ -1423,15 +1468,27 @@ const live = arrivals.filter(p => !p.hold);
        assets/hero/README.txt -- and swapping one in needs nothing changed
        here. If the file is ever missing the catalogue picture takes over --
        bands and all, which is worse than this and better than a hole. */
-    if(still && p){
+    if(shown && still && p){
       /* The alt describes whichever picture is actually on screen. The hero
          file is several pieces together, so naming one of them would be
          wrong; the fallback is a single piece, so there it is right. */
       still.alt = "Pieces from the Sthree Boutique collection";
+      /* Two rungs down, not one. If only the phone-sized picture is missing
+         the wide one is still right, and it is already the img's own src --
+         dropping the <source> alternatives makes the browser choose again and
+         land on it. Only when there is no alternative left to remove has the
+         hero itself failed, and then the catalogue picture takes over. */
+      let fallen = false;
       still.addEventListener("error", () => {
+        const pic = still.parentElement;
+        const alts = pic && pic.tagName === "PICTURE"
+          ? Array.from(pic.querySelectorAll("source")) : [];
+        if(alts.length){ alts.forEach(el => el.remove()); return; }
+        if(fallen) return;
+        fallen = true;
         still.alt = p.name;
         still.src = shot(p, primary(p));
-      }, { once:true });
+      });
       still.src = "assets/hero/hero-still.jpg";
     }
 
@@ -1440,7 +1497,7 @@ const live = arrivals.filter(p => !p.hold);
        a codec the machine will not take, or an autoplay the browser blocks all
        end the same way -- the still, which was already on screen as the
        poster, simply stays. Nothing flashes and nothing is empty. */
-    if(film){
+    if(shown && film){
       let settled = false;
       const useStill = () => {
         if(settled) return;

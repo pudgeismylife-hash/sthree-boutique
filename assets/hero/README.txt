@@ -4,12 +4,25 @@ THE FRONT PAGE PICTURE
 The hero is one picture running the full width of the screen with the
 boutique's name and the WhatsApp button laid over it.
 
-Two files control it, and neither needs any code changed:
+Three files control it, and none needs any code changed:
 
-  hero-still.jpg   the photograph. Always shown.
-  hero.mp4         a film, if there ever is one. Plays over the still.
+  hero-still.jpg        the wide picture. Laptops and tablets.
+  hero-still-tall.jpg   the tall picture. Phones, under 640 pixels wide.
+  hero.mp4              a film, if there ever is one. Plays over the still.
 
-Replace hero-still.jpg and the front page changes. That is the whole job.
+There are two pictures because a phone's hero is taller than it is wide and a
+laptop's is more than twice as wide as it is tall. One file cannot serve both:
+the wide one on a phone was covered from the middle out, so the phone saw
+about a third of it.
+
+Replace either file and that size of screen changes. Replace both and the
+whole front page changes. That is the whole job.
+
+If only hero-still.jpg is replaced, phones keep the tall one and nothing
+breaks -- but the two will no longer match, so replace both together when you
+can. If a file is missing altogether the page steps down on its own: no tall
+file falls back to the wide one, no wide one falls back to a product
+photograph. Nothing is ever left blank.
 
 
 -------------------------------------------------------------------
@@ -18,14 +31,20 @@ SHOOTING THE PHOTOGRAPH
 
 A phone is fine. Portrait mode off, flash off, clean lens.
 
-1. TURN THE PHONE SIDEWAYS.
-   Landscape, not upright. The hero is a wide band. An upright photo gets
-   cropped hard at the top and bottom and you lose most of it.
+1. SHOOT IT TWICE -- SIDEWAYS, THEN UPRIGHT.
+   Same setup, same light, same pose: turn the phone. The landscape one
+   becomes hero-still.jpg, the upright one hero-still-tall.jpg. Everything
+   below applies to both.
 
-2. LEAVE THE LEFT SIDE EMPTY.
-   The words sit over the lower left. Put the model on the RIGHT of the
-   frame and let the left be street, wall, cloth, sky -- anything quiet.
-   If the model stands in the middle, the words land on her face.
+   If you only shoot one, shoot the upright one: most customers are on a
+   phone.
+
+2. LEAVE ROOM FOR THE WORDS.
+   Sideways: the words sit over the lower LEFT. Put the model on the right
+   and let the left be street, wall, cloth, sky -- anything quiet.
+   Upright: the words run the full width across the lower half. Keep the
+   model high and let the bottom half be skirt, fabric, floor -- nothing
+   that matters. Her face must be in the top third.
 
 3. KEEP THE FACE HIGH IN THE FRAME.
    The picture is cropped from 22% down. A face in the top third
@@ -47,13 +66,14 @@ A phone is fine. Portrait mode off, flash off, clean lens.
 
 
 -------------------------------------------------------------------
-THE FILE
+THE FILES
 -------------------------------------------------------------------
 
-  Name it exactly       hero-still.jpg
-  Landscape             wider than it is tall
-  At least              2000 pixels across, 2500 or more is better
-  Under about           600 KB after saving, or the page loads slowly
+  The wide one          hero-still.jpg
+                        landscape, at least 2000 px across, 2500 is better
+  The tall one          hero-still-tall.jpg
+                        upright, at least 1000 px across, 1400 is better
+  Both, under about     600 KB each after saving, or the page loads slowly
 
 Do not add a border, a frame or a cream margin. The picture must reach
 all four edges -- the site puts its own darkening over the bottom so the
@@ -66,25 +86,32 @@ Nothing the boutique has sent is the right shape for a hero: every
 photograph is one figure, upright, on a cream studio background. Cropped
 to a wide band, they either lose the head or show cream down both sides.
 
-So the picture there now was built rather than shot. It is four of the
+So the pictures there now were built rather than shot. They are the
 boutique's own catalogue photographs -- the black shirt dress, the pink
 zari saree, the black sequin saree and the orange floral saree -- cut off
 their backgrounds and stood together on a dark warm ground at different
-sizes, so the eye reads them as a group. Nothing about any garment was
-changed: no colour, no shape, no work invented. It is an arrangement of
-real photographs.
+sizes, so the eye reads them as a group. Four of them in the wide picture,
+three in the tall one. Nothing about any garment was changed: no colour,
+no shape, no work invented. It is an arrangement of real photographs.
 
   python3 build-hero.py            report only, writes nothing
-  python3 build-hero.py --apply    rebuild it
+  python3 build-hero.py --apply    rebuild both
 
-Change which pieces appear by editing FIGURES at the top of build-hero.py.
-It refuses to write if a figure would land under the words, above the crop
-line, or outside what a phone can see.
+Change which pieces appear, and where they stand, by editing LAYOUTS at the
+top of build-hero.py. The two layouts are separate: the tall one carries only
+three figures and lets them overlap, because side by side at that width each
+would be a sliver. It refuses to write if a figure would land under the words,
+above the line covering crops to, outside what a phone can see of the wide
+file, or short of the bottom edge.
 
-It is a stand-in and it is meant to be replaced. One real photograph of
-the shop, shot to the rules above, will say more than four cut-outs on a
-made-up background ever will -- and dropping hero-still.jpg in place of
-this one needs no code changed at all.
+They are stand-ins and they are meant to be replaced. One real photograph
+of the shop, shot to the rules above, will say more than four cut-outs on
+a made-up background ever will -- and dropping the files in over these
+needs no code changed at all.
+
+framing-guide.png in this folder shows both shapes with the zones drawn
+over the real page: where the model goes, where the words fall, and the
+line the faces have to stay above.
 
 
 -------------------------------------------------------------------
@@ -92,6 +119,8 @@ IF YOU SHOOT A FILM INSTEAD
 -------------------------------------------------------------------
 
 Name it hero.mp4 and put it in this folder. Same framing rules as above.
+There is only one film -- it is used on every size -- so frame it the wide
+way and accept that a phone sees the middle of it.
 
   10 to 15 seconds. It loops, so it should end roughly where it began or
   the jump shows.
