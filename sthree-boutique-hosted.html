@@ -1410,12 +1410,22 @@ const live = arrivals.filter(p => !p.hold);
        assets/hero/hero-still.jpg rather than the catalogue picture: every
        catalogue image is letterboxed on cream so the cards all match, and a
        full-bleed hero built from one showed those margins as pale bands down
-       both edges. This is the same photograph with the cream trimmed off, so
-       it reaches the edges. If it is ever missing the catalogue picture takes
-       over -- bands and all, which is worse than this and better than a hole. */
+       both edges. That file is built by build-hero.py from the shop's own
+       cut-outs, standing several pieces on a dark ground so the picture is
+       wide, reaches all four edges and keeps its faces above the crop line.
+       It is a stand-in for a photograph shot for the purpose -- see
+       assets/hero/README.txt -- and swapping one in needs nothing changed
+       here. If the file is ever missing the catalogue picture takes over --
+       bands and all, which is worse than this and better than a hole. */
     if(still && p){
-      still.alt = p.name;
-      still.addEventListener("error", () => { still.src = shot(p, primary(p)); }, { once:true });
+      /* The alt describes whichever picture is actually on screen. The hero
+         file is several pieces together, so naming one of them would be
+         wrong; the fallback is a single piece, so there it is right. */
+      still.alt = "Pieces from the Sthree Boutique collection";
+      still.addEventListener("error", () => {
+        still.alt = p.name;
+        still.src = shot(p, primary(p));
+      }, { once:true });
       still.src = "assets/hero/hero-still.jpg";
     }
 

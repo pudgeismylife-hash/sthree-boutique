@@ -59,9 +59,32 @@ Do not add a border, a frame or a cream margin. The picture must reach
 all four edges -- the site puts its own darkening over the bottom so the
 words stay readable, and a margin shows as a pale band down the sides.
 
-The one on there now is the palazzo cordset photograph. It works, but it
-is only 770 pixels wide behind its margins, so it goes soft on a large
-screen. Almost any properly shot photograph will beat it.
+WHAT IS ON THERE NOW, AND WHY IT IS TEMPORARY
+---------------------------------------------
+
+Nothing the boutique has sent is the right shape for a hero: every
+photograph is one figure, upright, on a cream studio background. Cropped
+to a wide band, they either lose the head or show cream down both sides.
+
+So the picture there now was built rather than shot. It is four of the
+boutique's own catalogue photographs -- the black shirt dress, the pink
+zari saree, the black sequin saree and the orange floral saree -- cut off
+their backgrounds and stood together on a dark warm ground at different
+sizes, so the eye reads them as a group. Nothing about any garment was
+changed: no colour, no shape, no work invented. It is an arrangement of
+real photographs.
+
+  python3 build-hero.py            report only, writes nothing
+  python3 build-hero.py --apply    rebuild it
+
+Change which pieces appear by editing FIGURES at the top of build-hero.py.
+It refuses to write if a figure would land under the words, above the crop
+line, or outside what a phone can see.
+
+It is a stand-in and it is meant to be replaced. One real photograph of
+the shop, shot to the rules above, will say more than four cut-outs on a
+made-up background ever will -- and dropping hero-still.jpg in place of
+this one needs no code changed at all.
 
 
 -------------------------------------------------------------------
