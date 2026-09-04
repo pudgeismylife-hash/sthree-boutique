@@ -181,40 +181,66 @@ header nav{display:none}
    the edge of the screen rather than sitting in a panel with a margin
    round it. On a phone they stack, copy first -- what the shop is and
    how to order, before the picture. */
-.hero{background:var(--cream);display:grid}
-.hero-copy{padding:32px var(--gut) 28px}
-.hero h1{font-size:34px;line-height:1.04;margin:0 0 8px}
-.hero p.lede{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin:0;max-width:44ch}
+/* The hero is one full-bleed picture with the words laid over it, rather than
+   the old two-column row of copy beside a framed piece. The film sits under
+   everything, the scrim sits on the film, the words sit on the scrim. */
+.hero{
+  position:relative;isolation:isolate;background:var(--ink);
+  min-height:min(78vh,600px);display:flex;align-items:flex-end;overflow:hidden;
+}
+.hero-film,.hero-still{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  /* Fashion pictures are tall and a hero is wide, so covering one crops the
+     top and the bottom away. Centred, that took the model's head off. The
+     window is held high instead: a hem lost off the bottom costs nothing, a
+     face lost off the top costs the picture. */
+  object-position:50% 22%;
+}
+/* The still is what the hero opens on, always. The film is laid over it and
+   only revealed once it is genuinely playing, so a slow connection, a blocked
+   autoplay or a missing file all end at the same picture rather than at a
+   black rectangle -- and nothing has to be inlined as a poster to achieve it. */
+.hero-still{display:block}
+.hero-film{opacity:0;transition:opacity .5s ease}
+.hero.film-on .hero-film{opacity:1}
+.hero.no-film .hero-film{display:none}
+/* A picture cannot be relied on to be dark where the words fall, so the words
+   carry their own darkness: strongest at the bottom where they sit, clearing
+   to nothing at the top so the clothes are not muddied. */
+.hero-scrim{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to top,
+    rgba(14,11,9,.82) 0%, rgba(14,11,9,.62) 26%, rgba(14,11,9,.24) 56%, rgba(14,11,9,.06) 100%);
+}
+.hero-copy{position:relative;z-index:2;padding:0 var(--gut) 34px;max-width:var(--maxw);width:100%}
+.hero h1{font-size:34px;line-height:1.04;margin:0 0 10px;color:#fff}
+.hero p.lede{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.86);margin:0;max-width:44ch}
+.hero .eyebrow{color:rgba(255,255,255,.72)}
 .hero-act{margin-top:20px}
+.hero .btn{background:#fff;color:var(--ink);border-color:#fff}
+.hero .btn:hover{background:var(--gold);border-color:var(--gold);color:#fff}
 .hero-note{
   font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--grey);margin:11px 0 0;
+  color:rgba(255,255,255,.66);margin:11px 0 0;
 }
-.hero-piece{
-  /* A plain block, not a centring grid: a centred grid item is sized by its
-     own content, so width and height of 100% resolve against nothing and the
-     picture falls back to its intrinsic size and overflows. */
-  background:var(--cream-alt);display:block;overflow:hidden;padding:12px;height:420px;
-}
-/* object-fit rather than max-height: the panel centres its child, so a
-   percentage max-height resolves against an auto-sized grid area and the
-   browser drops it -- which had the figure overflowing and being clipped
-   at the head and the hem, the very thing this hero exists to stop. */
-.hero-piece img{width:100%;height:100%;object-fit:contain}
 @media (min-width:600px){
-  .hero h1{font-size:42px}
-  .hero-piece{height:470px}
+  .hero h1{font-size:46px}
+  .hero-copy{padding-bottom:44px}
 }
 @media (min-width:900px){
-  /* The copy lines up with the page's own gutter however wide the screen
-     is, while the piece keeps running to the edge -- which is the whole
-     point of it and is why this row is not inside .wrap. */
-  .hero{grid-template-columns:1fr .78fr;align-items:center}
+  .hero{min-height:min(86vh,720px)}
+  /* The copy keeps the page's own gutter however wide the screen gets, which
+     is why this block is not inside .wrap. */
   .hero-copy{
-    padding:68px 44px 68px max(var(--gut), (100vw - var(--maxw)) / 2 + var(--gut));
+    padding:0 44px 64px max(var(--gut), (100vw - var(--maxw)) / 2 + var(--gut));
   }
-  .hero h1{font-size:62px;line-height:1.01}
-  .hero-piece{height:min(66vh,520px);padding:22px}
+  .hero h1{font-size:64px;line-height:1.01;max-width:16ch}
+}
+/* Motion is a preference, not a given. Somebody who has asked their machine to
+   stop things moving gets the poster frame and no playback at all. */
+@media (prefers-reduced-motion:reduce){
+  .hero-film{display:none}
+  .hero-still{display:block}
 }
 
 /* ── image placeholders ───────────────────────────────────────
@@ -826,7 +852,19 @@ footer li a:hover{color:var(--gold)}
 </div>
 
 <main id="main">
-<div class="hero">
+<div class="hero" id="hero">
+  <!-- The film, when there is one. Muted, inline and looping, because every
+       phone refuses to autoplay anything else, and carrying a poster so the
+       first paint is the picture rather than a black rectangle. If the file is
+       missing -- which is the case until she sends footage -- the <video> is
+       removed on load and the poster stays as an ordinary still, so the shop
+       never opens on a hole. -->
+  <video class="hero-film" id="heroFilm" autoplay muted loop playsinline preload="none"
+         aria-hidden="true" tabindex="-1">
+    <source src="assets/hero/hero.mp4" type="video/mp4">
+  </video>
+  <img class="hero-still" id="heroStill" alt="" decoding="async">
+  <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-copy">
     <p class="eyebrow" id="heroEyebrow"></p>
     <h1>The boutique where fashion meets personality.</h1>
@@ -836,7 +874,6 @@ footer li a:hover{color:var(--gold)}
       <p class="hero-note" id="heroNote"></p>
     </div>
   </div>
-  <a class="hero-piece" id="heroPiece"><img id="heroImg" alt="" decoding="async"></a>
 </div>
 
 <section id="categories">
@@ -1364,19 +1401,52 @@ const live = arrivals.filter(p => !p.hold);
      The count and the opening prices are read off the catalogue rather
      than written down, so neither can end up claiming something untrue. */
   (function hero(){
-    const wrap = $("#heroPiece"), img = $("#heroImg");
+    const film = $("#heroFilm"), still = $("#heroStill"), box = $("#hero");
     const p = live.find(x => x.key === CONFIG.heroPiece) || live[0];
-    if(wrap && img && p){
-      img.src = shot(p, primary(p));
-      img.alt = p.name;
-      img.width = 760; img.height = 950;
-      /* Through to the piece itself. The collection page is the target
-         rather than this one, because the front page shows a selection
-         and the hero piece is not always among it. */
-      wrap.href = "collection.html?p=" + encodeURIComponent(p.key);
-      wrap.setAttribute("aria-label", "See " + p.name);
-    } else if(wrap){
-      wrap.remove();
+
+    /* The still is what the hero opens on and what it falls back to, so it is
+       set either way and never removed.
+
+       assets/hero/hero-still.jpg rather than the catalogue picture: every
+       catalogue image is letterboxed on cream so the cards all match, and a
+       full-bleed hero built from one showed those margins as pale bands down
+       both edges. This is the same photograph with the cream trimmed off, so
+       it reaches the edges. If it is ever missing the catalogue picture takes
+       over -- bands and all, which is worse than this and better than a hole. */
+    if(still && p){
+      still.alt = p.name;
+      still.addEventListener("error", () => { still.src = shot(p, primary(p)); }, { once:true });
+      still.src = "assets/hero/hero-still.jpg";
+    }
+
+    /* Whether a film exists is not something to assert in markup. The browser
+       is asked, and only a video that actually starts is kept: a missing file,
+       a codec the machine will not take, or an autoplay the browser blocks all
+       end the same way -- the still, which was already on screen as the
+       poster, simply stays. Nothing flashes and nothing is empty. */
+    if(film){
+      let settled = false;
+      const useStill = () => {
+        if(settled) return;
+        settled = true;
+        box && box.classList.add("no-film");
+        film.remove();
+      };
+      const keep = () => { settled = true; box && box.classList.add("film-on"); };
+      film.addEventListener("playing", keep, { once:true });
+      film.addEventListener("error", useStill, { once:true });
+      film.querySelector("source")?.addEventListener("error", useStill, { once:true });
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(reduced){ useStill(); }
+      else {
+        film.preload = "auto";
+        film.load();
+        const go = film.play();
+        if(go && go.catch) go.catch(useStill);
+        /* A film that has not begun within a few seconds is not going to be
+           the first thing a customer sees, whatever the reason. */
+        setTimeout(() => { if(!settled && film.readyState < 3) useStill(); }, 4000);
+      }
     }
 
     /* "Twenty-five pieces" reads like a boutique; "25 pieces" reads like a
