@@ -598,6 +598,13 @@ footer h3{
 }
 footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 footer li a,footer li span{font-size:13px;color:var(--ink-soft)}
+/* The other four lines in this list say what they are in words -- "WhatsApp",
+   "Call the boutique", the address itself. A bare @handle does not, so it gets
+   the mark. Sized in em so it tracks the text rather than a fixed box, and
+   nudged down off the baseline so it sits with the letters instead of on top
+   of them. */
+.ig-link{display:inline-flex;align-items:center;gap:.5em}
+.ig-glyph{width:1.05em;height:1.05em;flex:none;display:block}
 footer li a:hover{color:var(--gold)}
 .legal{
   margin-top:22px;padding-top:16px;border-top:1px solid var(--hairline);
@@ -831,6 +838,19 @@ footer li a:hover{color:var(--gold)}
 </head>
 <body>
 
+<!-- The Instagram mark, defined once and referenced wherever it is needed.
+     It appears twice -- beside the handle in the footer and on the Follow
+     button in About -- and two copies of the same glyph is exactly how they
+     drift apart. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="ig-mark" viewBox="0 0 24 24">
+    <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.2"
+          fill="none" stroke="currentColor" stroke-width="1.7"/>
+    <circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+    <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor"/>
+  </symbol>
+</svg>
+
 <a class="skip" href="#main">Skip to content</a>
 <div class="announce">Imported &amp; Indian · Mangalore</div>
 
@@ -959,12 +979,7 @@ footer li a:hover{color:var(--gold)}
           <span class="who">Priyanka Monteiro</span>
           <span class="role">Owner · Sthree Boutique</span>
           <a class="follow" id="followLink" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false">
-              <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.2"
-                    fill="none" stroke="currentColor" stroke-width="1.7"/>
-              <circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
-              <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor"/>
-            </svg>
+            <svg width="15" height="15" aria-hidden="true" focusable="false"><use href="#ig-mark"/></svg>
             <span id="followName"></span>
           </a>
         </figcaption>
@@ -2356,7 +2371,7 @@ const live = arrivals.filter(p => !p.hold);
     <li><a href="${wa(shopMsg)}" target="_blank" rel="noopener">WhatsApp ${pretty(CONFIG.whatsapp)}</a></li>
     <li><a href="tel:${CONFIG.tel}">Call the boutique</a></li>
     <li><a href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a></li>
-    <li><a href="https://instagram.com/${CONFIG.instagram}" target="_blank" rel="noopener">@${esc(CONFIG.instagram)}</a></li>
+    <li><a class="ig-link" href="https://instagram.com/${CONFIG.instagram}" target="_blank" rel="noopener"><svg class="ig-glyph" aria-hidden="true" focusable="false"><use href="#ig-mark"/></svg>@${esc(CONFIG.instagram)}</a></li>
     <li><span>${esc(CONFIG.hours)}</span></li>`;
 
   const follow = $("#followLink"), followName = $("#followName");
