@@ -39,6 +39,14 @@ UI_MED = os.path.join(FONTS, "jost-500.ttf")
 
 FIGURE = "sarees_1-a1"      # the pink zari saree: the strongest colour she has
 LOGO = os.path.join(HERE, "assets", "logo-web-dark.png")   # gold, for dark grounds
+LOGO_LIGHT = os.path.join(HERE, "assets", "logo-web.png")  # ink, for cream grounds
+
+# The cream cards stand a figure on the ground rather than bleeding it off the
+# bottom, so the cut-out has to be one that reaches the feet. Two of the sarees
+# stop at the shin because the photograph did.
+STANDING = "gowns_1-a1"
+TILES = ["cat-western", "cat-ethnic", "cat-coord",
+         "cat-jewellery", "cat-nails", "cat-bags"]
 
 
 def font(path, size):
@@ -102,6 +110,116 @@ def centred(d, y, text, ft, fill, track=0):
     for c, cw in zip(text, widths):
         d.text((x, y), c, font=ft, fill=fill)
         x += cw
+
+
+def shadow(canvas, cx, base, width):
+    """The soft contact shadow the product cards use. Without it a cut-out on
+    cream is a sticker; with it the piece is standing on something."""
+    w = int(width)
+    h = max(8, int(width * 0.13))
+    pad = h * 2
+    lay = Image.new("RGBA", (w + pad * 2, h + pad * 2), (0, 0, 0, 0))
+    ImageDraw.Draw(lay).ellipse([pad, pad, pad + w, pad + h], fill=(20, 17, 15, 62))
+    lay = lay.filter(ImageFilter.GaussianBlur(h * 0.55))
+    canvas.alpha_composite(lay, (int(cx - w / 2 - pad), int(base - h / 2 - pad)))
+
+
+def rule(d, y, half=60, colour=None):
+    d.line([(SIZE[0] / 2 - half, y), (SIZE[0] / 2 + half, y)],
+           fill=colour or GOLD, width=2)
+
+
+def build_cream():
+    """The light card: the shop's other face. Everything the site does on a
+    product card -- a piece cut out, stood on cream, with a soft shadow under
+    it -- at story size. Reads completely differently from the dark one, which
+    is the point of having both."""
+    marks = []
+    canvas = Image.new("RGBA", SIZE, CREAM + (255,))
+    d = ImageDraw.Draw(canvas)
+
+    logo = Image.open(LOGO_LIGHT).convert("RGBA")
+    lw = 300
+    logo = logo.resize((lw, int(round(logo.height * lw / logo.width))), Image.LANCZOS)
+    canvas.alpha_composite(logo, ((SIZE[0] - lw) // 2, SAFE[0]))
+    marks.append(("logo", SAFE[0], SAFE[0] + logo.height))
+
+    centred(d, 590, "NOW ONLINE", font(UI_MED, 28), GOLD, track=11)
+    marks.append(("eyebrow", 590, 618))
+
+    f = font(DISPLAY, 82)
+    for i, line in enumerate(["The boutique where", "fashion meets personality."]):
+        centred(d, 650 + i * 88, line, f, INK)
+    marks.append(("headline", 650, 650 + 88 + 82))
+
+    fig = cutout(STANDING)
+    th = 620
+    tw = int(round(fig.width * th / fig.height))
+    fig = fig.resize((tw, th), Image.LANCZOS)
+    base = 1490
+    shadow(canvas, SIZE[0] / 2, base, tw * 0.78)
+    canvas.alpha_composite(fig, (int(SIZE[0] / 2 - tw / 2), base - th))
+    marks.append(("figure", base - th, base))
+
+    rule(d, 1520)
+    centred(d, 1548, "sthreeboutique.com", font(DISPLAY_R, 66), GOLD)
+    marks.append(("address", 1548, 1614))
+    centred(d, 1642, "WESTERN  ·  ETHNIC  ·  JEWELLERY  ·  BAGS",
+            font(UI, 22), (138, 129, 119), track=5)
+    marks.append(("categories", 1642, 1664))
+    return canvas.convert("RGB"), marks
+
+
+def build_grid():
+    """The card that shows the range rather than one piece. The six squares are
+    the site's own category tiles, already framed to one rule by build-tiles.py,
+    so this stays in step with the front page for free."""
+    marks = []
+    canvas = Image.new("RGBA", SIZE, CREAM + (255,))
+    d = ImageDraw.Draw(canvas)
+
+    logo = Image.open(LOGO_LIGHT).convert("RGBA")
+    lw = 320
+    logo = logo.resize((lw, int(round(logo.height * lw / logo.width))), Image.LANCZOS)
+    canvas.alpha_composite(logo, ((SIZE[0] - lw) // 2, SAFE[0]))
+    marks.append(("logo", SAFE[0], SAFE[0] + logo.height))
+
+    # Three across, two down. Six squares stacked two-across ran 1343px tall and
+    # pushed the address out under Instagram's reply box -- the safe-area check
+    # caught it. Three across is also simply the better shape for an upright frame.
+    centred(d, 610, "NOW ONLINE", font(UI_MED, 28), GOLD, track=11)
+    marks.append(("eyebrow", 610, 638))
+
+    cols, gap, margin, label = 3, 16, 60, 38
+    cell = (SIZE[0] - margin * 2 - gap * (cols - 1)) // cols
+    gy = 700
+    lf = font(UI, 21)
+    for i, name in enumerate(TILES):
+        p = os.path.join(HERE, "assets", "products", name + ".jpg")
+        if not os.path.exists(p):
+            raise SystemExit("missing tile %s -- run build-tiles.py --apply" % name)
+        t = Image.open(p).convert("RGB").resize((cell, cell), Image.LANCZOS)
+        x = margin + (i % cols) * (cell + gap)
+        y = gy + (i // cols) * (cell + gap + label)
+        canvas.paste(t, (x, y))
+        d.rectangle([x, y, x + cell - 1, y + cell - 1], outline=(226, 217, 205), width=1)
+        # A picture of a bangle does not say "anti-tarnish jewellery"; the tile
+        # needs its name the same way the front page gives it one.
+        cap = name.replace("cat-", "").upper()
+        tw = d.textlength(cap, font=lf) + 3 * (len(cap) - 1)
+        cx = x + (cell - tw) / 2
+        for ch in cap:
+            d.text((cx, y + cell + 11), ch, font=lf, fill=(138, 129, 119))
+            cx += d.textlength(ch, font=lf) + 3
+    rows = (len(TILES) + cols - 1) // cols
+    grid_h = rows * (cell + label) + (rows - 1) * gap
+    marks.append(("tiles", gy, gy + grid_h))
+
+    ty = gy + grid_h + 46
+    rule(d, ty)
+    centred(d, ty + 28, "sthreeboutique.com", font(DISPLAY_R, 64), GOLD)
+    marks.append(("address", ty + 28, ty + 92))
+    return canvas.convert("RGB"), marks
 
 
 def build(sticker=False):
@@ -179,17 +297,21 @@ def build(sticker=False):
 
 
 CARDS = [
-    ("story-website.jpg", False,
-     "address printed -- WhatsApp status, print, anywhere with nothing to tap"),
-    ("story-website-link.jpg", True,
-     "room left for Instagram's link sticker"),
+    ("story-website.jpg", lambda: build(False),
+     "dark, address printed -- WhatsApp status, print, anywhere untappable"),
+    ("story-website-link.jpg", lambda: build(True),
+     "dark, room left for Instagram's link sticker"),
+    ("story-cream.jpg", build_cream,
+     "light editorial -- a piece stood on cream, the site's card language"),
+    ("story-grid.jpg", build_grid,
+     "the six categories -- shows the range rather than one piece"),
 ]
 
 
 def main():
     rc = 0
-    for name, sticker, why in CARDS:
-        im, marks = build(sticker)
+    for name, make, why in CARDS:
+        im, marks = make()
         print("%s  %dx%d  -- %s" % (name, im.width, im.height, why))
         bad = []
         for label, top, bot in marks:
