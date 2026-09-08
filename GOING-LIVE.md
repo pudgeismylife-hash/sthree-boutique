@@ -91,6 +91,45 @@ here.
 > before typing them in. GitHub's own settings page (Step 3) will also tell you
 > if they are wrong.
 
+### On GoDaddy specifically
+
+The domain was bought at GoDaddy, so:
+
+1. Sign in at godaddy.com → avatar (top right) → **My Products**
+2. Under **Domains**, find `sthreeboutique.com` → click **DNS**
+   (or the three dots → **Edit DNS**)
+
+You land on the **DNS Records** page. A new GoDaddy domain does not arrive
+empty — it arrives parked, and the parking records will win against anything
+you add beside them. So **delete before you add**:
+
+- the existing `A` record on `@` (its value will be a GoDaddy parking address,
+  or it may read *Parked* or *WebsiteBuilder Site*)
+- the existing `CNAME` on `www` (GoDaddy pre-fills this as `@`)
+- any **Domain Forwarding** — check the *Forwarding* section further down the
+  same page and remove it. Forwarding overrides the records above it, and a
+  forgotten forward is the usual reason a correct-looking zone still shows a
+  parking page.
+
+Leave `_domainconnect` and the `NS` and `SOA` records alone.
+
+Then **Add** five records, so the zone ends up like this:
+
+| Type | Name | Value | TTL |
+|---|---|---|---|
+| A | `@` | `185.199.108.153` | 600 seconds |
+| A | `@` | `185.199.109.153` | 600 seconds |
+| A | `@` | `185.199.110.153` | 600 seconds |
+| A | `@` | `185.199.111.153` | 600 seconds |
+| CNAME | `www` | `pudgeismylife-hash.github.io` | 1 hour |
+
+Four separate A records, all named `@`. GoDaddy allows this — add them one at
+a time; it is not a mistake that they share a name.
+
+Set TTL to **600 seconds** on the A records while setting up. A short TTL means
+a typo can be corrected in ten minutes instead of a day. Put it back to an hour
+once the site is working, if you like; it makes no practical difference.
+
 **Then wait.** DNS spreads in anything from 10 minutes to 24 hours. Check with:
 
 ```sh
@@ -98,12 +137,23 @@ dig +short sthreeboutique.com
 dig +short www.sthreeboutique.com
 ```
 
+No `dig` to hand? Open <https://www.whatsmydns.net> and look up
+`sthreeboutique.com` as an **A** record. It checks from servers around the
+world and shows a map of which ones have caught up, which is more useful than
+one answer from one machine.
+
 When the four `185.199.*` addresses come back, move on. Until then everything
 below will just report errors, so there is no point rushing it.
 
 ---
 
 ## Step 3 — Tell GitHub the domain (2 minutes)
+
+> ⚠️ **Do not do this step until Step 2 actually resolves.** The moment a custom
+> domain is set, GitHub stops serving the github.io address and redirects it to
+> the new one instead. If the new one does not answer yet, the shop is offline
+> until DNS catches up — a working site taken down by getting the order wrong.
+> Confirm the `185.199.*` addresses come back first.
 
 1. Go to the repository → **Settings** → **Pages**.
 2. Under **Custom domain**, type `sthreeboutique.com` and press **Save**.
