@@ -113,7 +113,13 @@ you add beside them. So **delete before you add**:
 
 Leave `_domainconnect` and the `NS` and `SOA` records alone.
 
-Then **Add** five records, so the zone ends up like this:
+**Edit rather than delete, for the first one.** GoDaddy ties the `A` record on
+`@` to its Website Builder and may refuse to delete it outright. Use the pencil
+icon instead and change its *Data* to the first GitHub address — that
+disconnects the builder and creates the record you want in one move. Accept any
+"this will disconnect your website" warning; disconnecting it is the point.
+
+The zone should end up like this:
 
 | Type | Name | Value | TTL |
 |---|---|---|---|
@@ -123,8 +129,15 @@ Then **Add** five records, so the zone ends up like this:
 | A | `@` | `185.199.111.153` | 600 seconds |
 | CNAME | `www` | `pudgeismylife-hash.github.io` | 1 hour |
 
-Four separate A records, all named `@`. GoDaddy allows this — add them one at
-a time; it is not a mistake that they share a name.
+Four separate A records, all named `@`. GoDaddy allows this — edit the existing
+one, then **Add New Record** for the other three. It is not a mistake that they
+share a name: GitHub runs four servers and this lists all of them.
+
+**Do not click "Connect Domain"** — the button top right, and the "Connect Your
+Domain in Minutes / Powered by Airo" card on the DNS page. That wizard points
+the domain at GoDaddy's own website or email, which is the opposite of what
+these records do. Same for "Verify Domain Ownership" and "Create MX records";
+neither is needed here.
 
 Set TTL to **600 seconds** on the A records while setting up. A short TTL means
 a typo can be corrected in ten minutes instead of a day. Put it back to an hour
