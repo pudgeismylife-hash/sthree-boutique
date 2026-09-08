@@ -303,6 +303,46 @@ services on the same name. Then update `CONFIG.email` in
 
 ---
 
+## The one that will waste an afternoon
+
+**The domain shows GoDaddy's "Launching Soon" page after everything is correct.**
+
+This happened on 8 September and cost an hour. The zone was right, GitHub
+reported "DNS check successful", the certificate had been issued and Enforce
+HTTPS was on — and the browser still showed GoDaddy's parked page.
+
+The cause was the local machine, not the setup. The domain had been parked for
+days with a one-hour TTL, so the PC and Chrome were both still holding
+GoDaddy's answer. whatsmydns.net showed GitHub's four addresses from resolvers
+worldwide at the same moment the laptop showed the parked page.
+
+Check the world before touching anything:
+
+- **whatsmydns.net**, type **A** — if it returns `185.199.*`, DNS is right and
+  the problem is local. Do not change a single record at GoDaddy.
+- **A phone on mobile data with WiFi off** — a different resolver entirely, and
+  a ten-second test.
+
+Then clear the local machine:
+
+```
+ipconfig /flushdns                       (Windows Command Prompt)
+chrome://net-internals/#dns              -> Clear host cache
+chrome://net-internals/#sockets          -> Flush socket pools
+```
+
+Close the browser fully, reopen, and hard-reload with **Ctrl+Shift+R** — the
+parked page sets long cache headers, so the browser can serve a saved copy of
+it even after DNS is corrected.
+
+Worth saying plainly, because it came up: **GitHub Pages supports custom
+domains.** It has for over a decade. A certificate issued for the domain and a
+green "DNS check successful" are GitHub confirming it is serving that name.
+Advice to migrate to another host to fix this is solving the wrong problem —
+the same stale cache would show the same parked page whoever was hosting.
+
+---
+
 ## If something goes wrong
 
 | Symptom | Cause |
