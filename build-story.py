@@ -104,9 +104,17 @@ def centred(d, y, text, ft, fill, track=0):
         x += cw
 
 
-def build():
-    """Returns (image, marks) where marks is every drawn element as
-    (name, top, bottom) so the safe area can be checked rather than eyeballed."""
+def build(sticker=False):
+    """Returns (image, marks): every drawn element as (name, top, bottom), so
+    the safe area is checked rather than eyeballed.
+
+    sticker=True leaves the foot of the safe area empty and prints no address.
+    A picture cannot be tapped -- Instagram's own link sticker carries the link
+    and has to be laid on top in the app -- so that version reserves a clean
+    band for it and says "tap the link below" instead of naming the address,
+    which the sticker will show anyway. The other version prints the address,
+    because a WhatsApp status and a printed card have nothing to tap.
+    """
     marks = []
     canvas = ground(SIZE).convert("RGBA")
 
@@ -125,6 +133,9 @@ def build():
     # Dark at both ends, clear through the middle where she is.
     canvas.alpha_composite(scrim(SIZE, [
         (0.00, 0.80), (0.16, 0.30), (0.34, 0.00),
+        (0.50, 0.00), (0.555, 0.70), (0.63, 0.92), (0.78, 0.95), (1.00, 0.97)]
+        if sticker else [
+        (0.00, 0.80), (0.16, 0.30), (0.34, 0.00),
         (0.50, 0.00), (0.58, 0.62), (0.66, 0.90), (0.80, 0.95), (1.00, 0.97)]))
 
     d = ImageDraw.Draw(canvas)
@@ -136,47 +147,69 @@ def build():
     canvas.alpha_composite(logo, ((SIZE[0] - lw) // 2, ly))
     marks.append(("logo", ly, ly + logo.height))
 
-    f = font(UI_MED, 30)
-    centred(d, 1215, "NOW ONLINE", f, GOLD_HI, track=11)
-    marks.append(("eyebrow", 1215, 1215 + 30))
+    top = 1120 if sticker else 1215
+    centred(d, top, "NOW ONLINE", font(UI_MED, 30), GOLD_HI, track=11)
+    marks.append(("eyebrow", top, top + 30))
 
+    hy = top + 70
     f = font(DISPLAY, 86)
     for i, line in enumerate(["The boutique where", "fashion meets personality."]):
-        centred(d, 1285 + i * 90, line, f, CREAM)
-    marks.append(("headline", 1285, 1285 + 90 + 86))
+        centred(d, hy + i * 90, line, f, CREAM)
+    marks.append(("headline", hy, hy + 90 + 86))
 
-    d.line([(SIZE[0] / 2 - 60, 1490), (SIZE[0] / 2 + 60, 1490)], fill=GOLD, width=2)
+    ry = hy + 205
+    d.line([(SIZE[0] / 2 - 60, ry), (SIZE[0] / 2 + 60, ry)], fill=GOLD, width=2)
 
-    centred(d, 1525, "sthreeboutique.com", font(DISPLAY_R, 72), GOLD_HI)
-    marks.append(("address", 1525, 1525 + 72))
-    centred(d, 1632, "WESTERN  ·  ETHNIC  ·  JEWELLERY  ·  BAGS",
-            font(UI, 25), (196, 186, 175), track=5)
-    marks.append(("categories", 1632, 1632 + 25))
+    cats = "WESTERN  ·  ETHNIC  ·  JEWELLERY  ·  BAGS"
+    if sticker:
+        centred(d, ry + 30, cats, font(UI, 25), (196, 186, 175), track=5)
+        marks.append(("categories", ry + 30, ry + 55))
+        centred(d, ry + 105, "TAP THE LINK BELOW", font(UI_MED, 26), GOLD, track=9)
+        marks.append(("cue", ry + 105, ry + 131))
+        # Left deliberately clear: this is where the link sticker is laid in
+        # the app. Reported as an element so the safe-area check covers it too.
+        marks.append(("sticker space", ry + 175, SAFE[1]))
+    else:
+        centred(d, ry + 35, "sthreeboutique.com", font(DISPLAY_R, 72), GOLD_HI)
+        marks.append(("address", ry + 35, ry + 107))
+        centred(d, ry + 142, cats, font(UI, 25), (196, 186, 175), track=5)
+        marks.append(("categories", ry + 142, ry + 167))
 
     return canvas.convert("RGB").filter(ImageFilter.GaussianBlur(0.3)), marks
 
 
+CARDS = [
+    ("story-website.jpg", False,
+     "address printed -- WhatsApp status, print, anywhere with nothing to tap"),
+    ("story-website-link.jpg", True,
+     "room left for Instagram's link sticker"),
+]
+
+
 def main():
-    im, marks = build()
-    print("story  %dx%d  figure %s" % (im.width, im.height, FIGURE))
-    bad = []
-    for name, top, bot in marks:
-        room = "ok"
-        if top < SAFE[0] or bot > SAFE[1]:
-            room = "OUTSIDE the safe area -- Instagram will cover it"
-            bad.append(name)
-        print("  %-11s %4d - %4d   %s" % (name, top, bot, room))
-    if bad:
-        print("\nnot written -- %s would be hidden" % ", ".join(bad))
-        return 1
-    if not APPLY:
-        print("report only; rerun with --apply to write assets/social/")
-        return 0
-    os.makedirs(OUT, exist_ok=True)
-    p = os.path.join(OUT, "story-website.jpg")
-    im.save(p, quality=92, optimize=True, progressive=True)
-    print("wrote assets/social/story-website.jpg  %d KB" % (os.path.getsize(p) // 1024))
-    return 0
+    rc = 0
+    for name, sticker, why in CARDS:
+        im, marks = build(sticker)
+        print("%s  %dx%d  -- %s" % (name, im.width, im.height, why))
+        bad = []
+        for label, top, bot in marks:
+            room = "ok"
+            if top < SAFE[0] or bot > SAFE[1]:
+                room = "OUTSIDE the safe area -- Instagram will cover it"
+                bad.append(label)
+            print("    %-14s %4d - %4d   %s" % (label, top, bot, room))
+        if bad:
+            print("    not written -- %s would be hidden\n" % ", ".join(bad))
+            rc = 1
+            continue
+        if not APPLY:
+            print("    report only; rerun with --apply\n")
+            continue
+        os.makedirs(OUT, exist_ok=True)
+        p = os.path.join(OUT, name)
+        im.save(p, quality=92, optimize=True, progressive=True)
+        print("    wrote assets/social/%s  %d KB\n" % (name, os.path.getsize(p) // 1024))
+    return rc
 
 
 if __name__ == "__main__":
