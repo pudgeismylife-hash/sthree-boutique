@@ -798,6 +798,50 @@ function check(s, label, needles) {
   if (missing.length) { console.error("FAIL " + label + " missing:", missing.join(" ")); process.exit(1); }
 }
 
+/* ── what a search engine is allowed to read, and where to start ──
+   Neither file existed until the site moved to its own domain, which is a
+   large part of why it could not be found: nothing had ever told a crawler the
+   site was there.
+
+   The sitemap lists two URLs, and that is not an oversight. Every other
+   address on this site says, in its own canonical tag, that it is not the
+   page: the 58 product stubs under p/ and the 6 category stubs under c/ exist
+   to carry link previews and send a real visitor onward, and each points its
+   canonical at the app view instead of itself. Listing a URL in a sitemap
+   while its own markup disowns it is a contradiction a crawler resolves by
+   ignoring both. A shop found by its name needs its front door indexed, not
+   sixty doorways. */
+function searchFiles(base) {
+  const day = new Date().toISOString().slice(0, 10);
+  const url = (loc, priority, freq) =>
+    "  <url>\n" +
+    "    <loc>" + loc + "</loc>\n" +
+    "    <lastmod>" + day + "</lastmod>\n" +
+    "    <changefreq>" + freq + "</changefreq>\n" +
+    "    <priority>" + priority + "</priority>\n" +
+    "  </url>";
+  const sitemap =
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    [url(base + "/", "1.0", "weekly"),
+     url(base + "/collection.html", "0.9", "weekly")].join("\n") +
+    "\n</urlset>\n";
+  fs.writeFileSync(DIR + "sitemap.xml", sitemap, "utf8");
+
+  const robots =
+    "User-agent: *\n" +
+    "Allow: /\n" +
+    "\n" +
+    "# The share stubs redirect a real visitor onward and name the app view as\n" +
+    "# their canonical, so there is nothing here for a crawler to index. Left\n" +
+    "# crawlable rather than blocked: a crawler that can read them can also read\n" +
+    "# the canonical tag that sends it to the right place.\n" +
+    "\n" +
+    "Sitemap: " + base + "/sitemap.xml\n";
+  fs.writeFileSync(DIR + "robots.txt", robots, "utf8");
+  return 2;
+}
+
 /* ── 1. GitHub Pages ────────────────────────────────────────────── */
 let pages = setLogo(src, logoName);
 pages = setSiteUrl(pages, SITE_URL || "__SITE_URL__");
@@ -813,6 +857,7 @@ check(pages, "index.html", ["<!doctype html>", 'id="items"', "917625077531", "og
 fs.writeFileSync(DIR + "index.html", pages, "utf8");
 const collLen = collectionPage(pages, SITE_URL || "");
 const cstubs = categoryPages(schema.items, SITE_URL || "");
+const seo = SITE_URL ? searchFiles(SITE_URL) : 0;
 
 /* ── 2. Claude artifact ─────────────────────────────────────────── */
 let artifact = unwrap(inlineProducts(stripHeld(setSiteUrl(setLogo(src, logoDataUri), SITE_URL), schema.items)).replace("<!-- __PRODUCT_SCHEMA__ -->", ""));
@@ -837,6 +882,8 @@ if (stubs.noCard.length) {
   console.log("       WARN no preview card for: " + stubs.noCard.join(", "));
   console.log("       run:  python3 build-og-images.py --apply");
 }
+console.log("search " + (seo ? "robots.txt + sitemap.xml (" + seo + " indexable URLs)"
+                             : "skipped, SITE_URL is empty"));
 console.log("logo   " + logoName + " (" + kb(logoBytes.length) + ")");
 console.log("index.html                    " + kb(pages.length) + "   links " + logoName + ", shows a selection");
 console.log("collection.html               " + kb(collLen) + "   every piece, tiles filter in place");

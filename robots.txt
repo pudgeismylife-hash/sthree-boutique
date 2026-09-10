@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# The share stubs redirect a real visitor onward and name the app view as
+# their canonical, so there is nothing here for a crawler to index. Left
+# crawlable rather than blocked: a crawler that can read them can also read
+# the canonical tag that sends it to the right place.
+
+Sitemap: https://sthreeboutique.com/sitemap.xml
