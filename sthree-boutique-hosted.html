@@ -816,6 +816,25 @@ footer li a:hover{color:var(--gold)}
 }
 .viewer-hint.gone{opacity:0}
 @media (max-width:899px){
+  /* On a phone the whole thing scrolls as one column, the way a shop's product
+     page does. It used to pin the picture at 52svh and give the details their
+     own little scrollbar underneath, which on an ordinary phone left about
+     230px of window for the name, price, size, three buttons, the spec table,
+     the care note and the fitting instructions. The boutique's word for it was
+     that you "cannot scroll fully", and she was right: everything was reachable
+     and almost nothing was readable. Now the picture scrolls away like any
+     other content and the details have the whole screen. */
+  .viewer-body{display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  .viewer-panel{overflow:visible}
+  /* The stage swallowed every touch so that pinching and panning a zoomed
+     photograph would work. That also swallowed the flick that scrolls the
+     page, so a finger landing on the picture -- most of the screen -- did
+     nothing at all. Vertical panning is handed back to the browser, and taken
+     away again only while zoomed, where a drag genuinely means move the
+     picture. Two-finger pinch is unaffected: no touch-action value describes
+     it, so it stays with the code that already handles it. */
+  .viewer-stage{touch-action:pan-y}
+  .viewer-stage.is-zoomed{touch-action:none}
   .viewer-stagewrap{height:52svh;min-height:260px}
   /* The hint sat centred along the bottom and the zoom control sits bottom
      right, so on a phone they overlapped and the hint was clipped mid-word.
